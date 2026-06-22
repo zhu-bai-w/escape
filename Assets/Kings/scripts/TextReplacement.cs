@@ -46,9 +46,9 @@ public class TextReplacement
     ///  
     /// 
     /// Examples for place holders:
-    ///  {value=army}              -> is replaced by the actual value of army (if defined in value definitions), e.g. 75
-    ///  {value=army,format=0.0}   -> is replace like before but with formatting, e.g. 75.0
-    ///  {value=army,preview=up}   -> is replaced by the preview for army when swiping up
+    ///  {value=bodyMind}              -> is replaced by the actual value of bodyMind (if defined in value definitions), e.g. 75
+    ///  {value=bodyMind,format=0.0}   -> is replace like before but with formatting, e.g. 75.0
+    ///  {value=bodyMind,preview=up}   -> is replaced by the preview for bodyMind when swiping up
     ///  {item=sword}              -> is replaced by the number of swords in the inventory
     ///  {dictionary=name}         -> is replaced by the value for the key 'name'. 
     /// </summary>
@@ -63,7 +63,7 @@ public class TextReplacement
         string pattern = @"\{(.*?)\}";
         string[] commandSeqences;
         string[] commandSplit;
-        var matches = Regex.Matches(query, pattern);    //e.g. "your army strenth is {army,format=0.0}." returns "army,format=0.0" in the first element (not a string yet)
+        var matches = Regex.Matches(query, pattern);    //e.g. "your bodyMind strenth is {bodyMind,format=0.0}." returns "bodyMind,format=0.0" in the first element (not a string yet)
 
         foreach (Match m in matches)
         {
@@ -73,7 +73,7 @@ public class TextReplacement
             //remove space characters 
             matchNoSpace = match.Replace(" ", string.Empty);
 
-            commandSeqences = matchNoSpace.Split(',');    //e.g. "army,format=0.0" is split into "army" and "format=0.0"
+            commandSeqences = matchNoSpace.Split(',');    //e.g. "bodyMind,format=0.0" is split into "bodyMind" and "format=0.0"
 
             //variables resulting from different commands
             string format = "";

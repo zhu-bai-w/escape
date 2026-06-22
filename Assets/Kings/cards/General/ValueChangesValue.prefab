@@ -292,7 +292,7 @@ MonoBehaviour:
       textContent: Money
       textField: {fileID: 114090687538468844}
     questionText:
-      textContent: Give away half of your total wealth ({value=money,format=0} Gold)
+      textContent: Give away half of your total wealth ({value=economy,format=0} Gold)
         to make all 3 factions happy?
       textField: {fileID: 114309495523116190}
     answerLeft:

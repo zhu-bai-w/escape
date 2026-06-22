@@ -25039,7 +25039,7 @@ GameObject:
   - component: {fileID: 634650720}
   - component: {fileID: 634650721}
   m_Layer: 0
-  m_Name: People
+  m_Name: Academics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25616,7 +25616,7 @@ GameObject:
   - component: {fileID: 658934259}
   - component: {fileID: 658934260}
   m_Layer: 0
-  m_Name: Army
+  m_Name: BodyMind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28868,7 +28868,7 @@ GameObject:
   - component: {fileID: 800512654}
   - component: {fileID: 800512655}
   m_Layer: 0
-  m_Name: Religion
+  m_Name: Relationships
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35258,7 +35258,7 @@ GameObject:
   - component: {fileID: 954501961}
   - component: {fileID: 954501962}
   m_Layer: 0
-  m_Name: Money
+  m_Name: Economy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
