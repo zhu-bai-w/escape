@@ -1,19 +1,57 @@
 {
     "success": true,
-    "generatedAt": "2026-06-22 18:47:13",
-    "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv",
+    "generatedAt": "2026-06-22 19:34:19",
+    "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
+    "textCsv": "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv",
     "styleList": "Assets/Kings/cards/_templates/CardStyle_List.asset",
     "outputFolder": "Assets/UniversitySimulator/Prefabs/Cards",
-    "csvRows": 89,
-    "generatedPrefabs": 89,
+    "targetScene": "Assets/Kings/Game.unity",
+    "csvRows": 108,
+    "generatedTextCsvRows": 108,
+    "generatedPrefabs": 108,
+    "configuredPrefabs": 108,
     "missingPrefabs": 0,
     "prefabErrors": 0,
+    "mainlineHooks": 12,
+    "sceneGroups": 13,
+    "sceneCards": 108,
+    "trueEndingStartCard": "US_E106",
     "errors": [],
     "warnings": [
-        "Applied CardStyle references after KingsImEx import: 89 prefab(s)."
+        "Applied CardStyle references after KingsImEx import: 19 prefab(s).",
+        "Card E005 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E008 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E011 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
+        "Card E017 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E020 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
+        "Card E026 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E028 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E030 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E032 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
+        "Card E038 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E039 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E041 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E042 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E047 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E049 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
+        "Card E057 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
+        "Card E059 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E064 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
+        "Card E065 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
+        "Card E068 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E069 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E070 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
+        "Card E072 has conditionExpression that cannot be fully imported into Kings AND-only conditions: relationships>=65 OR realConnection>=2",
+        "Card E073 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E075 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
+        "Card E078 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
+        "Card E084 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
+        "Card E085 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
+        "Card E089 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30"
     ],
     "cards": [
         {
+            "eventId": "E001",
             "cardName": "US_E001",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -21,10 +59,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E002",
             "cardName": "US_E002",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -32,10 +72,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E003",
             "cardName": "US_E003",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -43,10 +85,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E004",
             "cardName": "US_E004",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -54,10 +98,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E005",
             "cardName": "US_E005",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -65,10 +111,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E006",
             "cardName": "US_E006",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -76,10 +124,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E007",
             "cardName": "US_E007",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -87,10 +137,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E008",
             "cardName": "US_E008",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -98,10 +150,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E009",
             "cardName": "US_E009",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -109,10 +163,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E010",
             "cardName": "US_E010",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -120,10 +176,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E011",
             "cardName": "US_E011",
             "groupName": "SicknessRecovery",
             "styleName": "cs_None",
@@ -131,10 +189,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E012",
             "cardName": "US_E012",
             "groupName": "Story",
             "styleName": "cs_None",
@@ -142,10 +202,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E013",
             "cardName": "US_E013",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -153,10 +215,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E014",
             "cardName": "US_E014",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -164,10 +228,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E015",
             "cardName": "US_E015",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -175,10 +241,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E016",
             "cardName": "US_E016",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -186,10 +254,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E017",
             "cardName": "US_E017",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -197,10 +267,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E018",
             "cardName": "US_E018",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -208,10 +280,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E019",
             "cardName": "US_E019",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -219,10 +293,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E020",
             "cardName": "US_E020",
             "groupName": "SicknessRecovery",
             "styleName": "cs_None",
@@ -230,10 +306,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E021",
             "cardName": "US_E021",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -241,10 +319,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E022",
             "cardName": "US_E022",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -252,10 +332,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E023",
             "cardName": "US_E023",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -263,10 +345,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E024",
             "cardName": "US_E024",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -274,10 +358,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E025",
             "cardName": "US_E025",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -285,10 +371,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E026",
             "cardName": "US_E026",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -296,10 +384,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E027",
             "cardName": "US_E027",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -307,10 +397,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E028",
             "cardName": "US_E028",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -318,10 +410,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E029",
             "cardName": "US_E029",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -329,10 +423,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E030",
             "cardName": "US_E030",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -340,10 +436,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E031",
             "cardName": "US_E031",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -351,10 +449,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E032",
             "cardName": "US_E032",
             "groupName": "SicknessRecovery",
             "styleName": "cs_None",
@@ -362,10 +462,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E033",
             "cardName": "US_E033",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -373,10 +475,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E034",
             "cardName": "US_E034",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -384,10 +488,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E035",
             "cardName": "US_E035",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -395,10 +501,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E036",
             "cardName": "US_E036",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -406,10 +514,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E037",
             "cardName": "US_E037",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -417,10 +527,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E038",
             "cardName": "US_E038",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -428,10 +540,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E039",
             "cardName": "US_E039",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -439,10 +553,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E040",
             "cardName": "US_E040",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -450,10 +566,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E041",
             "cardName": "US_E041",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -461,10 +579,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E042",
             "cardName": "US_E042",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -472,10 +592,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E043",
             "cardName": "US_E043",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -483,10 +605,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E044",
             "cardName": "US_E044",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -494,10 +618,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E045",
             "cardName": "US_E045",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -505,10 +631,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E046",
             "cardName": "US_E046",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -516,10 +644,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E047",
             "cardName": "US_E047",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -527,10 +657,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E048",
             "cardName": "US_E048",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -538,10 +670,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E049",
             "cardName": "US_E049",
             "groupName": "FamilyPressure",
             "styleName": "cs_None",
@@ -549,10 +683,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E050",
             "cardName": "US_E050",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -560,10 +696,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E051",
             "cardName": "US_E051",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -571,10 +709,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E052",
             "cardName": "US_E052",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -582,10 +722,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E053",
             "cardName": "US_E053",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -593,10 +735,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E054",
             "cardName": "US_E054",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -604,10 +748,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E055",
             "cardName": "US_E055",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -615,10 +761,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E056",
             "cardName": "US_E056",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -626,10 +774,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E057",
             "cardName": "US_E057",
             "groupName": "FamilyPressure",
             "styleName": "cs_None",
@@ -637,10 +787,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E058",
             "cardName": "US_E058",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -648,10 +800,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E059",
             "cardName": "US_E059",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -659,10 +813,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E060",
             "cardName": "US_E060",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -670,10 +826,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E061",
             "cardName": "US_E061",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -681,10 +839,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E062",
             "cardName": "US_E062",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -692,10 +852,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E063",
             "cardName": "US_E063",
             "groupName": "Main",
             "styleName": "cs_None",
@@ -703,10 +865,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E064",
             "cardName": "US_E064",
             "groupName": "FamilyPressure",
             "styleName": "cs_None",
@@ -714,10 +878,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E065",
             "cardName": "US_E065",
             "groupName": "FamilyPressure",
             "styleName": "cs_None",
@@ -725,10 +891,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E066",
             "cardName": "US_E066",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -736,10 +904,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E067",
             "cardName": "US_E067",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -747,10 +917,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E068",
             "cardName": "US_E068",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -758,10 +930,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E069",
             "cardName": "US_E069",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -769,10 +943,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E070",
             "cardName": "US_E070",
             "groupName": "SicknessRecovery",
             "styleName": "cs_None",
@@ -780,10 +956,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E071",
             "cardName": "US_E071",
             "groupName": "AcademicPressure",
             "styleName": "cs_None",
@@ -791,10 +969,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E072",
             "cardName": "US_E072",
             "groupName": "RelationshipPressure",
             "styleName": "cs_None",
@@ -802,10 +982,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E073",
             "cardName": "US_E073",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -813,10 +995,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E074",
             "cardName": "US_E074",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -824,10 +1008,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E075",
             "cardName": "US_E075",
             "groupName": "TrueSelf",
             "styleName": "cs_None",
@@ -835,10 +1021,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E076",
             "cardName": "US_E076",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -846,10 +1034,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E077",
             "cardName": "US_E077",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -857,10 +1047,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E078",
             "cardName": "US_E078",
             "groupName": "ExamWeek",
             "styleName": "cs_None",
@@ -868,10 +1060,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E079",
             "cardName": "US_E079",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -879,10 +1073,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E080",
             "cardName": "US_E080",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -890,10 +1086,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E081",
             "cardName": "US_E081",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -901,10 +1099,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E082",
             "cardName": "US_E082",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -912,10 +1112,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E083",
             "cardName": "US_E083",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -923,10 +1125,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E084",
             "cardName": "US_E084",
             "groupName": "SicknessRecovery",
             "styleName": "cs_None",
@@ -934,10 +1138,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E085",
             "cardName": "US_E085",
             "groupName": "SicknessRecovery",
             "styleName": "cs_None",
@@ -945,10 +1151,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E086",
             "cardName": "US_E086",
             "groupName": "LifeManagement",
             "styleName": "cs_None",
@@ -956,10 +1164,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E087",
             "cardName": "US_E087",
             "groupName": "RealConnection",
             "styleName": "cs_None",
@@ -967,10 +1177,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E088",
             "cardName": "US_E088",
             "groupName": "LowEconomy",
             "styleName": "cs_None",
@@ -978,10 +1190,12 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         },
         {
+            "eventId": "E089",
             "cardName": "US_E089",
             "groupName": "SicknessRecovery",
             "styleName": "cs_None",
@@ -989,6 +1203,254 @@
             "exists": true,
             "hasEventScript": true,
             "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E090",
+            "cardName": "US_E090",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E090.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E091",
+            "cardName": "US_E091",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E091.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E092",
+            "cardName": "US_E092",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E092.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E093",
+            "cardName": "US_E093",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E093.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E094",
+            "cardName": "US_E094",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E094.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E095",
+            "cardName": "US_E095",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E095.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E096",
+            "cardName": "US_E096",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E096.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E097",
+            "cardName": "US_E097",
+            "groupName": "Main",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E097.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E098",
+            "cardName": "US_E098",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E098.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E099",
+            "cardName": "US_E099",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E099.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E100",
+            "cardName": "US_E100",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E100.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E101",
+            "cardName": "US_E101",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E101.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E102",
+            "cardName": "US_E102",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E102.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E103",
+            "cardName": "US_E103",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E103.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E104",
+            "cardName": "US_E104",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E104.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E105",
+            "cardName": "US_E105",
+            "groupName": "MainlineChain",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/MainlineChain/US_E105.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": true,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E106",
+            "cardName": "US_E106",
+            "groupName": "TrueEnding",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/TrueEnding/US_E106.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E107",
+            "cardName": "US_E107",
+            "groupName": "TrueEnding",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/TrueEnding/US_E107.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "E108",
+            "cardName": "US_E108",
+            "groupName": "TrueEnding",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/TrueEnding/US_E108.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
             "textMatches": true,
             "issues": []
         }

@@ -1,32 +1,52 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEditor.Events;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class UniversityCardImportTool
 {
-    const string SourceCsvPath = "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv";
+    const string ProgramCsvPath = "Assets/UniversitySimulator/Data/cards_v1_program.csv";
+    const string KingsTextCsvPath = "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv";
     const string StyleListPath = "Assets/Kings/cards/_templates/CardStyle_List.asset";
     const string OutputFolderPath = "Assets/UniversitySimulator/Prefabs/Cards";
     const string ReportPath = "Assets/UniversitySimulator/Data/cards_v1_kings_import_report.json";
+    const string TargetScenePath = "Assets/Kings/Game.unity";
 
-    [MenuItem("University Simulator/Cards/Import Kings Text Cards")]
-    public static void ImportKingsTextCards()
+    static readonly Dictionary<string, valueDefinitions.values> ValueMap = new Dictionary<string, valueDefinitions.values>
+    {
+        { "bodyMind", valueDefinitions.values.bodyMind },
+        { "academics", valueDefinitions.values.academics },
+        { "relationships", valueDefinitions.values.relationships },
+        { "economy", valueDefinitions.values.economy }
+    };
+
+    [MenuItem("University Simulator/Cards/Import Program Cards And Wire Scene")]
+    public static void ImportProgramCardsAndWireScene()
     {
         ImportReport report = RunImport();
         WriteReport(report);
 
         if (report.success)
         {
-            Debug.Log("University card import finished. Prefabs: " + report.generatedPrefabs + "/" + report.csvRows + ". Report: " + ReportPath);
+            Debug.Log("University program card import finished. Prefabs: " + report.generatedPrefabs + "/" + report.csvRows + ". Scene cards: " + report.sceneCards + ". Report: " + ReportPath);
         }
         else
         {
-            Debug.LogError("University card import failed. See report: " + ReportPath);
+            Debug.LogError("University program card import failed. See report: " + ReportPath);
         }
+    }
+
+    [MenuItem("University Simulator/Cards/Import Kings Text Cards")]
+    public static void ImportKingsTextCards()
+    {
+        ImportProgramCardsAndWireScene();
     }
 
     static ImportReport RunImport()
@@ -34,18 +54,20 @@ public static class UniversityCardImportTool
         ImportReport report = new ImportReport
         {
             generatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            sourceCsv = SourceCsvPath,
+            sourceCsv = ProgramCsvPath,
+            textCsv = KingsTextCsvPath,
             styleList = StyleListPath,
-            outputFolder = OutputFolderPath
+            outputFolder = OutputFolderPath,
+            targetScene = TargetScenePath
         };
 
         AssetDatabase.Refresh();
         EnsureAssetFolder(OutputFolderPath);
 
-        TextAsset csvAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(SourceCsvPath);
-        if (csvAsset == null)
+        TextAsset programCsv = AssetDatabase.LoadAssetAtPath<TextAsset>(ProgramCsvPath);
+        if (programCsv == null)
         {
-            report.errors.Add("CSV asset not found: " + SourceCsvPath);
+            report.errors.Add("Program CSV asset not found: " + ProgramCsvPath);
             return report;
         }
 
@@ -56,9 +78,9 @@ public static class UniversityCardImportTool
             return report;
         }
 
-        CsvTable table = CsvTable.Read(Encoding.UTF8.GetString(csvAsset.bytes));
+        CsvTable table = CsvTable.Read(Encoding.UTF8.GetString(programCsv.bytes), ',');
         report.csvRows = table.rows.Count;
-        string tableError = table.ValidateRequiredColumns();
+        string tableError = table.ValidateRequiredColumns(ProgramRequiredColumns());
         if (!string.IsNullOrEmpty(tableError))
         {
             report.errors.Add(tableError);
@@ -72,13 +94,24 @@ public static class UniversityCardImportTool
             return report;
         }
 
+        WriteKingsTextCsv(table, report);
+        AssetDatabase.ImportAsset(KingsTextCsvPath, ImportAssetOptions.ForceUpdate);
+        AssetDatabase.Refresh();
+
+        TextAsset textCsv = AssetDatabase.LoadAssetAtPath<TextAsset>(KingsTextCsvPath);
+        if (textCsv == null)
+        {
+            report.errors.Add("Generated Kings text CSV could not be loaded: " + KingsTextCsvPath);
+            return report;
+        }
+
         string outputAbsolutePath = ToAbsoluteAssetFolder(OutputFolderPath);
         Directory.CreateDirectory(outputAbsolutePath);
 
         KingsImEx importer = EditorWindow.GetWindow<KingsImEx>("Kings ImEx");
         importer.mInit();
         importer.fieldSeparatorIndex = 0;
-        importer.importFile = csvAsset;
+        importer.importFile = textCsv;
         importer.styleDefinitions = styleList;
         importer.importFolder = outputAbsolutePath.Replace("\\", "/");
         importer.AnalyzeImportData();
@@ -96,27 +129,120 @@ public static class UniversityCardImportTool
             return report;
         }
 
+        AssetDatabase.Refresh();
+        Dictionary<string, GameObject> prefabsByEventId = LoadImportedPrefabs(table, report);
         ApplyStyleReferences(table, styleList, report);
+        ConfigurePrefabs(table, prefabsByEventId, report);
+        WireScene(table, prefabsByEventId, report);
         AssetDatabase.Refresh();
         VerifyImportedPrefabs(table, styleList, report);
+
         report.success = report.errors.Count == 0 && report.missingPrefabs == 0 && report.prefabErrors == 0;
         return report;
+    }
+
+    static string[] ProgramRequiredColumns()
+    {
+        return new[]
+        {
+            "eventId",
+            "cardName",
+            "groupName",
+            "styleName",
+            "titleText",
+            "questionText",
+            "answerLeft",
+            "answerRight",
+            "left_bodyMind",
+            "left_academics",
+            "left_relationships",
+            "left_economy",
+            "right_bodyMind",
+            "right_academics",
+            "right_relationships",
+            "right_economy",
+            "cardProbability",
+            "cooldown",
+            "maxDraws",
+            "isDrawable",
+            "isHighPriority",
+            "poolId"
+        };
+    }
+
+    static void WriteKingsTextCsv(CsvTable table, ImportReport report)
+    {
+        string[] headers =
+        {
+            "GroupName",
+            "CardName",
+            "StyleName",
+            "EventScript.titleText",
+            "EventScript.questionText",
+            "EventScript.answerLeft",
+            "EventScript.answerRight",
+            "EventScript.answerUp",
+            "EventScript.answerDown"
+        };
+
+        StringBuilder csv = new StringBuilder();
+        csv.AppendLine(string.Join(";", headers));
+        foreach (ProgramCard row in table.rows)
+        {
+            string[] values =
+            {
+                row.GroupName,
+                row.CardName,
+                row.StyleName,
+                row.Get("titleText"),
+                row.Get("questionText"),
+                row.Get("answerLeft"),
+                row.Get("answerRight"),
+                "",
+                ""
+            };
+            csv.AppendLine(string.Join(";", values.Select(QuoteSemicolonCsv)));
+        }
+
+        File.WriteAllText(ToAbsoluteAssetPath(KingsTextCsvPath), csv.ToString(), new UTF8Encoding(false));
+        report.generatedTextCsvRows = table.rows.Count;
+    }
+
+    static Dictionary<string, GameObject> LoadImportedPrefabs(CsvTable table, ImportReport report)
+    {
+        Dictionary<string, GameObject> prefabsByEventId = new Dictionary<string, GameObject>();
+        foreach (ProgramCard row in table.rows)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(GetPrefabPath(row));
+            if (prefab == null)
+            {
+                report.missingPrefabs++;
+                report.errors.Add("Prefab was not created: " + GetPrefabPath(row));
+                continue;
+            }
+
+            if (!string.IsNullOrEmpty(row.EventId))
+            {
+                prefabsByEventId[row.EventId] = prefab;
+            }
+        }
+
+        return prefabsByEventId;
     }
 
     static void ApplyStyleReferences(CsvTable table, KingsCardStyleList styleList, ImportReport report)
     {
         int fixedCount = 0;
-        foreach (Dictionary<string, string> row in table.rows)
+        foreach (ProgramCard row in table.rows)
         {
-            string styleName = row["StyleName"];
-            KingsCardStyle style = styleList.GetStyle(styleName);
+            KingsCardStyle style = styleList.GetStyle(row.StyleName);
             if (style == null)
             {
-                report.errors.Add("Style does not exist in CardStyle_List: " + styleName);
+                report.errors.Add("Style does not exist in CardStyle_List: " + row.StyleName);
                 continue;
             }
 
-            string prefabPath = OutputFolderPath + "/" + row["GroupName"] + "/" + row["CardName"] + ".prefab";
+            string prefabPath = GetPrefabPath(row);
             GameObject root = PrefabUtility.LoadPrefabContents(prefabPath);
             try
             {
@@ -127,7 +253,7 @@ public static class UniversityCardImportTool
                     continue;
                 }
 
-                if (cardStyle.GetStyleName() != styleName)
+                if (cardStyle.GetStyleName() != row.StyleName)
                 {
                     cardStyle.SetStyle(style);
                     cardStyle.Refresh();
@@ -148,19 +274,387 @@ public static class UniversityCardImportTool
         }
     }
 
+    static void ConfigurePrefabs(CsvTable table, Dictionary<string, GameObject> prefabsByEventId, ImportReport report)
+    {
+        foreach (ProgramCard row in table.rows)
+        {
+            string prefabPath = GetPrefabPath(row);
+            GameObject root = PrefabUtility.LoadPrefabContents(prefabPath);
+            try
+            {
+                EventScript eventScript = root.GetComponent<EventScript>();
+                if (eventScript == null)
+                {
+                    report.errors.Add("Generated prefab is missing EventScript: " + prefabPath);
+                    continue;
+                }
+
+                eventScript.isDrawable = ParseBool(row.Get("isDrawable"), true);
+                eventScript.isHighPriorityCard = ParseBool(row.Get("isHighPriority"), false);
+                eventScript.cardPropability = Mathf.Clamp01(ParseFloat(row.Get("cardProbability"), Mathf.Min(1f, ParseFloat(row.Get("weight"), 1f))));
+                eventScript.redrawBlockCnt = Mathf.Max(0, ParseInt(row.Get("cooldown"), 0));
+                eventScript.maxDraws = Mathf.Max(1, ParseInt(row.Get("maxDraws"), ParseBool(row.Get("unique"), false) ? 1 : 100));
+                eventScript.swipeType = EventScript.E_SwipeType.LeftRight;
+                eventScript.conditions = BuildConditions(row, report);
+                eventScript.Results.resultLeft = BuildResult(row, "left");
+                eventScript.Results.resultRight = BuildResult(row, "right");
+                eventScript.Results.resultUp = BuildEmptyResult();
+                eventScript.Results.resultDown = BuildEmptyResult();
+                eventScript.Results.additional_choice_0 = BuildEmptyResult();
+                eventScript.Results.additional_choice_1 = BuildEmptyResult();
+
+                ApplyFollowUp(eventScript.Results.resultLeft, row.Get("nextLeftCardId"), prefabsByEventId, row, report);
+                ApplyFollowUp(eventScript.Results.resultRight, row.Get("nextRightCardId"), prefabsByEventId, row, report);
+                ConfigureMainlineHook(root, eventScript, row, prefabsByEventId, report);
+
+                EditorUtility.SetDirty(eventScript);
+                PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
+                report.configuredPrefabs++;
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(root);
+            }
+        }
+    }
+
+    static EventScript.condition[] BuildConditions(ProgramCard row, ImportReport report)
+    {
+        List<EventScript.condition> conditions = new List<EventScript.condition>();
+        AddRangeCondition(row, conditions, "bodyMind", "condition_bodyMind_min", "condition_bodyMind_max");
+        AddRangeCondition(row, conditions, "academics", "condition_academics_min", "condition_academics_max");
+        AddRangeCondition(row, conditions, "relationships", "condition_relationships_min", "condition_relationships_max");
+        AddRangeCondition(row, conditions, "economy", "condition_economy_min", "condition_economy_max");
+
+        string expression = row.Get("conditionExpression");
+        if (!string.IsNullOrWhiteSpace(expression) && conditions.Count == 0)
+        {
+            report.warnings.Add("Card " + row.EventId + " has conditionExpression that cannot be fully imported into Kings AND-only conditions: " + expression);
+        }
+
+        if (!string.IsNullOrWhiteSpace(row.Get("condition_round_min")))
+        {
+            report.warnings.Add("Card " + row.EventId + " uses condition_round_min. Runtime day gating is handled by UniversityTrueEndingProgress, not Kings value conditions.");
+        }
+
+        return conditions.ToArray();
+    }
+
+    static void AddRangeCondition(ProgramCard row, List<EventScript.condition> conditions, string valueName, string minColumn, string maxColumn)
+    {
+        string minText = row.Get(minColumn);
+        string maxText = row.Get(maxColumn);
+        if (string.IsNullOrWhiteSpace(minText) && string.IsNullOrWhiteSpace(maxText))
+        {
+            return;
+        }
+
+        float min = string.IsNullOrWhiteSpace(minText) ? 0f : ParseFloat(minText, 0f);
+        float max = string.IsNullOrWhiteSpace(maxText) ? 100f : ParseFloat(maxText, 100f);
+        conditions.Add(new EventScript.condition
+        {
+            type = EventScript.E_ConditionType.standard,
+            value = ValueMap[valueName],
+            valueMin = min,
+            valueMax = max,
+            compareType = EventScript.E_ConditionCompareType.greaterThan,
+            rValue = valueDefinitions.values.name,
+            itemCompareType = EventScript.E_ItemCompareType.greaterThan,
+            item = null,
+            itemCmpValue = 1,
+            gamedictionary_key = "",
+            gamedictionary_comparer = ""
+        });
+    }
+
+    static EventScript.result BuildResult(ProgramCard row, string side)
+    {
+        List<EventScript.resultModifier> modifiers = new List<EventScript.resultModifier>();
+        AddValueModifier(row, modifiers, side, "bodyMind");
+        AddValueModifier(row, modifiers, side, "academics");
+        AddValueModifier(row, modifiers, side, "relationships");
+        AddValueModifier(row, modifiers, side, "economy");
+        return BuildResult(modifiers.ToArray());
+    }
+
+    static void AddValueModifier(ProgramCard row, List<EventScript.resultModifier> modifiers, string side, string valueName)
+    {
+        float delta = ParseFloat(row.Get(side + "_" + valueName), 0f);
+        if (Mathf.Approximately(delta, 0f))
+        {
+            return;
+        }
+
+        modifiers.Add(new EventScript.resultModifier
+        {
+            modificationType = EventScript.E_ModificationType.add,
+            modifier = ValueMap[valueName],
+            valueAdd = delta,
+            valueSet = 0f,
+            rndRangeAdd = new EventScript.C_RndRange(),
+            rndRangeSet = new EventScript.C_RndRange()
+        });
+    }
+
+    static EventScript.result BuildEmptyResult()
+    {
+        return BuildResult(new EventScript.resultModifier[0]);
+    }
+
+    static EventScript.result BuildResult(EventScript.resultModifier[] valueChanges)
+    {
+        return new EventScript.result
+        {
+            resultType = EventScript.resultTypes.simple,
+            modifiers = BuildModifierGroup(valueChanges),
+            conditions = new EventScript.condition[0],
+            modifiersTrue = BuildModifierGroup(new EventScript.resultModifier[0]),
+            modifiersFalse = BuildModifierGroup(new EventScript.resultModifier[0]),
+            randomModifiers = new EventScript.modifierGroup[0]
+        };
+    }
+
+    static EventScript.modifierGroup BuildModifierGroup(EventScript.resultModifier[] valueChanges)
+    {
+        return new EventScript.modifierGroup
+        {
+            valueChanges = valueChanges,
+            extras = new EventScript.C_AdditionalModifiers[0],
+            followUpCard = null,
+            followUpDelay = new EventScript.C_intRange { min = 0, max = 0 }
+        };
+    }
+
+    static void ApplyFollowUp(EventScript.result result, string nextCardId, Dictionary<string, GameObject> prefabsByEventId, ProgramCard row, ImportReport report)
+    {
+        if (string.IsNullOrWhiteSpace(nextCardId))
+        {
+            return;
+        }
+
+        GameObject nextCard;
+        if (!prefabsByEventId.TryGetValue(nextCardId.Trim(), out nextCard) || nextCard == null)
+        {
+            report.errors.Add("Card " + row.EventId + " references missing follow-up card: " + nextCardId);
+            return;
+        }
+
+        result.modifiers.followUpCard = nextCard;
+        result.modifiers.followUpDelay = new EventScript.C_intRange { min = 0, max = 0 };
+    }
+
+    static void ConfigureMainlineHook(GameObject root, EventScript eventScript, ProgramCard row, Dictionary<string, GameObject> prefabsByEventId, ImportReport report)
+    {
+        string permanentFlagLeft = row.Get("permanentFlagLeft");
+        string permanentFlagRight = row.Get("permanentFlagRight");
+        string chainStartLeftId = row.Get("chainStartLeft");
+        string chainStartRightId = row.Get("chainStartRight");
+        bool hasHookData = !string.IsNullOrWhiteSpace(permanentFlagLeft)
+            || !string.IsNullOrWhiteSpace(permanentFlagRight)
+            || !string.IsNullOrWhiteSpace(chainStartLeftId)
+            || !string.IsNullOrWhiteSpace(chainStartRightId);
+
+        UniversityMainlineCardHook hook = root.GetComponent<UniversityMainlineCardHook>();
+        if (!hasHookData)
+        {
+            if (hook != null)
+            {
+                UnityEngine.Object.DestroyImmediate(hook, true);
+            }
+
+            return;
+        }
+
+        if (hook == null)
+        {
+            hook = root.AddComponent<UniversityMainlineCardHook>();
+        }
+
+        hook.cardId = row.EventId;
+        hook.requiresMetaUnlock = ParseBool(row.Get("requiresMetaUnlock"), true);
+        hook.requiredLifetimeDays = ParseInt(row.Get("requiredLifetimeDays"), UniversityTrueEndingProgress.DefaultRequiredLifetimeDays);
+        hook.requiredGameOvers = ParseInt(row.Get("requiredGameOvers"), UniversityTrueEndingProgress.DefaultRequiredGameOvers);
+        hook.permanentFlagLeft = permanentFlagLeft.Trim();
+        hook.permanentFlagRight = permanentFlagRight.Trim();
+        hook.chainStartLeft = ResolveOptionalCard(chainStartLeftId, prefabsByEventId, row, report, "chainStartLeft");
+        hook.chainStartRight = ResolveOptionalCard(chainStartRightId, prefabsByEventId, row, report, "chainStartRight");
+
+        RemovePersistentListenersForTarget(eventScript.OnSwipeLeft, hook);
+        RemovePersistentListenersForTarget(eventScript.OnSwipeRight, hook);
+        UnityEventTools.AddPersistentListener(eventScript.OnSwipeLeft, hook.ApplyLeftChoice);
+        UnityEventTools.AddPersistentListener(eventScript.OnSwipeRight, hook.ApplyRightChoice);
+        EditorUtility.SetDirty(hook);
+        report.mainlineHooks++;
+    }
+
+    static GameObject ResolveOptionalCard(string eventId, Dictionary<string, GameObject> prefabsByEventId, ProgramCard row, ImportReport report, string fieldName)
+    {
+        if (string.IsNullOrWhiteSpace(eventId))
+        {
+            return null;
+        }
+
+        GameObject card;
+        if (!prefabsByEventId.TryGetValue(eventId.Trim(), out card) || card == null)
+        {
+            report.errors.Add("Card " + row.EventId + " references missing " + fieldName + ": " + eventId);
+            return null;
+        }
+
+        return card;
+    }
+
+    static void RemovePersistentListenersForTarget(EventScript.mEvent unityEvent, UnityEngine.Object target)
+    {
+        for (int i = unityEvent.GetPersistentEventCount() - 1; i >= 0; i--)
+        {
+            if (unityEvent.GetPersistentTarget(i) == target)
+            {
+                UnityEventTools.RemovePersistentListener(unityEvent, i);
+            }
+        }
+    }
+
+    static void WireScene(CsvTable table, Dictionary<string, GameObject> prefabsByEventId, ImportReport report)
+    {
+        Scene activeScene = EditorSceneManager.GetActiveScene();
+        if (activeScene.path != TargetScenePath)
+        {
+            if (activeScene.IsValid() && activeScene.isDirty && !string.IsNullOrEmpty(activeScene.path))
+            {
+                EditorSceneManager.SaveScene(activeScene);
+            }
+
+            EditorSceneManager.OpenScene(TargetScenePath, OpenSceneMode.Single);
+        }
+
+        CardStack cardStack = FindSceneComponent<CardStack>();
+        if (cardStack == null)
+        {
+            report.errors.Add("CardStack not found in scene: " + TargetScenePath);
+            return;
+        }
+
+        Dictionary<string, List<GameObject>> groupedCards = new Dictionary<string, List<GameObject>>();
+        foreach (ProgramCard row in table.rows)
+        {
+            GameObject prefab;
+            if (!prefabsByEventId.TryGetValue(row.EventId, out prefab) || prefab == null)
+            {
+                continue;
+            }
+
+            if (!groupedCards.ContainsKey(row.GroupName))
+            {
+                groupedCards[row.GroupName] = new List<GameObject>();
+            }
+
+            groupedCards[row.GroupName].Add(prefab);
+        }
+
+        cardStack.allCards = groupedCards
+            .OrderBy(pair => GetGroupSortOrder(pair.Key))
+            .ThenBy(pair => pair.Key)
+            .Select(pair => new CardStack.cardCategory
+            {
+                groupName = pair.Key,
+                subStackCondition = new EventScript.condition[0],
+                groupCards = pair.Value.ToArray()
+            })
+            .ToArray();
+
+        GameObject fallback;
+        if (prefabsByEventId.TryGetValue("E001", out fallback) && fallback != null)
+        {
+            cardStack.fallBackCard = fallback;
+        }
+
+        UniversityTrueEndingController controller = cardStack.GetComponent<UniversityTrueEndingController>();
+        if (controller == null)
+        {
+            controller = cardStack.gameObject.AddComponent<UniversityTrueEndingController>();
+        }
+
+        controller.requiredLifetimeDays = UniversityTrueEndingProgress.DefaultRequiredLifetimeDays;
+        controller.requiredGameOvers = UniversityTrueEndingProgress.DefaultRequiredGameOvers;
+        controller.requiredPermanentFlags = UniversityTrueEndingProgress.DefaultRequiredFlags.ToArray();
+        controller.triggerOnlyOnce = true;
+        controller.countCardSwipesAsDays = true;
+        controller.countGameOverEvents = true;
+        controller.trueEndingStartCard = ResolveTrueEndingStartCard(table, prefabsByEventId, report);
+
+        EditorUtility.SetDirty(cardStack);
+        EditorUtility.SetDirty(controller);
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
+
+        report.sceneGroups = cardStack.allCards.Length;
+        report.sceneCards = cardStack.allCards.Sum(group => group.groupCards.Length);
+        report.trueEndingStartCard = controller.trueEndingStartCard != null ? controller.trueEndingStartCard.name : "";
+    }
+
+    static int GetGroupSortOrder(string groupName)
+    {
+        if (groupName == "Main")
+        {
+            return 0;
+        }
+
+        if (groupName == "TrueEnding")
+        {
+            return 90;
+        }
+
+        return 10;
+    }
+
+    static GameObject ResolveTrueEndingStartCard(CsvTable table, Dictionary<string, GameObject> prefabsByEventId, ImportReport report)
+    {
+        ProgramCard configuredStart = table.rows
+            .Where(row => ParseBool(row.Get("isEndingChain"), false))
+            .OrderBy(row => ParseInt(row.Get("chainOrder"), 999))
+            .FirstOrDefault();
+
+        if (configuredStart == null)
+        {
+            report.errors.Add("No true-ending chain start card found. Mark at least one row with isEndingChain=true and chainOrder=1.");
+            return null;
+        }
+
+        GameObject prefab;
+        if (!prefabsByEventId.TryGetValue(configuredStart.EventId, out prefab) || prefab == null)
+        {
+            report.errors.Add("True-ending chain start prefab missing: " + configuredStart.EventId);
+            return null;
+        }
+
+        return prefab;
+    }
+
+    static T FindSceneComponent<T>() where T : Component
+    {
+        foreach (T component in Resources.FindObjectsOfTypeAll<T>())
+        {
+            if (component != null && component.gameObject.scene.IsValid())
+            {
+                return component;
+            }
+        }
+
+        return null;
+    }
+
     static void VerifyImportedPrefabs(CsvTable table, KingsCardStyleList styleList, ImportReport report)
     {
-        foreach (Dictionary<string, string> row in table.rows)
+        foreach (ProgramCard row in table.rows)
         {
-            string group = row["GroupName"];
-            string cardName = row["CardName"];
-            string styleName = row["StyleName"];
-            string prefabPath = OutputFolderPath + "/" + group + "/" + cardName + ".prefab";
+            string prefabPath = GetPrefabPath(row);
             CardCheck check = new CardCheck
             {
-                cardName = cardName,
-                groupName = group,
-                styleName = styleName,
+                eventId = row.EventId,
+                cardName = row.CardName,
+                groupName = row.GroupName,
+                styleName = row.StyleName,
                 prefabPath = prefabPath
             };
 
@@ -168,7 +662,6 @@ public static class UniversityCardImportTool
             check.exists = prefab != null;
             if (prefab == null)
             {
-                report.missingPrefabs++;
                 check.issues.Add("Prefab was not created.");
                 report.cards.Add(check);
                 continue;
@@ -178,6 +671,7 @@ public static class UniversityCardImportTool
             CardStyle cardStyle = prefab.GetComponent<CardStyle>();
             check.hasEventScript = eventScript != null;
             check.hasCardStyle = cardStyle != null;
+            check.hasMainlineHook = prefab.GetComponent<UniversityMainlineCardHook>() != null;
 
             if (eventScript == null)
             {
@@ -185,26 +679,33 @@ public static class UniversityCardImportTool
             }
             else
             {
-                CompareText(row, "EventScript.titleText", eventScript.textFields.titleText.textContent, check);
-                CompareText(row, "EventScript.questionText", eventScript.textFields.questionText.textContent, check);
-                CompareText(row, "EventScript.answerLeft", eventScript.textFields.answerLeft.textContent, check);
-                CompareText(row, "EventScript.answerRight", eventScript.textFields.answerRight.textContent, check);
-                CompareText(row, "EventScript.answerUp", eventScript.textFields.answerUp.textContent, check);
-                CompareText(row, "EventScript.answerDown", eventScript.textFields.answerDown.textContent, check);
+                CompareText(row.Get("titleText"), eventScript.textFields.titleText.textContent, "titleText", check);
+                CompareText(row.Get("questionText"), eventScript.textFields.questionText.textContent, "questionText", check);
+                CompareText(row.Get("answerLeft"), eventScript.textFields.answerLeft.textContent, "answerLeft", check);
+                CompareText(row.Get("answerRight"), eventScript.textFields.answerRight.textContent, "answerRight", check);
+                if (eventScript.isDrawable != ParseBool(row.Get("isDrawable"), true))
+                {
+                    check.issues.Add("isDrawable mismatch.");
+                }
+
+                if (eventScript.isHighPriorityCard != ParseBool(row.Get("isHighPriority"), false))
+                {
+                    check.issues.Add("isHighPriority mismatch.");
+                }
             }
 
             if (cardStyle == null)
             {
                 check.issues.Add("Missing CardStyle.");
             }
-            else if (cardStyle.GetStyleName() != styleName)
+            else if (cardStyle.GetStyleName() != row.StyleName)
             {
-                check.issues.Add("Style mismatch. Expected '" + styleName + "', got '" + cardStyle.GetStyleName() + "'.");
+                check.issues.Add("Style mismatch. Expected '" + row.StyleName + "', got '" + cardStyle.GetStyleName() + "'.");
             }
 
-            if (!styleList.HasStyle(styleName))
+            if (!styleList.HasStyle(row.StyleName))
             {
-                check.issues.Add("Style does not exist in CardStyle_List: " + styleName);
+                check.issues.Add("Style does not exist in CardStyle_List: " + row.StyleName);
             }
 
             check.textMatches = check.issues.Count == 0;
@@ -219,12 +720,11 @@ public static class UniversityCardImportTool
         report.generatedPrefabs = report.cards.FindAll(card => card.exists).Count;
     }
 
-    static void CompareText(Dictionary<string, string> row, string key, string actual, CardCheck check)
+    static void CompareText(string expected, string actual, string field, CardCheck check)
     {
-        string expected = row.ContainsKey(key) ? row[key] : "";
-        if ((actual ?? "") != expected)
+        if ((actual ?? "") != (expected ?? ""))
         {
-            check.issues.Add(key + " mismatch.");
+            check.issues.Add(field + " mismatch.");
         }
     }
 
@@ -234,6 +734,11 @@ public static class UniversityCardImportTool
         Directory.CreateDirectory(Path.GetDirectoryName(absolutePath));
         File.WriteAllText(absolutePath, JsonUtility.ToJson(report, true), new UTF8Encoding(false));
         AssetDatabase.Refresh();
+    }
+
+    static string GetPrefabPath(ProgramCard row)
+    {
+        return OutputFolderPath + "/" + row.GroupName + "/" + row.CardName + ".prefab";
     }
 
     static string ToAbsoluteAssetFolder(string assetPath)
@@ -268,18 +773,67 @@ public static class UniversityCardImportTool
         }
     }
 
+    static int ParseInt(string value, int fallback)
+    {
+        int parsed;
+        return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out parsed) ? parsed : fallback;
+    }
+
+    static float ParseFloat(string value, float fallback)
+    {
+        float parsed;
+        return float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsed) ? parsed : fallback;
+    }
+
+    static bool ParseBool(string value, bool fallback)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return fallback;
+        }
+
+        string normalized = value.Trim().ToLowerInvariant();
+        if (normalized == "true" || normalized == "1" || normalized == "yes" || normalized == "y")
+        {
+            return true;
+        }
+
+        if (normalized == "false" || normalized == "0" || normalized == "no" || normalized == "n")
+        {
+            return false;
+        }
+
+        return fallback;
+    }
+
+    static string QuoteSemicolonCsv(string value)
+    {
+        value = value ?? "";
+        bool mustQuote = value.IndexOfAny(new[] { ';', '"', '\r', '\n' }) >= 0;
+        value = value.Replace("\"", "\"\"");
+        return mustQuote ? "\"" + value + "\"" : value;
+    }
+
     [Serializable]
     public class ImportReport
     {
         public bool success;
         public string generatedAt;
         public string sourceCsv;
+        public string textCsv;
         public string styleList;
         public string outputFolder;
+        public string targetScene;
         public int csvRows;
+        public int generatedTextCsvRows;
         public int generatedPrefabs;
+        public int configuredPrefabs;
         public int missingPrefabs;
         public int prefabErrors;
+        public int mainlineHooks;
+        public int sceneGroups;
+        public int sceneCards;
+        public string trueEndingStartCard;
         public List<string> errors = new List<string>();
         public List<string> warnings = new List<string>();
         public List<CardCheck> cards = new List<CardCheck>();
@@ -288,6 +842,7 @@ public static class UniversityCardImportTool
     [Serializable]
     public class CardCheck
     {
+        public string eventId;
         public string cardName;
         public string groupName;
         public string styleName;
@@ -295,59 +850,67 @@ public static class UniversityCardImportTool
         public bool exists;
         public bool hasEventScript;
         public bool hasCardStyle;
+        public bool hasMainlineHook;
         public bool textMatches;
         public List<string> issues = new List<string>();
+    }
+
+    class ProgramCard
+    {
+        readonly Dictionary<string, string> values;
+
+        public ProgramCard(Dictionary<string, string> values)
+        {
+            this.values = values;
+        }
+
+        public string EventId { get { return Get("eventId"); } }
+        public string CardName { get { return Get("cardName"); } }
+        public string GroupName { get { return string.IsNullOrWhiteSpace(Get("groupName")) ? "Main" : Get("groupName"); } }
+        public string StyleName { get { return string.IsNullOrWhiteSpace(Get("styleName")) ? "cs_None" : Get("styleName"); } }
+
+        public string Get(string key)
+        {
+            string value;
+            return values.TryGetValue(key, out value) ? value ?? "" : "";
+        }
     }
 
     class CsvTable
     {
         public readonly string[] headers;
-        public readonly List<Dictionary<string, string>> rows = new List<Dictionary<string, string>>();
+        public readonly List<ProgramCard> rows = new List<ProgramCard>();
 
         CsvTable(string[] headers)
         {
             this.headers = headers;
         }
 
-        public static CsvTable Read(string csv)
+        public static CsvTable Read(string csv, char delimiter)
         {
-            string[] lines = csv.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
-            CsvTable table = new CsvTable(SplitLine(lines[0]));
-            for (int i = 1; i < lines.Length; i++)
+            List<string[]> rawRows = ParseRows(csv, delimiter);
+            CsvTable table = new CsvTable(rawRows.Count > 0 ? rawRows[0] : new string[0]);
+            for (int i = 1; i < rawRows.Count; i++)
             {
-                if (string.IsNullOrWhiteSpace(lines[i]))
+                if (rawRows[i].All(string.IsNullOrWhiteSpace))
                 {
                     continue;
                 }
 
-                string[] values = SplitLine(lines[i]);
                 Dictionary<string, string> row = new Dictionary<string, string>();
                 for (int h = 0; h < table.headers.Length; h++)
                 {
-                    row[table.headers[h]] = h < values.Length ? values[h] : "";
+                    row[table.headers[h]] = h < rawRows[i].Length ? rawRows[i][h] : "";
                 }
 
-                table.rows.Add(row);
+                table.rows.Add(new ProgramCard(row));
             }
 
             return table;
         }
 
-        public string ValidateRequiredColumns()
+        public string ValidateRequiredColumns(string[] required)
         {
-            string[] required =
-            {
-                "GroupName",
-                "CardName",
-                "StyleName",
-                "EventScript.titleText",
-                "EventScript.questionText",
-                "EventScript.answerLeft",
-                "EventScript.answerRight",
-                "EventScript.answerUp",
-                "EventScript.answerDown"
-            };
-
             List<string> missing = new List<string>();
             foreach (string requiredColumn in required)
             {
@@ -360,20 +923,60 @@ public static class UniversityCardImportTool
             return missing.Count == 0 ? "" : "Missing required columns: " + string.Join(", ", missing.ToArray());
         }
 
-        static string[] SplitLine(string line)
+        static List<string[]> ParseRows(string text, char delimiter)
         {
-            string[] values = Regex.Split(line, ";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-            for (int i = 0; i < values.Length; i++)
-            {
-                if (values[i].Length >= 2 && values[i].StartsWith("\"") && values[i].EndsWith("\""))
-                {
-                    values[i] = values[i].Substring(1, values[i].Length - 2);
-                }
+            List<string[]> rows = new List<string[]>();
+            List<string> row = new List<string>();
+            StringBuilder cell = new StringBuilder();
+            bool inQuotes = false;
 
-                values[i] = values[i].Replace("\"\"", "\"");
+            for (int i = 0; i < text.Length; i++)
+            {
+                char ch = text[i];
+                char next = i + 1 < text.Length ? text[i + 1] : '\0';
+
+                if (ch == '"')
+                {
+                    if (inQuotes && next == '"')
+                    {
+                        cell.Append('"');
+                        i++;
+                    }
+                    else
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                }
+                else if (ch == delimiter && !inQuotes)
+                {
+                    row.Add(cell.ToString());
+                    cell.Length = 0;
+                }
+                else if ((ch == '\n' || ch == '\r') && !inQuotes)
+                {
+                    if (ch == '\r' && next == '\n')
+                    {
+                        i++;
+                    }
+
+                    row.Add(cell.ToString());
+                    rows.Add(row.ToArray());
+                    row.Clear();
+                    cell.Length = 0;
+                }
+                else
+                {
+                    cell.Append(ch);
+                }
             }
 
-            return values;
+            if (cell.Length > 0 || row.Count > 0)
+            {
+                row.Add(cell.ToString());
+                rows.Add(row.ToArray());
+            }
+
+            return rows;
         }
     }
 }
