@@ -1,6 +1,6 @@
 {
     "success": true,
-    "generatedAt": "2026-06-22 19:34:19",
+    "generatedAt": "2026-06-23 00:44:35",
     "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
     "textCsv": "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv",
     "styleList": "Assets/Kings/cards/_templates/CardStyle_List.asset",
@@ -13,42 +13,12 @@
     "missingPrefabs": 0,
     "prefabErrors": 0,
     "mainlineHooks": 12,
+    "conditionExpressionGates": 40,
     "sceneGroups": 13,
     "sceneCards": 108,
     "trueEndingStartCard": "US_E106",
     "errors": [],
-    "warnings": [
-        "Applied CardStyle references after KingsImEx import: 19 prefab(s).",
-        "Card E005 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E008 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E011 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
-        "Card E017 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E020 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
-        "Card E026 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E028 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E030 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E032 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
-        "Card E038 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E039 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E041 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E042 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E047 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E049 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
-        "Card E057 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
-        "Card E059 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E064 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
-        "Card E065 has conditionExpression that cannot be fully imported into Kings AND-only conditions: familyExpectation>=2 OR danger(academics) OR danger(economy)",
-        "Card E068 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E069 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E070 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
-        "Card E072 has conditionExpression that cannot be fully imported into Kings AND-only conditions: relationships>=65 OR realConnection>=2",
-        "Card E073 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E075 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=45 OR selfChoice>=2",
-        "Card E078 has conditionExpression that cannot be fully imported into Kings AND-only conditions: round>=15 OR academics<=40 OR academics>=70",
-        "Card E084 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
-        "Card E085 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30",
-        "Card E089 has conditionExpression that cannot be fully imported into Kings AND-only conditions: bodyMind<=40 OR bodyMind<=30"
-    ],
+    "warnings": [],
     "cards": [
         {
             "eventId": "E001",
@@ -60,6 +30,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -73,6 +44,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -86,6 +58,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -99,6 +72,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -112,6 +86,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -125,6 +100,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -138,6 +114,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -151,6 +128,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -164,6 +142,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -177,6 +156,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -190,6 +170,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -203,6 +184,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -216,6 +198,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -229,6 +212,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -242,6 +226,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -255,6 +240,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -268,6 +254,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -281,6 +268,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -294,6 +282,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -307,6 +296,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -320,6 +310,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -333,6 +324,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -346,6 +338,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -359,6 +352,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -372,6 +366,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -385,6 +380,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -398,6 +394,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -411,6 +408,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -424,6 +422,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -437,6 +436,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -450,6 +450,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -463,6 +464,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -476,6 +478,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -489,6 +492,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -502,6 +506,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -515,6 +520,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -528,6 +534,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -541,6 +548,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -554,6 +562,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -567,6 +576,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -580,6 +590,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -593,6 +604,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -606,6 +618,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -619,6 +632,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -632,6 +646,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -645,6 +660,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -658,6 +674,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -671,6 +688,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -684,6 +702,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -697,6 +716,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -710,6 +730,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -723,6 +744,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -736,6 +758,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -749,6 +772,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -762,6 +786,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -775,6 +800,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -788,6 +814,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -801,6 +828,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -814,6 +842,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -827,6 +856,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -840,6 +870,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -853,6 +884,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -866,6 +898,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -879,6 +912,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -892,6 +926,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -905,6 +940,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -918,6 +954,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -931,6 +968,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -944,6 +982,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -957,6 +996,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -970,6 +1010,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -983,6 +1024,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -996,6 +1038,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1009,6 +1052,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1022,6 +1066,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1035,6 +1080,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1048,6 +1094,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1061,6 +1108,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1074,6 +1122,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1087,6 +1136,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1100,6 +1150,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1113,6 +1164,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1126,6 +1178,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1139,6 +1192,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1152,6 +1206,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1165,6 +1220,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1178,6 +1234,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1191,6 +1248,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1204,6 +1262,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": true,
             "textMatches": true,
             "issues": []
         },
@@ -1217,6 +1276,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1230,6 +1290,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1243,6 +1304,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1256,6 +1318,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1269,6 +1332,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1282,6 +1346,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1295,6 +1360,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1308,6 +1374,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1321,6 +1388,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1334,6 +1402,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1347,6 +1416,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1360,6 +1430,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1373,6 +1444,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1386,6 +1458,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1399,6 +1472,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1412,6 +1486,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": true,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1425,6 +1500,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1438,6 +1514,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         },
@@ -1451,6 +1528,7 @@
             "hasEventScript": true,
             "hasCardStyle": true,
             "hasMainlineHook": false,
+            "hasConditionExpression": false,
             "textMatches": true,
             "issues": []
         }

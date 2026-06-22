@@ -54,6 +54,7 @@ public class UniversityTrueEndingController : MonoBehaviour
 
         cardStack.onCardSwipe.AddListener(RecordCardSwipeDay);
         cardStack.OnCardDestroy += EvaluateBeforeNextCard;
+        gameStateManager.OnNewGame.AddListener(ResetCurrentRunDay);
         gameStateManager.OnGameOver.AddListener(RecordGameOver);
         subscribed = true;
     }
@@ -73,6 +74,7 @@ public class UniversityTrueEndingController : MonoBehaviour
 
         if (gameStateManager != null)
         {
+            gameStateManager.OnNewGame.RemoveListener(ResetCurrentRunDay);
             gameStateManager.OnGameOver.RemoveListener(RecordGameOver);
         }
 
@@ -87,6 +89,12 @@ public class UniversityTrueEndingController : MonoBehaviour
         }
 
         UniversityTrueEndingProgress.AddLifetimeDays(1);
+        UniversityTrueEndingProgress.AddCurrentRunDays(1);
+    }
+
+    void ResetCurrentRunDay()
+    {
+        UniversityTrueEndingProgress.ResetCurrentRunDays();
     }
 
     void RecordGameOver()

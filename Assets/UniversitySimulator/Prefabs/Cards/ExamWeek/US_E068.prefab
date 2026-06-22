@@ -337,5 +337,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1818390954452748, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4294945475399014916}
   m_SourcePrefab: {fileID: 100100000, guid: 0f0aa08f89365394b80c6b149344b23a, type: 3}
+--- !u!1 &5949746685612943205 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1818390954452748, guid: 0f0aa08f89365394b80c6b149344b23a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5951448389737726057}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4294945475399014916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5949746685612943205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99dbf6eaf4319314f9b57202df516643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conditionExpression: round>=15 OR academics<=40 OR academics>=70
+  emptyExpressionPasses: 1
+  dangerLowThreshold: 30
+  dangerHighThreshold: 70
+  debugLogInvalidExpression: 0
+  lastError: 

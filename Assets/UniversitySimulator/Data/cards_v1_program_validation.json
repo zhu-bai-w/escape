@@ -36,6 +36,6 @@
   },
   "errors": [],
   "warnings": [
-    "conditionExpression 中的复杂 OR 条件仍需导入器报告提醒；Kings 原生条件是 AND。"
+    "conditionExpression 已由 UniversityConditionExpression 运行时解释器处理；复杂 OR/AND 不再落到 Kings 原生 AND 条件。"
   ]
 }

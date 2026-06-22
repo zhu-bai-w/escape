@@ -8,6 +8,7 @@ public static class UniversityTrueEndingProgress
 
     const string KeyPrefix = "US.TrueEnding.";
     const string LifetimeDaysKey = KeyPrefix + "LifetimeDays";
+    const string CurrentRunDaysKey = KeyPrefix + "CurrentRunDays";
     const string GameOverCountKey = KeyPrefix + "GameOverCount";
     const string TriggeredKey = KeyPrefix + "Triggered";
     const string FlagPrefix = KeyPrefix + "Flag.";
@@ -29,6 +30,11 @@ public static class UniversityTrueEndingProgress
         get { return SecurePlayerPrefs.GetInt(LifetimeDaysKey); }
     }
 
+    public static int CurrentRunDays
+    {
+        get { return SecurePlayerPrefs.GetInt(CurrentRunDaysKey); }
+    }
+
     public static int GameOverCount
     {
         get { return SecurePlayerPrefs.GetInt(GameOverCountKey); }
@@ -47,6 +53,21 @@ public static class UniversityTrueEndingProgress
         }
 
         SecurePlayerPrefs.SetInt(LifetimeDaysKey, LifetimeDays + amount);
+    }
+
+    public static void AddCurrentRunDays(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        SecurePlayerPrefs.SetInt(CurrentRunDaysKey, CurrentRunDays + amount);
+    }
+
+    public static void ResetCurrentRunDays()
+    {
+        SecurePlayerPrefs.SetInt(CurrentRunDaysKey, 0);
     }
 
     public static void AddGameOver(int amount)
@@ -138,6 +159,7 @@ public static class UniversityTrueEndingProgress
     public static void ResetForDebug(IEnumerable<string> flagIds)
     {
         SecurePlayerPrefs.SetInt(LifetimeDaysKey, 0);
+        SecurePlayerPrefs.SetInt(CurrentRunDaysKey, 0);
         SecurePlayerPrefs.SetInt(GameOverCountKey, 0);
         SecurePlayerPrefs.SetBool(TriggeredKey, false);
 

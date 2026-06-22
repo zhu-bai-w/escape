@@ -793,6 +793,11 @@ public class CardStack :  TranslatableContent {
 						}
 					}
 
+                    UniversityConditionExpression universityCondition = allCards[i].groupCards[j].GetComponent<UniversityConditionExpression>();
+                    if (conditionOk == true && universityCondition != null && universityCondition.IsMet() == false) {
+                        conditionOk = false;
+                    }
+
 					if (conditionOk == true && es.isDrawable == true) {
 						if (es.isHighPriorityCard == true) {
 							highPriorityCards.Add (allCards [i].groupCards [j]);

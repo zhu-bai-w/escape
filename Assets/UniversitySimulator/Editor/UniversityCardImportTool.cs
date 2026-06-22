@@ -295,7 +295,10 @@ public static class UniversityCardImportTool
                 eventScript.redrawBlockCnt = Mathf.Max(0, ParseInt(row.Get("cooldown"), 0));
                 eventScript.maxDraws = Mathf.Max(1, ParseInt(row.Get("maxDraws"), ParseBool(row.Get("unique"), false) ? 1 : 100));
                 eventScript.swipeType = EventScript.E_SwipeType.LeftRight;
-                eventScript.conditions = BuildConditions(row, report);
+                ConfigureConditionExpression(root, row, report);
+                eventScript.conditions = string.IsNullOrWhiteSpace(row.Get("conditionExpression"))
+                    ? BuildConditions(row, report)
+                    : new EventScript.condition[0];
                 eventScript.Results.resultLeft = BuildResult(row, "left");
                 eventScript.Results.resultRight = BuildResult(row, "right");
                 eventScript.Results.resultUp = BuildEmptyResult();
@@ -318,6 +321,34 @@ public static class UniversityCardImportTool
         }
     }
 
+    static void ConfigureConditionExpression(GameObject root, ProgramCard row, ImportReport report)
+    {
+        string expression = row.Get("conditionExpression").Trim();
+        UniversityConditionExpression gate = root.GetComponent<UniversityConditionExpression>();
+        if (string.IsNullOrWhiteSpace(expression))
+        {
+            if (gate != null)
+            {
+                UnityEngine.Object.DestroyImmediate(gate, true);
+            }
+
+            return;
+        }
+
+        if (gate == null)
+        {
+            gate = root.AddComponent<UniversityConditionExpression>();
+        }
+
+        gate.conditionExpression = expression;
+        gate.emptyExpressionPasses = true;
+        gate.dangerLowThreshold = ParseFloat(row.Get("dangerLowThreshold"), 30f);
+        gate.dangerHighThreshold = ParseFloat(row.Get("dangerHighThreshold"), 70f);
+        gate.debugLogInvalidExpression = false;
+        EditorUtility.SetDirty(gate);
+        report.conditionExpressionGates++;
+    }
+
     static EventScript.condition[] BuildConditions(ProgramCard row, ImportReport report)
     {
         List<EventScript.condition> conditions = new List<EventScript.condition>();
@@ -325,12 +356,6 @@ public static class UniversityCardImportTool
         AddRangeCondition(row, conditions, "academics", "condition_academics_min", "condition_academics_max");
         AddRangeCondition(row, conditions, "relationships", "condition_relationships_min", "condition_relationships_max");
         AddRangeCondition(row, conditions, "economy", "condition_economy_min", "condition_economy_max");
-
-        string expression = row.Get("conditionExpression");
-        if (!string.IsNullOrWhiteSpace(expression) && conditions.Count == 0)
-        {
-            report.warnings.Add("Card " + row.EventId + " has conditionExpression that cannot be fully imported into Kings AND-only conditions: " + expression);
-        }
 
         if (!string.IsNullOrWhiteSpace(row.Get("condition_round_min")))
         {
@@ -672,6 +697,7 @@ public static class UniversityCardImportTool
             check.hasEventScript = eventScript != null;
             check.hasCardStyle = cardStyle != null;
             check.hasMainlineHook = prefab.GetComponent<UniversityMainlineCardHook>() != null;
+            check.hasConditionExpression = prefab.GetComponent<UniversityConditionExpression>() != null;
 
             if (eventScript == null)
             {
@@ -706,6 +732,11 @@ public static class UniversityCardImportTool
             if (!styleList.HasStyle(row.StyleName))
             {
                 check.issues.Add("Style does not exist in CardStyle_List: " + row.StyleName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(row.Get("conditionExpression")) && !check.hasConditionExpression)
+            {
+                check.issues.Add("Missing UniversityConditionExpression.");
             }
 
             check.textMatches = check.issues.Count == 0;
@@ -831,6 +862,7 @@ public static class UniversityCardImportTool
         public int missingPrefabs;
         public int prefabErrors;
         public int mainlineHooks;
+        public int conditionExpressionGates;
         public int sceneGroups;
         public int sceneCards;
         public string trueEndingStartCard;
@@ -851,6 +883,7 @@ public static class UniversityCardImportTool
         public bool hasEventScript;
         public bool hasCardStyle;
         public bool hasMainlineHook;
+        public bool hasConditionExpression;
         public bool textMatches;
         public List<string> issues = new List<string>();
     }

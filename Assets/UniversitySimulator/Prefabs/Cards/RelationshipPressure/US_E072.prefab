@@ -337,5 +337,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1818390954452748, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1685449357671740335}
   m_SourcePrefab: {fileID: 100100000, guid: 0f0aa08f89365394b80c6b149344b23a, type: 3}
+--- !u!1 &4744294881246341804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1818390954452748, guid: 0f0aa08f89365394b80c6b149344b23a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4742689391837924768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1685449357671740335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4744294881246341804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99dbf6eaf4319314f9b57202df516643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conditionExpression: relationships>=65 OR realConnection>=2
+  emptyExpressionPasses: 1
+  dangerLowThreshold: 30
+  dangerHighThreshold: 70
+  debugLogInvalidExpression: 0
+  lastError: 
