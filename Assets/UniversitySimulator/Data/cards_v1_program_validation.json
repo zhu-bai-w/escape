@@ -1,41 +1,42 @@
 {
-  "generatedAt": "2026-06-22 19:33:13",
+  "generatedAt": "2026-06-23 21:22:13",
   "source": "E:/escape/Assets/UniversitySimulator/Data/cards_v1_program.csv",
-  "rowCount": 108,
-  "originalRows": 89,
-  "addedTrueEndingRows": 19,
-  "newColumns": [
-    "nextLeftCardId",
-    "nextRightCardId",
-    "requiresMetaUnlock",
-    "permanentFlagLeft",
-    "permanentFlagRight",
-    "chainStartLeft",
-    "chainStartRight",
-    "chainId",
-    "chainOrder",
-    "isEndingChain",
-    "trueEndingConfigId",
-    "requiredLifetimeDays",
-    "requiredGameOvers"
-  ],
-  "requiredFlags": [
-    "MAIN_01",
-    "MAIN_02",
-    "MAIN_03",
-    "MAIN_04",
-    "MAIN_05",
-    "MAIN_06",
-    "MAIN_07",
-    "MAIN_08"
-  ],
-  "trueEndingGate": {
-    "requiredLifetimeDays": 365,
-    "requiredGameOvers": 51,
-    "gameOverRule": "all GameOver events; >50 means >=51"
+  "rowCount": 48,
+  "cardSet": "final48_daily_main_pool",
+  "allDailyPool": true,
+  "groupName": "Main",
+  "poolId": "main",
+  "textImportRows": 48,
+  "requiredColumnsPresent": true,
+  "valueStats": {
+    "totals": {
+      "bodyMind": 0,
+      "academics": 0,
+      "relationships": 0,
+      "economy": 0
+    },
+    "nonzero": {
+      "academics": 82,
+      "relationships": 73,
+      "economy": 78,
+      "bodyMind": 87
+    },
+    "positive": {
+      "relationships": 36,
+      "academics": 41,
+      "economy": 41,
+      "bodyMind": 42
+    },
+    "negative": {
+      "academics": 41,
+      "economy": 37,
+      "bodyMind": 45,
+      "relationships": 37
+    }
   },
   "errors": [],
   "warnings": [
-    "conditionExpression 已由 UniversityConditionExpression 运行时解释器处理；复杂 OR/AND 不再落到 Kings 原生 AND 条件。"
+    "当前版本为纯日常卡池，已清空条件触发和真结局链字段。",
+    "如需刷新 Unity Prefab/场景，请在 Unity 中运行 University Simulator/Cards/Import Program Cards And Wire Scene。"
   ]
 }

@@ -642,7 +642,7 @@ public static class UniversityCardImportTool
 
         if (configuredStart == null)
         {
-            report.errors.Add("No true-ending chain start card found. Mark at least one row with isEndingChain=true and chainOrder=1.");
+            report.warnings.Add("No true-ending chain start card configured; true ending trigger is disabled for this card set.");
             return null;
         }
 
