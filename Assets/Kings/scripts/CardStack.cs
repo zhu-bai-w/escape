@@ -652,6 +652,29 @@ public class CardStack :  TranslatableContent {
 		}
 	}
 
+	public GameObject DebugShowCard(GameObject cardPrefab)
+	{
+		if (cardPrefab == null) {
+			Debug.LogWarning("No card prefab selected for debug display.");
+			return null;
+		}
+
+		if (CardParent == null) {
+			Debug.LogWarning("CardStack has no CardParent assigned, so the debug card cannot be displayed.");
+			return null;
+		}
+
+		if (spawnedCard != null) {
+			DestroySpawnedCard();
+		}
+
+		anim = null;
+		actMoveDistance = Vector2.zero;
+		moveBackEnabled = true;
+
+		return spawnCard(cardPrefab, false);
+	}
+
 
 	//get an random standardcard according to its propability
 	GameObject randomStandardCard(){
@@ -669,15 +692,22 @@ public class CardStack :  TranslatableContent {
 	}
 
 	//spawn a card, set its parameters and count it
-	GameObject spawnCard(GameObject go){
+	GameObject spawnCard(GameObject go, bool recordDraw = true){
+		if (go == null) {
+			Debug.LogWarning("CardStack tried to spawn a missing card prefab.");
+			return null;
+		}
+
 		//Debug.Log ("new card");
 		spawnedCard = (GameObject)Instantiate (go);
 
-		addDrawCnt (go);
-        addBlockCnt(go);
-        decrementBlockCounts();                         //Reduce counter for all cards which are blocked by a previous draw.
-        lastCardIndex = getCardIndex (go);
-		saveCardIndex ();
+		if (recordDraw == true) {
+			addDrawCnt (go);
+			addBlockCnt(go);
+			decrementBlockCounts();                         //Reduce counter for all cards which are blocked by a previous draw.
+			lastCardIndex = getCardIndex (go);
+			saveCardIndex ();
+		}
 
 		getCardAnimator ();
 		spawnedCard.transform.SetParent (CardParent,false);
@@ -690,11 +720,25 @@ public class CardStack :  TranslatableContent {
 
     void DestroySpawnedCard()
     {
+		if (spawnedCard == null) {
+			return;
+		}
+
         if(OnCardDestroy != null)
         {
             OnCardDestroy.Invoke();
         }
-        Destroy(spawnedCard);
+
+#if UNITY_EDITOR
+		if (Application.isPlaying == false) {
+			DestroyImmediate(spawnedCard);
+		} else {
+			Destroy(spawnedCard);
+		}
+#else
+		Destroy(spawnedCard);
+#endif
+		spawnedCard = null;
     }
 
 	void newCard(){

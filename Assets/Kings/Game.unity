@@ -45610,149 +45610,53 @@ MonoBehaviour:
     subStackCondition: []
     groupCards:
     - {fileID: 361572660142382326, guid: 9c7f9db9aea7d684cb6a179d3eff3182, type: 3}
-    - {fileID: 992489896701513940, guid: 56e7d85d0d65e3b4bb0ce4e5f08f870a, type: 3}
-    - {fileID: 6129890037038687265, guid: 9d9362bf28be2b949a8c6422a90e4859, type: 3}
-    - {fileID: 6994200385446429898, guid: 2a0cbd10e5732f34c91ceff34a968313, type: 3}
+    - {fileID: 5370056213723639460, guid: a21e9a8db7d576a44b9b3ffea221c9f8, type: 3}
     - {fileID: 8489704186734187382, guid: 65ec0f23dc8bf6f44bc50582cab49d7f, type: 3}
-    - {fileID: 7922049866824295162, guid: 65bfbd322ca372345943b747342883b0, type: 3}
-    - {fileID: 655988191788151780, guid: 19de3e9e206e968489b0d6270104cb1a, type: 3}
+    - {fileID: 6735063186638747050, guid: 78a0f548d452dae418ce0ed82144e478, type: 3}
     - {fileID: 4798767011678861861, guid: 945476d4cc496b04cbb91d6f50f9a081, type: 3}
+    - {fileID: 1797463257639947124, guid: 943edaee977ffaf4dadc4e121a87b981, type: 3}
+    - {fileID: 8242756660510095833, guid: b88535f334432e94290bb801ffafbe23, type: 3}
     - {fileID: 2026909197190391366, guid: 6af0b839d42a2694cafec9d5e39069f3, type: 3}
     - {fileID: 5531958160834122299, guid: d6cefbdd3d444a14cafce5083bbf9ec8, type: 3}
-    - {fileID: 5884242309311152884, guid: 2bb57c055431c1a4c9fa8ab5f88f0ba3, type: 3}
-    - {fileID: 5297355376396092071, guid: 6f9fd7c0e22d3074ea4b3685f376a243, type: 3}
     - {fileID: 4140966378901161464, guid: 756e2387807510f478491ac4d3e50d1f, type: 3}
     - {fileID: 8069578498264874764, guid: d1897c30faf7dd2469cfa7c21a223c4f, type: 3}
-    - {fileID: 1587570808347881845, guid: 20f4a6ebf60917e41a8e61f80f5548d2, type: 3}
+    - {fileID: 2442663380177388264, guid: 1286e2fc715f2c048b4ee643f5e665f6, type: 3}
     - {fileID: 6653296871705581049, guid: 883833b7c360f974482993d0232fc7f3, type: 3}
-    - {fileID: 3301038876894333296, guid: c9f8558561eb3e84a8378e1d6cd9cddb, type: 3}
     - {fileID: 6385839784089202901, guid: e164b409f5c73ea42a80a8ed850e8c2b, type: 3}
-    - {fileID: 533837510930716251, guid: ca202fe28a81a21469d91fd0c1cd98aa, type: 3}
+    - {fileID: 69705361891504184, guid: 509461b0857c59e419fd3297447b57c8, type: 3}
     - {fileID: 3757178044074642522, guid: 66c2c8c550f3d7d48ad9b0c9a7af71f7, type: 3}
-    - {fileID: 7593265094553396459, guid: f63c11f775be897428d2b90e576b81a1, type: 3}
-    - {fileID: 8899863469704880651, guid: 3c3faa6f20ffb204499f48e42bd60615, type: 3}
-    - {fileID: 4155873574336834736, guid: 0789acd9d8342d74db1b7dc6e39759ac, type: 3}
     - {fileID: 5560186715877615940, guid: 5397d9acc73de5944935f09e0367b911, type: 3}
-    - {fileID: 8420086856928992218, guid: ed3c8d480ee4d3b4a963a278cb34071f, type: 3}
     - {fileID: 8978830826890976264, guid: b7b6d0157b933eb4cb8365a273e82e04, type: 3}
-    - {fileID: 558181816298832493, guid: e6a47b1a8bdb7e24d9331a1444430238, type: 3}
-    - {fileID: 2083454850274517465, guid: 78809ff899ae8a042bc1342ce43d43f7, type: 3}
+    - {fileID: 96322529224680892, guid: 96ff946ef96606c43acccb345ea39499, type: 3}
+    - {fileID: 7576015656751895073, guid: ad64e9b4aa5514d458b4dec1f5fab4d8, type: 3}
     - {fileID: 8111365893580311317, guid: f751fed6e80c507448bab260625cb003, type: 3}
-    - {fileID: 7218049199778093403, guid: ba6db05f084957245af0c343346f14d1, type: 3}
-    - {fileID: 3907328172684520904, guid: d6fca7f8d30b13043aeaf7be90efbc2a, type: 3}
     - {fileID: 4026466565302182636, guid: ff711d42fd634e94f927a5ef553147cd, type: 3}
     - {fileID: 7461688798620728129, guid: 88084f53f0e00ab4896b3725d3961e11, type: 3}
-    - {fileID: 7502205011788715868, guid: b7007639eb186a84195222109290daee, type: 3}
+    - {fileID: 1880366636088776820, guid: 68f7ce683818c4f4b9570ab0ea918edd, type: 3}
     - {fileID: 1779696023960723383, guid: b94149ff3c7634c4eb0dcb654a06e7a7, type: 3}
     - {fileID: 7828783202587702313, guid: 0383c2050d6057c4ca0ef6989da49326, type: 3}
     - {fileID: 3813491941694275255, guid: 3c9c393fa1e6ad849aae0972f18c92b4, type: 3}
     - {fileID: 3804205825308548043, guid: 3ad8889102d9c5544a934cc39dafc515, type: 3}
     - {fileID: 1729931926869437363, guid: 5c38063811cbcc141b406a434ff0c1be, type: 3}
     - {fileID: 4414457747621728374, guid: d7d8a944ff26b7549ad69ebea84fd483, type: 3}
+    - {fileID: 3519224240919531022, guid: d993afbb65b0e604eb4bf00b84d4b735, type: 3}
     - {fileID: 8707587283876894993, guid: 358a32f67c8d06d4095dedd756cbad17, type: 3}
+    - {fileID: 5539026868655575435, guid: 03d0babac308bd34eaa5e567a1528076, type: 3}
     - {fileID: 2204293927057713074, guid: 6f92ddf412c63f343bfa66f25a542df0, type: 3}
-    - {fileID: 4028297128291741618, guid: 2623773c8cdff7d42aa5629aaddbcb11, type: 3}
     - {fileID: 5638138850090114936, guid: ee7d4ac12845bfe47af0aa523d83676a, type: 3}
     - {fileID: 5237054982849797418, guid: eaec6d77234ccbc45ac37239d5c26416, type: 3}
-    - {fileID: 8241930852013348545, guid: 6e2cad595fb81ed4a8281faf302ac32e, type: 3}
-    - {fileID: 7178212072971623387, guid: fcc876cd32b4b854693708bc6ef41972, type: 3}
-    - {fileID: 7578066261119725546, guid: 202b0940f429e544997f7b046515f0f8, type: 3}
-    - {fileID: 5262548706706878550, guid: e5d7ae5c37e3fe04899286409687df24, type: 3}
-    - {fileID: 9200691059120071257, guid: 998a02b94b9542649a4bb817b1b13955, type: 3}
-    - {fileID: 2729352821512864888, guid: fd3406d5ddf6f3b44adf83fdd88c2a8d, type: 3}
-    - {fileID: 3466798143754040349, guid: e4201123e36c2134ba35d0c24d35b350, type: 3}
-    - {fileID: 4699386469696021542, guid: ba29279dd9e515e418820016828210d5, type: 3}
-  - groupName: AcademicPressure
-    subStackCondition: []
-    groupCards:
-    - {fileID: 1275823413310284251, guid: bf1d0077df4decf44bfb60f6d0ab0a81, type: 3}
-  - groupName: ExamWeek
-    subStackCondition: []
-    groupCards:
-    - {fileID: 8537079014170938580, guid: 8b4225c4e173a1d48924deb837967ee9, type: 3}
-    - {fileID: 69705361891504184, guid: 509461b0857c59e419fd3297447b57c8, type: 3}
-    - {fileID: 7336065673314082595, guid: 1a5af3e13e31299458e720cfbcea7a2e, type: 3}
-    - {fileID: 96322529224680892, guid: 96ff946ef96606c43acccb345ea39499, type: 3}
-    - {fileID: 7387545345853111366, guid: 5f74c4ff2d20b4c40b9aa9ccee71b0ac, type: 3}
-    - {fileID: 5949746685612943205, guid: d93a5fca02a7dc340b9b36aa1e776f87, type: 3}
-    - {fileID: 1061746757916299984, guid: 56093a0566e16cc4592038a73b03cd16, type: 3}
-    - {fileID: 4849902884896725226, guid: a6b33b0d7d2eb954da9860121af5f6bc, type: 3}
-  - groupName: FamilyPressure
-    subStackCondition: []
-    groupCards:
-    - {fileID: 1880366636088776820, guid: 68f7ce683818c4f4b9570ab0ea918edd, type: 3}
-    - {fileID: 3519224240919531022, guid: d993afbb65b0e604eb4bf00b84d4b735, type: 3}
     - {fileID: 3135925114953329847, guid: 97759237b4bf11245b1c038aa85266f6, type: 3}
     - {fileID: 3887481846794537372, guid: 54658525f3b9ae34f8a28b23d249b0e4, type: 3}
-  - groupName: LifeManagement
-    subStackCondition: []
-    groupCards:
-    - {fileID: 630718897347816309, guid: c57ae37847e30174ca0e10ce64ab047d, type: 3}
-  - groupName: LowEconomy
-    subStackCondition: []
-    groupCards:
-    - {fileID: 4038019998591884601, guid: 6dba621f7a3b1dc4693b9024b470d943, type: 3}
-    - {fileID: 3534992635617904153, guid: bbc56cf3aed288b49b256ee37c191967, type: 3}
-    - {fileID: 6357881763656864871, guid: af6e88597733ff448a80c24f6c85e19d, type: 3}
-    - {fileID: 7625949613975245643, guid: 57945d6da7532d44d898edaeff2b96d2, type: 3}
-    - {fileID: 503864388625224018, guid: f7de13baad98d2a49be122c9ac9cd695, type: 3}
-    - {fileID: 6068637069633345265, guid: 5b10ca4ea13f56642ae77dc3a991ce92, type: 3}
-    - {fileID: 2451873263923626028, guid: 7835e68a26d9ad14d9d238d96e3495cc, type: 3}
-    - {fileID: 3541486651527287401, guid: 7a46781250cb498439d90019e4249b8d, type: 3}
-    - {fileID: 787474437627036892, guid: f89e3174482c379468e0c2e2ec7fbfb2, type: 3}
-    - {fileID: 4565195474151271898, guid: 7f3734fd37f7584488c071c30bffb313, type: 3}
-    - {fileID: 8087166061216800626, guid: e3398f39463f4aa47b4c1fa115efbc33, type: 3}
-  - groupName: MainlineChain
-    subStackCondition: []
-    groupCards:
-    - {fileID: 4718890010154363284, guid: 2a19758706c732b45825798fdce359ff, type: 3}
-    - {fileID: 3285169403379303963, guid: f2283850371069647ba96a7bcd62491f, type: 3}
-    - {fileID: 5932344371463086857, guid: b4064047fab55b1459174dd7e05c18eb, type: 3}
-    - {fileID: 6767824344930798782, guid: 35ebd1710d01c5341b394732ca7a62ac, type: 3}
-    - {fileID: 2298993854941052545, guid: 94eb4812d52768b40aa457ae27cd850f, type: 3}
-    - {fileID: 3577769082801234409, guid: 169d6f9a01439b64cbf85f563dca5b38, type: 3}
-    - {fileID: 6905463495889263863, guid: 1bad7bab3e42a8940bbe51fb2c7d4e36, type: 3}
-    - {fileID: 6789092335940662730, guid: 2606e2ab44be18b488116048136da58e, type: 3}
-  - groupName: RealConnection
-    subStackCondition: []
-    groupCards:
-    - {fileID: 2706092254405302441, guid: de19389810a231b45ae512e837f1062b, type: 3}
-  - groupName: RelationshipPressure
-    subStackCondition: []
-    groupCards:
-    - {fileID: 4744294881246341804, guid: 5afe8ffbd737fa64e81f31e971536d7a, type: 3}
-  - groupName: SicknessRecovery
-    subStackCondition: []
-    groupCards:
-    - {fileID: 1797463257639947124, guid: 943edaee977ffaf4dadc4e121a87b981, type: 3}
-    - {fileID: 2442663380177388264, guid: 1286e2fc715f2c048b4ee643f5e665f6, type: 3}
-    - {fileID: 1822320684648013272, guid: 70f08d651a62dca4eba9c208d0a5c987, type: 3}
+    - {fileID: 5949746685612943205, guid: d93a5fca02a7dc340b9b36aa1e776f87, type: 3}
+    - {fileID: 1061746757916299984, guid: 56093a0566e16cc4592038a73b03cd16, type: 3}
     - {fileID: 234912187853614407, guid: bcf3cf0eeab28c14991a18c374de5ab7, type: 3}
-    - {fileID: 8283184053380671022, guid: 5d3b7d478f8a1ec43bf12b9eacebb51a, type: 3}
-    - {fileID: 4731643662718623561, guid: 7951e483dc91e1b4a81990eac7ba5740, type: 3}
-    - {fileID: 4458249098398751276, guid: faa4b9ede3757694d8452a59eb340ddb, type: 3}
-  - groupName: Story
-    subStackCondition: []
-    groupCards:
-    - {fileID: 8242756660510095833, guid: b88535f334432e94290bb801ffafbe23, type: 3}
-  - groupName: TrueSelf
-    subStackCondition: []
-    groupCards:
-    - {fileID: 5370056213723639460, guid: a21e9a8db7d576a44b9b3ffea221c9f8, type: 3}
-    - {fileID: 6735063186638747050, guid: 78a0f548d452dae418ce0ed82144e478, type: 3}
-    - {fileID: 7474626952663232785, guid: afcadfd96ded0434088f7185145a7318, type: 3}
-    - {fileID: 7958156939806377552, guid: e07d2f6adeb1ff14ea9885f8b71bc876, type: 3}
-    - {fileID: 3495714390998310426, guid: db4432c0189282841bcf91cf62ee6638, type: 3}
-    - {fileID: 7576015656751895073, guid: ad64e9b4aa5514d458b4dec1f5fab4d8, type: 3}
-    - {fileID: 5539026868655575435, guid: 03d0babac308bd34eaa5e567a1528076, type: 3}
-    - {fileID: 8186469147219346774, guid: 697faff699e26a8439dc94726bffc92e, type: 3}
+    - {fileID: 4744294881246341804, guid: 5afe8ffbd737fa64e81f31e971536d7a, type: 3}
+    - {fileID: 6357881763656864871, guid: af6e88597733ff448a80c24f6c85e19d, type: 3}
     - {fileID: 5240148589058757620, guid: 44858b7b623dfcc48a01987dacc91354, type: 3}
-  - groupName: TrueEnding
-    subStackCondition: []
-    groupCards:
-    - {fileID: 4962730762097730361, guid: 3ba1bdcecc888ac44b84499e7b78ed2f, type: 3}
-    - {fileID: 3822851540641559843, guid: ab5589efa0f07f544b54bf254e01894d, type: 3}
-    - {fileID: 8277106392663975431, guid: 1fefe4539992c2749afbf91f313e7ec1, type: 3}
+    - {fileID: 4849902884896725226, guid: a6b33b0d7d2eb954da9860121af5f6bc, type: 3}
+    - {fileID: 6068637069633345265, guid: 5b10ca4ea13f56642ae77dc3a991ce92, type: 3}
+    - {fileID: 4565195474151271898, guid: 7f3734fd37f7584488c071c30bffb313, type: 3}
+    - {fileID: 8283184053380671022, guid: 5d3b7d478f8a1ec43bf12b9eacebb51a, type: 3}
   cardDrawCount:
     cnt: []
   cardBlockCount:
@@ -46088,8 +45992,7 @@ MonoBehaviour:
   - MAIN_06
   - MAIN_07
   - MAIN_08
-  trueEndingStartCard: {fileID: 4962730762097730361, guid: 3ba1bdcecc888ac44b84499e7b78ed2f,
-    type: 3}
+  trueEndingStartCard: {fileID: 0}
   triggerOnlyOnce: 1
   countCardSwipesAsDays: 1
   countGameOverEvents: 1

@@ -1,0 +1,18 @@
+﻿{
+  "cardPrefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E001.prefab",
+  "expectedSpritePath": "Assets/UniversitySimulator/Art/cards/card-E001.png",
+  "isPlaying": true,
+  "prefabLoaded": true,
+  "expectedSpriteLoaded": true,
+  "cardStackFound": true,
+  "spawnedCardName": "US_E001(Clone)",
+  "cardStyleFound": true,
+  "usePrefabIconOverride": true,
+  "iconImageFound": true,
+  "iconSpriteName": "card-E001",
+  "iconSpritePath": "Assets/UniversitySimulator/Art/cards/card-E001.png",
+  "matchesExpectedSprite": true,
+  "imageCount": 3,
+  "error": "",
+  "images": [{"name": "US_E001(Clone)","path": "GameCanvas/Cards/US_E001(Clone)","spriteName": "card","spritePath": "Assets/Kings/graphics/card.png","activeInHierarchy":true},{"name": "Icon","path": "GameCanvas/Cards/US_E001(Clone)/Icon","spriteName": "card-E001","spritePath": "Assets/UniversitySimulator/Art/cards/card-E001.png","activeInHierarchy":true},{"name": "AnswersBack","path": "GameCanvas/Cards/US_E001(Clone)/AnswersBack","spriteName": "card","spritePath": "Assets/Kings/graphics/card.png","activeInHierarchy":true}]
+}

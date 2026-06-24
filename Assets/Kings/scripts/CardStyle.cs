@@ -65,6 +65,7 @@ public class CardStyle : MonoBehaviour
 
     public C_CardImages cardImages;
     public Image iconImage;
+    public bool usePrefabIconOverride;
 
     void actualizeColoring()
     {
@@ -82,7 +83,7 @@ public class CardStyle : MonoBehaviour
     }
 
     void actualizeImages() {
-        if (iconImage != null && style.icon != null) {
+        if (!usePrefabIconOverride && iconImage != null && style.icon != null) {
             iconImage.sprite = style.icon;
         }
         if (cardImages.front != null && style.cardFront != null) {

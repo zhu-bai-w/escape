@@ -18,6 +18,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: cb37a81baf43c7e46b8ae79c2c57b46f,
         type: 2}
+    - target: {fileID: 114484288795279350, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: usePrefabIconOverride
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: redrawBlockCnt
@@ -197,8 +202,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 942462fce505db945bd17b2cac9b849a,
-        type: 3}
+      objectReference: {fileID: 21300000, guid: 2ced33ed4cffef04b945693c04ede65d, type: 3}
     - target: {fileID: 224275568673289112, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: m_Pivot.x
