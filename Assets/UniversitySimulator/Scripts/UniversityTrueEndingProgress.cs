@@ -6,6 +6,8 @@ public static class UniversityTrueEndingProgress
     public const int DefaultRequiredLifetimeDays = 365;
     public const int DefaultRequiredGameOvers = 51;
 
+    public static event System.Action<int> OnCurrentRunDaysChanged;
+
     const string KeyPrefix = "US.TrueEnding.";
     const string LifetimeDaysKey = KeyPrefix + "LifetimeDays";
     const string CurrentRunDaysKey = KeyPrefix + "CurrentRunDays";
@@ -62,12 +64,15 @@ public static class UniversityTrueEndingProgress
             return;
         }
 
-        SecurePlayerPrefs.SetInt(CurrentRunDaysKey, CurrentRunDays + amount);
+        int updatedDays = CurrentRunDays + amount;
+        SecurePlayerPrefs.SetInt(CurrentRunDaysKey, updatedDays);
+        OnCurrentRunDaysChanged?.Invoke(updatedDays);
     }
 
     public static void ResetCurrentRunDays()
     {
         SecurePlayerPrefs.SetInt(CurrentRunDaysKey, 0);
+        OnCurrentRunDaysChanged?.Invoke(0);
     }
 
     public static void AddGameOver(int amount)
@@ -162,6 +167,7 @@ public static class UniversityTrueEndingProgress
         SecurePlayerPrefs.SetInt(CurrentRunDaysKey, 0);
         SecurePlayerPrefs.SetInt(GameOverCountKey, 0);
         SecurePlayerPrefs.SetBool(TriggeredKey, false);
+        OnCurrentRunDaysChanged?.Invoke(0);
 
         IEnumerable<string> flagsToReset = flagIds ?? DefaultRequiredFlags;
         foreach (string flagId in flagsToReset)
