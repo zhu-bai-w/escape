@@ -42058,6 +42058,10 @@ MonoBehaviour:
     - {fileID: 8068730067539490891, guid: f4e36ede1a611d64a8ed014eca5273b2, type: 3}
     - {fileID: 2601019138746741785, guid: 94a7f307991eedb4b8bb69409e83abf9, type: 3}
     - {fileID: 819277483401644788, guid: ba61d6b8de2b152438a0d8603a282133, type: 3}
+  - groupName: TrueEnding
+    subStackCondition: []
+    groupCards:
+    - {fileID: 6157573110093152660, guid: ec7c41bc6ca749a4e952cc62bbe41e21, type: 3}
   cardDrawCount:
     cnt: []
   cardBlockCount:
@@ -42390,7 +42394,8 @@ MonoBehaviour:
   - MAIN_02
   - MAIN_03
   - MAIN_04
-  trueEndingStartCard: {fileID: 0}
+  trueEndingStartCard: {fileID: 6157573110093152660, guid: ec7c41bc6ca749a4e952cc62bbe41e21,
+    type: 3}
   triggerOnlyOnce: 1
   countCardSwipesAsDays: 1
   countGameOverEvents: 1
@@ -64543,8 +64548,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e811f8421d3494aa7d9ef4131b712d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  res: {x: 1164, y: 546}
-  ratio: 2.1318681
+  res: {x: 1209, y: 591}
+  ratio: 2.0456853
   ratioEvents:
   - ratio: 0
     transformModifications: []

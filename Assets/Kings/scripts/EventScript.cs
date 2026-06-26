@@ -466,7 +466,7 @@ public class EventScript : MonoBehaviour {
         {
             result res = Results.resultUp;
             computeResult(res);
-            OnSwipeRight.Invoke();
+            OnSwipeUp.Invoke();
         }
     }
     /*
@@ -480,7 +480,7 @@ public class EventScript : MonoBehaviour {
         {
             result res = Results.resultDown;
             computeResult(res);
-            OnSwipeRight.Invoke();
+            OnSwipeDown.Invoke();
         }
     }
 

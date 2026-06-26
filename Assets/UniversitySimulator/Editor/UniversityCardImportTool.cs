@@ -661,6 +661,7 @@ public static class UniversityCardImportTool
                 ApplyFollowUp(eventScript.Results.resultRight, row.Get("nextRightCardId"), prefabsByEventId, row, report);
                 ConfigureMainlineHook(root, eventScript, row, prefabsByEventId, report);
                 ConfigureMainlineEventCard(root, row);
+                ConfigureTrueEndingReturn(root, eventScript, row, report);
 
                 EditorUtility.SetDirty(eventScript);
                 PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
@@ -891,6 +892,36 @@ public static class UniversityCardImportTool
         report.mainlineHooks++;
     }
 
+    static void ConfigureTrueEndingReturn(GameObject root, EventScript eventScript, ProgramCard row, ImportReport report)
+    {
+        bool isEndingCard = ParseBool(row.Get("isEndingChain"), false);
+        UniversityTrueEndingReturnToNewGame returnToNewGame = root.GetComponent<UniversityTrueEndingReturnToNewGame>();
+        if (!isEndingCard)
+        {
+            if (returnToNewGame != null)
+            {
+                RemovePersistentListenersForTarget(eventScript.OnSwipeLeft, returnToNewGame);
+                RemovePersistentListenersForTarget(eventScript.OnSwipeRight, returnToNewGame);
+                UnityEngine.Object.DestroyImmediate(returnToNewGame, true);
+            }
+
+            return;
+        }
+
+        if (returnToNewGame == null)
+        {
+            returnToNewGame = root.AddComponent<UniversityTrueEndingReturnToNewGame>();
+        }
+
+        returnToNewGame.reloadScene = true;
+        RemovePersistentListenersForTarget(eventScript.OnSwipeLeft, returnToNewGame);
+        RemovePersistentListenersForTarget(eventScript.OnSwipeRight, returnToNewGame);
+        UnityEventTools.AddPersistentListener(eventScript.OnSwipeLeft, returnToNewGame.ReturnToNewGame);
+        UnityEventTools.AddPersistentListener(eventScript.OnSwipeRight, returnToNewGame.ReturnToNewGame);
+        EditorUtility.SetDirty(returnToNewGame);
+        report.trueEndingReturnCards++;
+    }
+
     static GameObject ResolveOptionalCard(string eventId, Dictionary<string, GameObject> prefabsByEventId, ProgramCard row, ImportReport report, string fieldName)
     {
         if (string.IsNullOrWhiteSpace(eventId))
@@ -1090,6 +1121,7 @@ public static class UniversityCardImportTool
             check.hasCardStyle = cardStyle != null;
             check.hasMainlineHook = prefab.GetComponent<UniversityMainlineCardHook>() != null;
             check.hasConditionExpression = prefab.GetComponent<UniversityConditionExpression>() != null;
+            check.hasTrueEndingReturn = prefab.GetComponent<UniversityTrueEndingReturnToNewGame>() != null;
 
             if (eventScript == null)
             {
@@ -1129,6 +1161,11 @@ public static class UniversityCardImportTool
             if (!string.IsNullOrWhiteSpace(row.Get("conditionExpression")) && !check.hasConditionExpression)
             {
                 check.issues.Add("Missing UniversityConditionExpression.");
+            }
+
+            if (ParseBool(row.Get("isEndingChain"), false) && !check.hasTrueEndingReturn)
+            {
+                check.issues.Add("Missing UniversityTrueEndingReturnToNewGame.");
             }
 
             check.textMatches = check.issues.Count == 0;
@@ -1263,6 +1300,7 @@ public static class UniversityCardImportTool
         public int prefabErrors;
         public int mainlineHooks;
         public int conditionExpressionGates;
+        public int trueEndingReturnCards;
         public int sceneGroups;
         public int sceneCards;
         public string trueEndingStartCard;
@@ -1311,6 +1349,7 @@ public static class UniversityCardImportTool
         public bool hasCardStyle;
         public bool hasMainlineHook;
         public bool hasConditionExpression;
+        public bool hasTrueEndingReturn;
         public bool textMatches;
         public List<string> issues = new List<string>();
     }

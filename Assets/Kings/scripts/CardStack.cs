@@ -482,15 +482,10 @@ public class CardStack :  TranslatableContent {
                         }
                         else
                         {
-                            actMoveDistance.x += moveBackSpeed * Time.deltaTime * Screen.width;
                             actMoveDistance.y += moveBackSpeed * Time.deltaTime * Screen.width;
-                            if (actMoveDistance.x > 0f)
+                            if (actMoveDistance.y > 0f)
                             {
-                                actMoveDistance.x = 0f;
-                            }
-                            if (actMoveDistance.x > 0f)
-                            {
-                                actMoveDistance.x = 0f;
+                                actMoveDistance.y = 0f;
                             }
                         }
                     }
@@ -1041,16 +1036,15 @@ public class CardStack :  TranslatableContent {
         if (cardMoveEnabled == true)
         {
             EventScript es = spawnedCard.GetComponent<EventScript>();
+            if (es == null)
+            {
+                Debug.LogError("Event script missing on card");
+                return;
+            }
+
             if (es.swipeType == EventScript.E_SwipeType.FourDirection)
             {
-                if (es != null)
-                {
-                    es.onUpSwipe(); //call the eventscript on the card for stat-changes, linking of follow up cards, etc.
-                }
-                else
-                {
-                    Debug.LogError("Event script missing on card");
-                }
+                es.onUpSwipe(); //call the eventscript on the card for stat-changes, linking of follow up cards, etc.
                 onCardSwipe.Invoke();
                 nextCard(E_moveOutDirection.up);
             }
@@ -1065,16 +1059,15 @@ public class CardStack :  TranslatableContent {
         if (cardMoveEnabled == true)
         {
             EventScript es = spawnedCard.GetComponent<EventScript>();
+            if (es == null)
+            {
+                Debug.LogError("Event script missing on card");
+                return;
+            }
+
             if (es.swipeType == EventScript.E_SwipeType.FourDirection)
             {
-                if (es != null)
-                {
-                    es.onUpSpwipePreview();
-                }
-                else
-                {
-                    Debug.LogError("Event script missing on card");
-                }
+                es.onUpSpwipePreview();
             }
         }
     }
@@ -1088,16 +1081,15 @@ public class CardStack :  TranslatableContent {
         if (cardMoveEnabled == true)
         {
             EventScript es = spawnedCard.GetComponent<EventScript>();
+            if (es == null)
+            {
+                Debug.LogError("Event script missing on card");
+                return;
+            }
+
             if (es.swipeType == EventScript.E_SwipeType.FourDirection)
             {
-                if (es != null)
-                {
-                    es.onDownSwipe(); //call the eventscript on the card for stat-changes, linking of follow up cards, etc.
-                }
-                else
-                {
-                    Debug.LogError("Event script missing on card");
-                }
+                es.onDownSwipe(); //call the eventscript on the card for stat-changes, linking of follow up cards, etc.
                 onCardSwipe.Invoke();
                 nextCard(E_moveOutDirection.down);
             }
@@ -1112,16 +1104,15 @@ public class CardStack :  TranslatableContent {
         if (cardMoveEnabled == true)
         {
             EventScript es = spawnedCard.GetComponent<EventScript>();
+            if (es == null)
+            {
+                Debug.LogError("Event script missing on card");
+                return;
+            }
+
             if (es.swipeType == EventScript.E_SwipeType.FourDirection)
             {
-                if (es != null)
-                {
-                    es.onDownSpwipePreview();
-                }
-                else
-                {
-                    Debug.LogError("Event script missing on card");
-                }
+                es.onDownSpwipePreview();
             }
         }
     }
@@ -1271,7 +1262,7 @@ public class CardStack :  TranslatableContent {
 		}
 
 		if (spawnedCard != null) {
-			es = fallBackCard.GetComponent<EventScript> ();
+			es = spawnedCard.GetComponent<EventScript> ();
 
 			if (es != null) {
 				terms.Add (es.textFields.titleText.textContent);

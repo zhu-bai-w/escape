@@ -14,15 +14,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114484288795279350, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
+      propertyPath: usePrefabIconOverride
+      value: 1
+      objectReference: {fileID: 0}    - target: {fileID: 114484288795279350, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
       propertyPath: style
       value: 
       objectReference: {fileID: 11400000, guid: cb37a81baf43c7e46b8ae79c2c57b46f,
         type: 2}
-    - target: {fileID: 114484288795279350, guid: 0f0aa08f89365394b80c6b149344b23a,
-        type: 3}
-      propertyPath: usePrefabIconOverride
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: maxDraws

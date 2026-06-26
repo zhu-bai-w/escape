@@ -1,30 +1,31 @@
 {
     "success": true,
-    "generatedAt": "2026-06-26 17:04:15",
+    "generatedAt": "2026-06-26 21:23:33",
     "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
     "textCsv": "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv",
     "styleList": "Assets/Kings/cards/_templates/CardStyle_List.asset",
     "outputFolder": "Assets/UniversitySimulator/Prefabs/Cards",
     "targetScene": "Assets/Kings/Game.unity",
-    "csvRows": 62,
-    "generatedTextCsvRows": 62,
-    "generatedPrefabs": 62,
-    "configuredPrefabs": 62,
+    "csvRows": 63,
+    "generatedTextCsvRows": 63,
+    "generatedPrefabs": 63,
+    "configuredPrefabs": 63,
     "missingPrefabs": 0,
     "prefabErrors": 0,
     "mainlineHooks": 4,
     "conditionExpressionGates": 0,
-    "sceneGroups": 2,
-    "sceneCards": 62,
-    "trueEndingStartCard": "",
+    "trueEndingReturnCards": 1,
+    "sceneGroups": 3,
+    "sceneCards": 63,
+    "trueEndingStartCard": "US_TE001",
     "tableValidation": {
         "success": true,
-        "generatedAt": "2026-06-26 17:04:15",
+        "generatedAt": "2026-06-26 21:23:33",
         "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
-        "rowCount": 62,
-        "eventChainCount": 4,
-        "eventChainCards": 16,
-        "eventChainEntryCards": 4,
+        "rowCount": 63,
+        "eventChainCount": 5,
+        "eventChainCards": 17,
+        "eventChainEntryCards": 5,
         "errors": [],
         "warnings": [],
         "chainChecks": [
@@ -59,12 +60,20 @@
                 "orderRange": "1-4",
                 "issues": [],
                 "warnings": []
+            },
+            {
+                "chainId": "TRUE_ENDING",
+                "cardCount": 1,
+                "entryEventId": "TE001",
+                "orderRange": "1-1",
+                "issues": [],
+                "warnings": []
             }
         ]
     },
     "errors": [],
     "warnings": [
-        "No true-ending chain start card configured; true ending trigger is disabled for this card set."
+        "Applied CardStyle references after KingsImEx import: 46 prefab(s)."
     ],
     "cards": [
         {
@@ -78,6 +87,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -92,6 +102,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -106,6 +117,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -120,6 +132,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -134,6 +147,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -148,6 +162,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -162,6 +177,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -176,6 +192,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -190,6 +207,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -204,6 +222,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -218,6 +237,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -232,6 +252,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -246,6 +267,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -260,6 +282,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -274,6 +297,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -288,6 +312,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -302,6 +327,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -316,6 +342,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -330,6 +357,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -344,6 +372,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -358,6 +387,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -372,6 +402,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -386,6 +417,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -400,6 +432,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -414,6 +447,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -428,6 +462,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -442,6 +477,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -456,6 +492,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -470,6 +507,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -484,6 +522,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -498,6 +537,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -512,6 +552,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -526,6 +567,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -540,6 +582,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -554,6 +597,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -568,6 +612,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -582,6 +627,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -596,6 +642,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -610,6 +657,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -624,6 +672,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -638,6 +687,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -652,6 +702,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -666,6 +717,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -680,6 +732,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -694,6 +747,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -708,6 +762,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -722,6 +777,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": true,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -736,6 +792,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -750,6 +807,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -764,6 +822,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -778,6 +837,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": true,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -792,6 +852,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -806,6 +867,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -820,6 +882,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -834,6 +897,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": true,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -848,6 +912,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -862,6 +927,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -876,6 +942,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -890,6 +957,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": true,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -904,6 +972,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -918,6 +987,7 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
             "textMatches": true,
             "issues": []
         },
@@ -932,6 +1002,22 @@
             "hasCardStyle": true,
             "hasMainlineHook": false,
             "hasConditionExpression": false,
+            "hasTrueEndingReturn": false,
+            "textMatches": true,
+            "issues": []
+        },
+        {
+            "eventId": "TE001",
+            "cardName": "US_TE001",
+            "groupName": "TrueEnding",
+            "styleName": "cs_None",
+            "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/TrueEnding/US_TE001.prefab",
+            "exists": true,
+            "hasEventScript": true,
+            "hasCardStyle": true,
+            "hasMainlineHook": false,
+            "hasConditionExpression": false,
+            "hasTrueEndingReturn": true,
             "textMatches": true,
             "issues": []
         }

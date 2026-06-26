@@ -90,6 +90,30 @@ public class GameStateManager : MonoBehaviour {
 		SceneManager.LoadScene (currentSceneName);						//reload the scene for a clean startup of the game
 	}
 
+    public void RestartAsNewGame()
+    {
+        RestartAsNewGame(true);
+    }
+
+    public void RestartAsNewGame(bool reloadScene)
+    {
+        gamestate = Gamestate.idle;
+
+        if (CardStack.instance != null)
+        {
+            CardStack.instance.resetCardStack();
+            CardStack.instance.clearFollowUpStack();
+        }
+
+        saveGameState();
+
+        if (reloadScene)
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+        }
+    }
+
 	public mEvent OnNewGame;
     public mEvent OnGameOver;
 	public mEvent OnFirstSwipe;

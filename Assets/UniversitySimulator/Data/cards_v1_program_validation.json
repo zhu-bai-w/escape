@@ -1,11 +1,11 @@
 {
     "success": true,
-    "generatedAt": "2026-06-26 17:07:25",
+    "generatedAt": "2026-06-26 21:23:31",
     "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
-    "rowCount": 62,
-    "eventChainCount": 4,
-    "eventChainCards": 16,
-    "eventChainEntryCards": 4,
+    "rowCount": 63,
+    "eventChainCount": 5,
+    "eventChainCards": 17,
+    "eventChainEntryCards": 5,
     "errors": [],
     "warnings": [],
     "chainChecks": [
@@ -38,6 +38,14 @@
             "cardCount": 4,
             "entryEventId": "S100",
             "orderRange": "1-4",
+            "issues": [],
+            "warnings": []
+        },
+        {
+            "chainId": "TRUE_ENDING",
+            "cardCount": 1,
+            "entryEventId": "TE001",
+            "orderRange": "1-1",
             "issues": [],
             "warnings": []
         }
