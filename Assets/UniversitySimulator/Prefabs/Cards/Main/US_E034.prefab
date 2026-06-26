@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
@@ -81,42 +81,62 @@ PrefabInstance:
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultLeft.modifiers.valueChanges.Array.data[0].modifier
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultLeft.modifiers.valueChanges.Array.data[0].valueAdd
-      value: -5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultLeft.modifiers.valueChanges.Array.data[1].modifier
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultLeft.modifiers.valueChanges.Array.data[1].valueAdd
-      value: 5
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[0].modifier
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
-        type: 3}
-      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[0].valueAdd
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[0].valueAdd
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[1].modifier
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[1].valueAdd
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[2].modifier
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[2].valueAdd
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[3].modifier
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[3].valueAdd
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
@@ -158,11 +178,32 @@ PrefabInstance:
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[1].rndRangeSet.max
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[2].rndRangeAdd.max
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[2].rndRangeSet.max
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[3].rndRangeAdd.max
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
+      propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[3].rndRangeSet.max
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 114853187802903376, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4ecb84a6e059b124ba05fc193997b0d2, type: 3}
+      objectReference: {fileID: 21300000, guid: 4ecb84a6e059b124ba05fc193997b0d2,
+        type: 3}
     - target: {fileID: 224275568673289112, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: m_Pivot.x

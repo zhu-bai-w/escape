@@ -66,12 +66,12 @@ PrefabInstance:
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultLeft.modifiers.valueChanges.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
@@ -126,7 +126,7 @@ PrefabInstance:
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[0].valueAdd
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
@@ -242,7 +242,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 998df25190a51cb43b43aeaad917f6d5, type: 3}
+      objectReference: {fileID: 21300000, guid: 998df25190a51cb43b43aeaad917f6d5,
+        type: 3}
     - target: {fileID: 224275568673289112, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: m_Pivot.x

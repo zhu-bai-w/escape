@@ -17,6 +17,7 @@ public static class UniversityCardImportTool
     const string StyleListPath = "Assets/Kings/cards/_templates/CardStyle_List.asset";
     const string OutputFolderPath = "Assets/UniversitySimulator/Prefabs/Cards";
     const string ReportPath = "Assets/UniversitySimulator/Data/cards_v1_kings_import_report.json";
+    const string ValidationReportPath = "Assets/UniversitySimulator/Data/cards_v1_program_validation.json";
     const string TargetScenePath = "Assets/Kings/Game.unity";
 
     static readonly Dictionary<string, valueDefinitions.values> ValueMap = new Dictionary<string, valueDefinitions.values>
@@ -40,6 +41,22 @@ public static class UniversityCardImportTool
         else
         {
             Debug.LogError("University program card import failed. See report: " + ReportPath);
+        }
+    }
+
+    [MenuItem("University Simulator/Cards/Validate Program Card CSV")]
+    public static void ValidateProgramCardCsv()
+    {
+        ProgramValidationReport report = RunProgramValidation();
+        WriteValidationReport(report);
+
+        if (report.success)
+        {
+            Debug.Log("University program card validation passed. Rows: " + report.rowCount + ". Event-chain cards: " + report.eventChainCards + ". Report: " + ValidationReportPath);
+        }
+        else
+        {
+            Debug.LogError("University program card validation failed. See report: " + ValidationReportPath);
         }
     }
 
@@ -86,6 +103,15 @@ public static class UniversityCardImportTool
             report.errors.Add(tableError);
             return report;
         }
+
+        report.tableValidation = ValidateProgramTable(table);
+        if (report.tableValidation.errors.Count > 0)
+        {
+            report.errors.AddRange(report.tableValidation.errors);
+            return report;
+        }
+
+        report.warnings.AddRange(report.tableValidation.warnings);
 
         string styleErrors = styleList.GetCardStyleDefinitionErrors();
         if (!string.IsNullOrEmpty(styleErrors))
@@ -166,8 +192,333 @@ public static class UniversityCardImportTool
             "maxDraws",
             "isDrawable",
             "isHighPriority",
-            "poolId"
+            "poolId",
+            "nextLeftCardId",
+            "nextRightCardId",
+            "requiresMetaUnlock",
+            "permanentFlagLeft",
+            "permanentFlagRight",
+            "chainId",
+            "chainOrder",
+            "isEndingChain"
         };
+    }
+
+    static ProgramValidationReport RunProgramValidation()
+    {
+        ProgramValidationReport report = new ProgramValidationReport
+        {
+            generatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            sourceCsv = ProgramCsvPath
+        };
+
+        AssetDatabase.Refresh();
+        TextAsset programCsv = AssetDatabase.LoadAssetAtPath<TextAsset>(ProgramCsvPath);
+        if (programCsv == null)
+        {
+            report.errors.Add("Program CSV asset not found: " + ProgramCsvPath);
+            report.success = false;
+            return report;
+        }
+
+        CsvTable table = CsvTable.Read(Encoding.UTF8.GetString(programCsv.bytes), ',');
+        string tableError = table.ValidateRequiredColumns(ProgramRequiredColumns());
+        if (!string.IsNullOrEmpty(tableError))
+        {
+            report.errors.Add(tableError);
+            report.success = false;
+            return report;
+        }
+
+        report = ValidateProgramTable(table);
+        report.generatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        report.sourceCsv = ProgramCsvPath;
+        return report;
+    }
+
+    static ProgramValidationReport ValidateProgramTable(CsvTable table)
+    {
+        ProgramValidationReport report = new ProgramValidationReport
+        {
+            generatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            sourceCsv = ProgramCsvPath,
+            rowCount = table.rows.Count
+        };
+
+        Dictionary<string, ProgramCard> rowsByEventId = new Dictionary<string, ProgramCard>();
+        HashSet<string> duplicateEventIds = new HashSet<string>();
+        foreach (ProgramCard row in table.rows)
+        {
+            string eventId = row.EventId.Trim();
+            if (string.IsNullOrEmpty(eventId))
+            {
+                report.errors.Add("A row has an empty eventId.");
+                continue;
+            }
+
+            if (rowsByEventId.ContainsKey(eventId))
+            {
+                duplicateEventIds.Add(eventId);
+            }
+            else
+            {
+                rowsByEventId[eventId] = row;
+            }
+
+            if (string.IsNullOrWhiteSpace(row.CardName))
+            {
+                report.errors.Add("Card " + eventId + " has an empty cardName.");
+            }
+            else if (row.CardName != "US_" + eventId)
+            {
+                report.warnings.Add("Card " + eventId + " uses cardName '" + row.CardName + "'. Standard workflow expects 'US_" + eventId + "'.");
+            }
+        }
+
+        foreach (string duplicateEventId in duplicateEventIds.OrderBy(id => id))
+        {
+            report.errors.Add("Duplicate eventId: " + duplicateEventId);
+        }
+
+        foreach (ProgramCard row in table.rows)
+        {
+            ValidateFollowUpReference(row, "nextLeftCardId", rowsByEventId, report);
+            ValidateFollowUpReference(row, "nextRightCardId", rowsByEventId, report);
+            ValidateFollowUpReference(row, "chainStartLeft", rowsByEventId, report);
+            ValidateFollowUpReference(row, "chainStartRight", rowsByEventId, report);
+        }
+
+        ValidateEventChains(table, rowsByEventId, report);
+        report.success = report.errors.Count == 0;
+        return report;
+    }
+
+    static void ValidateFollowUpReference(ProgramCard row, string fieldName, Dictionary<string, ProgramCard> rowsByEventId, ProgramValidationReport report)
+    {
+        string targetId = row.Get(fieldName).Trim();
+        if (string.IsNullOrEmpty(targetId))
+        {
+            return;
+        }
+
+        if (!rowsByEventId.ContainsKey(targetId))
+        {
+            report.errors.Add("Card " + row.EventId + " references missing " + fieldName + ": " + targetId);
+        }
+    }
+
+    static void ValidateEventChains(CsvTable table, Dictionary<string, ProgramCard> rowsByEventId, ProgramValidationReport report)
+    {
+        Dictionary<string, List<ProgramCard>> chains = new Dictionary<string, List<ProgramCard>>();
+        foreach (ProgramCard row in table.rows)
+        {
+            string chainId = row.Get("chainId").Trim();
+            if (string.IsNullOrEmpty(chainId))
+            {
+                continue;
+            }
+
+            if (!chains.ContainsKey(chainId))
+            {
+                chains[chainId] = new List<ProgramCard>();
+            }
+
+            chains[chainId].Add(row);
+        }
+
+        report.eventChainCount = chains.Count;
+        report.eventChainCards = chains.Values.Sum(rows => rows.Count);
+
+        foreach (KeyValuePair<string, List<ProgramCard>> pair in chains.OrderBy(item => item.Key))
+        {
+            ChainCheck check = new ChainCheck
+            {
+                chainId = pair.Key,
+                cardCount = pair.Value.Count
+            };
+
+            bool isMainlineChain = pair.Key.StartsWith("MAIN_", StringComparison.OrdinalIgnoreCase)
+                || pair.Value.Any(row => row.GroupName == "Mainline");
+
+            Dictionary<int, ProgramCard> rowsByOrder = new Dictionary<int, ProgramCard>();
+            HashSet<int> duplicateOrders = new HashSet<int>();
+            foreach (ProgramCard row in pair.Value)
+            {
+                int order = ParseInt(row.Get("chainOrder"), 0);
+                if (order <= 0)
+                {
+                    AddChainError(report, check, "Card " + row.EventId + " in chain " + pair.Key + " must have chainOrder >= 1.");
+                    continue;
+                }
+
+                if (rowsByOrder.ContainsKey(order))
+                {
+                    duplicateOrders.Add(order);
+                }
+                else
+                {
+                    rowsByOrder[order] = row;
+                }
+
+                if (ParseBool(row.Get("isDrawable"), true))
+                {
+                    AddChainError(report, check, "Card " + row.EventId + " in chain " + pair.Key + " must set isDrawable=false.");
+                }
+
+                if (isMainlineChain && row.GroupName != "Mainline")
+                {
+                    AddChainWarning(report, check, "Card " + row.EventId + " is in mainline chain " + pair.Key + " but groupName is '" + row.GroupName + "'. Standard workflow uses Mainline.");
+                }
+            }
+
+            foreach (int duplicateOrder in duplicateOrders.OrderBy(order => order))
+            {
+                AddChainError(report, check, "Chain " + pair.Key + " has duplicate chainOrder " + duplicateOrder + ".");
+            }
+
+            if (!rowsByOrder.ContainsKey(1))
+            {
+                AddChainError(report, check, "Chain " + pair.Key + " has no entry card with chainOrder=1.");
+            }
+            else
+            {
+                check.entryEventId = rowsByOrder[1].EventId;
+                report.eventChainEntryCards++;
+            }
+
+            int maxOrder = rowsByOrder.Count == 0 ? 0 : rowsByOrder.Keys.Max();
+            check.orderRange = maxOrder == 0 ? "" : "1-" + maxOrder;
+            for (int order = 1; order <= maxOrder; order++)
+            {
+                ProgramCard row;
+                if (!rowsByOrder.TryGetValue(order, out row))
+                {
+                    AddChainError(report, check, "Chain " + pair.Key + " is missing chainOrder " + order + ".");
+                    continue;
+                }
+
+                bool isFinal = order == maxOrder;
+                ValidateChainCard(row, order, isFinal, pair.Key, rowsByOrder, rowsByEventId, isMainlineChain, report, check);
+            }
+
+            report.chainChecks.Add(check);
+        }
+    }
+
+    static void ValidateChainCard(
+        ProgramCard row,
+        int order,
+        bool isFinal,
+        string chainId,
+        Dictionary<int, ProgramCard> rowsByOrder,
+        Dictionary<string, ProgramCard> rowsByEventId,
+        bool isMainlineChain,
+        ProgramValidationReport report,
+        ChainCheck check)
+    {
+        if (order == 1)
+        {
+            if (!string.IsNullOrWhiteSpace(row.Get("nextLeftCardId")) && isMainlineChain)
+            {
+                AddChainError(report, check, "Entry card " + row.EventId + " should leave nextLeftCardId empty so the wrong choice returns to the normal pool.");
+            }
+
+            if (rowsByOrder.Count > 1)
+            {
+                ValidateExpectedChainNext(row, "nextRightCardId", 2, chainId, rowsByOrder, rowsByEventId, report, check);
+            }
+
+            if (isMainlineChain && string.IsNullOrWhiteSpace(row.Get("permanentFlagRight")))
+            {
+                AddChainError(report, check, "Entry card " + row.EventId + " in mainline chain " + chainId + " must set permanentFlagRight.");
+            }
+
+            if (isMainlineChain && !string.IsNullOrWhiteSpace(row.Get("permanentFlagLeft")))
+            {
+                AddChainError(report, check, "Entry card " + row.EventId + " should leave permanentFlagLeft empty.");
+            }
+
+            return;
+        }
+
+        if (!ChainCardValuesAreZero(row))
+        {
+            AddChainError(report, check, "Narrative chain card " + row.EventId + " must keep all value deltas at 0.");
+        }
+
+        if (!string.IsNullOrWhiteSpace(row.Get("permanentFlagLeft")) || !string.IsNullOrWhiteSpace(row.Get("permanentFlagRight")))
+        {
+            AddChainError(report, check, "Narrative chain card " + row.EventId + " should not set permanent flags.");
+        }
+
+        if (isFinal)
+        {
+            if (!string.IsNullOrWhiteSpace(row.Get("nextLeftCardId")) || !string.IsNullOrWhiteSpace(row.Get("nextRightCardId")))
+            {
+                AddChainError(report, check, "Final chain card " + row.EventId + " should leave both next card fields empty.");
+            }
+
+            return;
+        }
+
+        ValidateExpectedChainNext(row, "nextLeftCardId", order + 1, chainId, rowsByOrder, rowsByEventId, report, check);
+        ValidateExpectedChainNext(row, "nextRightCardId", order + 1, chainId, rowsByOrder, rowsByEventId, report, check);
+    }
+
+    static void ValidateExpectedChainNext(
+        ProgramCard row,
+        string fieldName,
+        int expectedOrder,
+        string chainId,
+        Dictionary<int, ProgramCard> rowsByOrder,
+        Dictionary<string, ProgramCard> rowsByEventId,
+        ProgramValidationReport report,
+        ChainCheck check)
+    {
+        ProgramCard expectedRow;
+        rowsByOrder.TryGetValue(expectedOrder, out expectedRow);
+        string targetId = row.Get(fieldName).Trim();
+        if (expectedRow == null)
+        {
+            AddChainError(report, check, "Card " + row.EventId + " expects chainOrder " + expectedOrder + " in chain " + chainId + ", but that card is missing.");
+            return;
+        }
+
+        if (targetId != expectedRow.EventId)
+        {
+            AddChainError(report, check, "Card " + row.EventId + " " + fieldName + " should point to " + expectedRow.EventId + ".");
+            return;
+        }
+
+        ProgramCard targetRow;
+        if (rowsByEventId.TryGetValue(targetId, out targetRow) && targetRow.Get("chainId").Trim() != chainId)
+        {
+            AddChainError(report, check, "Card " + row.EventId + " " + fieldName + " points outside chain " + chainId + ".");
+        }
+    }
+
+    static bool ChainCardValuesAreZero(ProgramCard row)
+    {
+        return Mathf.Approximately(ParseFloat(row.Get("left_bodyMind"), 0f), 0f)
+            && Mathf.Approximately(ParseFloat(row.Get("left_academics"), 0f), 0f)
+            && Mathf.Approximately(ParseFloat(row.Get("left_relationships"), 0f), 0f)
+            && Mathf.Approximately(ParseFloat(row.Get("left_economy"), 0f), 0f)
+            && Mathf.Approximately(ParseFloat(row.Get("right_bodyMind"), 0f), 0f)
+            && Mathf.Approximately(ParseFloat(row.Get("right_academics"), 0f), 0f)
+            && Mathf.Approximately(ParseFloat(row.Get("right_relationships"), 0f), 0f)
+            && Mathf.Approximately(ParseFloat(row.Get("right_economy"), 0f), 0f);
+    }
+
+    static void AddChainError(ProgramValidationReport report, ChainCheck check, string message)
+    {
+        report.errors.Add(message);
+        check.issues.Add(message);
+    }
+
+    static void AddChainWarning(ProgramValidationReport report, ChainCheck check, string message)
+    {
+        report.warnings.Add(message);
+        check.warnings.Add(message);
     }
 
     static void WriteKingsTextCsv(CsvTable table, ImportReport report)
@@ -309,6 +660,7 @@ public static class UniversityCardImportTool
                 ApplyFollowUp(eventScript.Results.resultLeft, row.Get("nextLeftCardId"), prefabsByEventId, row, report);
                 ApplyFollowUp(eventScript.Results.resultRight, row.Get("nextRightCardId"), prefabsByEventId, row, report);
                 ConfigureMainlineHook(root, eventScript, row, prefabsByEventId, report);
+                ConfigureMainlineEventCard(root, row);
 
                 EditorUtility.SetDirty(eventScript);
                 PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
@@ -468,6 +820,33 @@ public static class UniversityCardImportTool
         result.modifiers.followUpDelay = new EventScript.C_intRange { min = 0, max = 0 };
     }
 
+    static void ConfigureMainlineEventCard(GameObject root, ProgramCard row)
+    {
+        string chainId = row.Get("chainId").Trim();
+        UniversityMainlineEventCard marker = root.GetComponent<UniversityMainlineEventCard>();
+        if (string.IsNullOrWhiteSpace(chainId))
+        {
+            if (marker != null)
+            {
+                UnityEngine.Object.DestroyImmediate(marker, true);
+            }
+
+            return;
+        }
+
+        if (marker == null)
+        {
+            marker = root.AddComponent<UniversityMainlineEventCard>();
+        }
+
+        int chainOrder = ParseInt(row.Get("chainOrder"), 0);
+        marker.chainId = chainId;
+        marker.chainOrder = chainOrder;
+        marker.isEntryCard = chainOrder == 1;
+        marker.permanentFlagId = row.Get("permanentFlagRight").Trim();
+        EditorUtility.SetDirty(marker);
+    }
+
     static void ConfigureMainlineHook(GameObject root, EventScript eventScript, ProgramCard row, Dictionary<string, GameObject> prefabsByEventId, ImportReport report)
     {
         string permanentFlagLeft = row.Get("permanentFlagLeft");
@@ -608,8 +987,21 @@ public static class UniversityCardImportTool
         controller.countGameOverEvents = true;
         controller.trueEndingStartCard = ResolveTrueEndingStartCard(table, prefabsByEventId, report);
 
+        UniversityMainlineEventScheduler scheduler = cardStack.GetComponent<UniversityMainlineEventScheduler>();
+        if (scheduler == null)
+        {
+            scheduler = cardStack.gameObject.AddComponent<UniversityMainlineEventScheduler>();
+        }
+
+        scheduler.protectedNormalDraws = 10;
+        scheduler.initialChance = 0.15f;
+        scheduler.chanceIncreasePerMiss = 0.15f;
+        scheduler.guaranteedAfterMisses = 6;
+        scheduler.debugLog = false;
+
         EditorUtility.SetDirty(cardStack);
         EditorUtility.SetDirty(controller);
+        EditorUtility.SetDirty(scheduler);
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
 
@@ -767,6 +1159,14 @@ public static class UniversityCardImportTool
         AssetDatabase.Refresh();
     }
 
+    static void WriteValidationReport(ProgramValidationReport report)
+    {
+        string absolutePath = ToAbsoluteAssetPath(ValidationReportPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(absolutePath));
+        File.WriteAllText(absolutePath, JsonUtility.ToJson(report, true), new UTF8Encoding(false));
+        AssetDatabase.Refresh();
+    }
+
     static string GetPrefabPath(ProgramCard row)
     {
         return OutputFolderPath + "/" + row.GroupName + "/" + row.CardName + ".prefab";
@@ -866,9 +1266,36 @@ public static class UniversityCardImportTool
         public int sceneGroups;
         public int sceneCards;
         public string trueEndingStartCard;
+        public ProgramValidationReport tableValidation;
         public List<string> errors = new List<string>();
         public List<string> warnings = new List<string>();
         public List<CardCheck> cards = new List<CardCheck>();
+    }
+
+    [Serializable]
+    public class ProgramValidationReport
+    {
+        public bool success;
+        public string generatedAt;
+        public string sourceCsv;
+        public int rowCount;
+        public int eventChainCount;
+        public int eventChainCards;
+        public int eventChainEntryCards;
+        public List<string> errors = new List<string>();
+        public List<string> warnings = new List<string>();
+        public List<ChainCheck> chainChecks = new List<ChainCheck>();
+    }
+
+    [Serializable]
+    public class ChainCheck
+    {
+        public string chainId;
+        public int cardCount;
+        public string entryEventId;
+        public string orderRange;
+        public List<string> issues = new List<string>();
+        public List<string> warnings = new List<string>();
     }
 
     [Serializable]

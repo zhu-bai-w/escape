@@ -1,42 +1,45 @@
 {
-  "generatedAt": "2026-06-23 21:22:13",
-  "source": "E:/escape/Assets/UniversitySimulator/Data/cards_v1_program.csv",
-  "rowCount": 48,
-  "cardSet": "final48_daily_main_pool",
-  "allDailyPool": true,
-  "groupName": "Main",
-  "poolId": "main",
-  "textImportRows": 48,
-  "requiredColumnsPresent": true,
-  "valueStats": {
-    "totals": {
-      "bodyMind": 0,
-      "academics": 0,
-      "relationships": 0,
-      "economy": 0
-    },
-    "nonzero": {
-      "academics": 82,
-      "relationships": 73,
-      "economy": 78,
-      "bodyMind": 87
-    },
-    "positive": {
-      "relationships": 36,
-      "academics": 41,
-      "economy": 41,
-      "bodyMind": 42
-    },
-    "negative": {
-      "academics": 41,
-      "economy": 37,
-      "bodyMind": 45,
-      "relationships": 37
-    }
-  },
-  "errors": [],
-  "warnings": [
-    "当前版本为纯日常卡池，已清空条件触发和真结局链字段。",
-    "如需刷新 Unity Prefab/场景，请在 Unity 中运行 University Simulator/Cards/Import Program Cards And Wire Scene。"
-  ]
+    "success": true,
+    "generatedAt": "2026-06-26 17:07:25",
+    "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
+    "rowCount": 62,
+    "eventChainCount": 4,
+    "eventChainCards": 16,
+    "eventChainEntryCards": 4,
+    "errors": [],
+    "warnings": [],
+    "chainChecks": [
+        {
+            "chainId": "MAIN_ACADEMICS",
+            "cardCount": 4,
+            "entryEventId": "S200",
+            "orderRange": "1-4",
+            "issues": [],
+            "warnings": []
+        },
+        {
+            "chainId": "MAIN_BODY_MIND",
+            "cardCount": 4,
+            "entryEventId": "S300",
+            "orderRange": "1-4",
+            "issues": [],
+            "warnings": []
+        },
+        {
+            "chainId": "MAIN_ECONOMY",
+            "cardCount": 4,
+            "entryEventId": "S400",
+            "orderRange": "1-4",
+            "issues": [],
+            "warnings": []
+        },
+        {
+            "chainId": "MAIN_SOCIAL",
+            "cardCount": 4,
+            "entryEventId": "S100",
+            "orderRange": "1-4",
+            "issues": [],
+            "warnings": []
+        }
+    ]
 }

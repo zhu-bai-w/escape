@@ -51,10 +51,6 @@ i have waited a long time for this!
 i will try my best to be a good king
 
 You became King. Everyone was excited to see how you will rule the kingdom.
-Advertisement
-Want to show a quick video to increase all stats?
-Sure!
-No :(
 Army
 The army wants to hold a big parade?
 Sure
@@ -204,7 +200,6 @@ You named him {dict=Child}
 Your son {dict=Child} wants to play with the crossbow?
 Sure, what should go wrong??
 Better not...
-The people are getting frustrated! Watch ad to make them happy?
 WAR LOST!
 Your army was weaker than the enemy army...
 but lost it!

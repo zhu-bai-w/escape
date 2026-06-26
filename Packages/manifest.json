@@ -1,11 +1,9 @@
 {
   "dependencies": {
-    "com.unity.ads": "4.4.2",
     "com.unity.analytics": "3.8.1",
     "com.unity.collab-proxy": "2.12.4",
     "com.besty.unity-skills": "https://github.com/Besty0728/Unity-Skills.git?path=/SkillsForUnity",
     "com.unity.feature.development": "1.0.1",
-    "com.unity.purchasing": "4.11.0",
     "com.unity.textmeshpro": "3.0.7",
     "com.unity.timeline": "1.7.7",
     "com.unity.ugui": "1.0.0",

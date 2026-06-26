@@ -3,8 +3,8 @@ using UnityEngine;
 
 public static class UniversityTrueEndingProgress
 {
-    public const int DefaultRequiredLifetimeDays = 365;
-    public const int DefaultRequiredGameOvers = 51;
+    public const int DefaultRequiredLifetimeDays = 0;
+    public const int DefaultRequiredGameOvers = 0;
 
     public static event System.Action<int> OnCurrentRunDaysChanged;
 
@@ -20,11 +20,7 @@ public static class UniversityTrueEndingProgress
         "MAIN_01",
         "MAIN_02",
         "MAIN_03",
-        "MAIN_04",
-        "MAIN_05",
-        "MAIN_06",
-        "MAIN_07",
-        "MAIN_08"
+        "MAIN_04"
     };
 
     public static int LifetimeDays

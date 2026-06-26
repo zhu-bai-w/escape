@@ -533,6 +533,9 @@ public class CardStack :  TranslatableContent {
 	[Tooltip("Defines the parent of a new spawned card.")]
 	public Transform CardParent;
 
+	[Tooltip("Audio source played when a new card is spawned.")]
+	public AudioSource drawCardAudioSource;
+
 	[Tooltip("Until which distance should the card be moved out of the screen, until a new card is spawned?")]
 	public float moveOutMax = 20f;
 	IEnumerator moveCardOut(E_moveOutDirection direction){
@@ -713,8 +716,16 @@ public class CardStack :  TranslatableContent {
 		spawnedCard.transform.SetParent (CardParent,false);
 		spawnedCard.transform.localScale = new Vector3 (1f, 1f, 1f);
 		actMoveDistance = Vector3.zero;
+		playDrawCardSound();
 
 		return spawnedCard;
+	}
+
+	void playDrawCardSound()
+	{
+		if (Application.isPlaying == true && drawCardAudioSource != null) {
+			drawCardAudioSource.Play();
+		}
 	}
 
 

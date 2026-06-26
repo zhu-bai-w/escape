@@ -136,7 +136,7 @@ PrefabInstance:
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: Results.resultRight.modifiers.valueChanges.Array.data[2].valueAdd
-      value: -5
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 114734209699886960, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
@@ -202,7 +202,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3ce40ebb733f5604fba678e06ff17d61, type: 3}
+      objectReference: {fileID: 21300000, guid: 3ce40ebb733f5604fba678e06ff17d61,
+        type: 3}
     - target: {fileID: 224275568673289112, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
       propertyPath: m_Pivot.x
