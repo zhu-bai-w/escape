@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Kings/Game.unity
+    path: Assets/UniversitySimulator/Scenes/Game.unity
     guid: 2834e451a27ad414fa9c58c28df81dfe
-  - enabled: 0
-    path: Assets/Kings/theMayor/Mayor_Game.unity
-    guid: 19e643b694641ca4c8a017815efca19d
   m_configObjects: {}

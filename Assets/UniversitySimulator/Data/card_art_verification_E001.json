@@ -14,5 +14,5 @@
   "matchesExpectedSprite": true,
   "imageCount": 3,
   "error": "",
-  "images": [{"name": "US_E001(Clone)","path": "GameCanvas/Cards/US_E001(Clone)","spriteName": "card","spritePath": "Assets/Kings/graphics/card.png","activeInHierarchy":true},{"name": "Icon","path": "GameCanvas/Cards/US_E001(Clone)/Icon","spriteName": "card-E001","spritePath": "Assets/UniversitySimulator/Art/cards/card-E001.png","activeInHierarchy":true},{"name": "AnswersBack","path": "GameCanvas/Cards/US_E001(Clone)/AnswersBack","spriteName": "card","spritePath": "Assets/Kings/graphics/card.png","activeInHierarchy":true}]
+  "images": [{"name": "US_E001(Clone)","path": "GameCanvas/Cards/US_E001(Clone)","spriteName": "card","spritePath": "Assets/UniversitySimulator/Art/LegacyKingsUI/card.png","activeInHierarchy":true},{"name": "Icon","path": "GameCanvas/Cards/US_E001(Clone)/Icon","spriteName": "card-E001","spritePath": "Assets/UniversitySimulator/Art/cards/card-E001.png","activeInHierarchy":true},{"name": "AnswersBack","path": "GameCanvas/Cards/US_E001(Clone)/AnswersBack","spriteName": "card","spritePath": "Assets/UniversitySimulator/Art/LegacyKingsUI/card.png","activeInHierarchy":true}]
 }

@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 
 public class UniversitySimulatorRegressionTests
 {
     const string ProgramCsvPath = "Assets/UniversitySimulator/Data/cards_v1_program.csv";
+    const string CardsFolderPath = "Assets/UniversitySimulator/Art/cards";
+    const string PrefabRootPath = "Assets/UniversitySimulator/Prefabs/Cards";
 
     [SetUp]
     public void SetUp()
@@ -175,6 +178,77 @@ public class UniversitySimulatorRegressionTests
         }
     }
 
+    [Test]
+    public void ExistingProgramCardArtIsBoundToMainPrefabs()
+    {
+        foreach (Dictionary<string, string> row in ReadCsvRows())
+        {
+            string eventId = row["eventId"];
+            if (!IsStandardCardArtEventId(eventId))
+            {
+                continue;
+            }
+
+            string expectedArtPath = CardsFolderPath + "/card-" + eventId + ".png";
+            if (!File.Exists(ToAbsoluteAssetPath(expectedArtPath)))
+            {
+                continue;
+            }
+
+            Sprite expectedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(expectedArtPath);
+            Assert.IsNotNull(expectedSprite, "Expected art is not importable as a sprite: " + expectedArtPath);
+
+            string prefabPath = PrefabRootPath + "/" + row["groupName"] + "/" + row["cardName"] + ".prefab";
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            Assert.IsNotNull(prefab, "Missing prefab for card art binding: " + prefabPath);
+
+            CardStyle cardStyle = prefab.GetComponent<CardStyle>();
+            Assert.IsNotNull(cardStyle, "Missing CardStyle on prefab: " + prefabPath);
+            Assert.IsTrue(cardStyle.usePrefabIconOverride, "Card art override is disabled: " + eventId);
+            Assert.IsNotNull(cardStyle.iconImage, "Missing icon image on prefab: " + eventId);
+            Assert.IsNotNull(cardStyle.iconImage.sprite, "Missing bound icon sprite: " + eventId);
+            Assert.AreEqual(expectedArtPath, AssetDatabase.GetAssetPath(cardStyle.iconImage.sprite), "Card art sprite mismatch: " + eventId);
+            Assert.IsTrue(IsUntintedIconColor(cardStyle.iconImage.color), "Card art icon tint is not removed: " + eventId);
+        }
+    }
+
+    [Test]
+    public void ProgramCardArtCoverageOnlyHasKnownOpenItems()
+    {
+        HashSet<string> expectedIds = new HashSet<string>();
+        foreach (Dictionary<string, string> row in ReadCsvRows())
+        {
+            if (IsStandardCardArtEventId(row["eventId"]))
+            {
+                expectedIds.Add(row["eventId"]);
+            }
+        }
+
+        HashSet<string> artIds = new HashSet<string>();
+        foreach (string path in Directory.GetFiles(CardsFolderPath, "card-E*.png", SearchOption.TopDirectoryOnly))
+        {
+            artIds.Add(Path.GetFileNameWithoutExtension(path).Substring("card-".Length));
+        }
+
+        HashSet<string> missing = new HashSet<string>(expectedIds);
+        missing.ExceptWith(artIds);
+        HashSet<string> extra = new HashSet<string>(artIds);
+        extra.ExceptWith(expectedIds);
+
+        CollectionAssert.IsSubsetOf(missing, new[] { "E008", "E012" }, "Unexpected missing card art IDs.");
+        CollectionAssert.IsSubsetOf(extra, new[] { "E036", "E053" }, "Unexpected extra card art IDs.");
+    }
+
+    [Test]
+    public void UniversityCardPrefabsDoNotContainCollapsedYamlModificationEntries()
+    {
+        foreach (string path in Directory.GetFiles(PrefabRootPath, "*.prefab", SearchOption.AllDirectories))
+        {
+            string text = File.ReadAllText(path);
+            Assert.IsFalse(text.Contains("objectReference: {fileID: 0}    - target"), "Collapsed YAML modification entry found in " + path);
+        }
+    }
+
     static EventScript.result EmptyResult()
     {
         return new EventScript.result
@@ -201,12 +275,27 @@ public class UniversitySimulatorRegressionTests
 
     static Dictionary<string, string> FindCsvRow(string eventId)
     {
+        foreach (Dictionary<string, string> row in ReadCsvRows())
+        {
+            if (row["eventId"] == eventId)
+            {
+                return row;
+            }
+        }
+
+        Assert.Fail("CSV row not found: " + eventId);
+        return null;
+    }
+
+    static List<Dictionary<string, string>> ReadCsvRows()
+    {
         string[] lines = File.ReadAllLines(ProgramCsvPath);
         string[] headers = SplitCsvLine(lines[0]);
+        List<Dictionary<string, string>> rows = new List<Dictionary<string, string>>();
         for (int i = 1; i < lines.Length; i++)
         {
             string[] values = SplitCsvLine(lines[i]);
-            if (values.Length == 0 || values[0] != eventId)
+            if (values.Length == 0 || string.IsNullOrWhiteSpace(values[0]))
             {
                 continue;
             }
@@ -217,11 +306,39 @@ public class UniversitySimulatorRegressionTests
                 row[headers[j]] = j < values.Length ? values[j] : "";
             }
 
-            return row;
+            rows.Add(row);
         }
 
-        Assert.Fail("CSV row not found: " + eventId);
-        return null;
+        return rows;
+    }
+
+    static bool IsStandardCardArtEventId(string eventId)
+    {
+        if (string.IsNullOrWhiteSpace(eventId) || eventId.Length != 4 || eventId[0] != 'E')
+        {
+            return false;
+        }
+
+        for (int i = 1; i < eventId.Length; i++)
+        {
+            if (!char.IsDigit(eventId[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static bool IsUntintedIconColor(Color color)
+    {
+        return color.a > 0.99f && color.r > 0.99f && color.g > 0.99f && color.b > 0.99f;
+    }
+
+    static string ToAbsoluteAssetPath(string assetPath)
+    {
+        string relative = assetPath.StartsWith("Assets/") ? assetPath.Substring("Assets/".Length) : assetPath;
+        return Path.Combine(Application.dataPath, relative);
     }
 
     static string[] SplitCsvLine(string line)

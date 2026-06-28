@@ -14,11 +14,13 @@ public static class UniversityCardImportTool
 {
     const string ProgramCsvPath = "Assets/UniversitySimulator/Data/cards_v1_program.csv";
     const string KingsTextCsvPath = "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv";
-    const string StyleListPath = "Assets/Kings/cards/_templates/CardStyle_List.asset";
+    const string StyleListPath = "Assets/UniversitySimulator/Data/CardStyles/CardStyle_List.asset";
     const string OutputFolderPath = "Assets/UniversitySimulator/Prefabs/Cards";
+    const string CardArtFolderPath = "Assets/UniversitySimulator/Art/cards";
     const string ReportPath = "Assets/UniversitySimulator/Data/cards_v1_kings_import_report.json";
     const string ValidationReportPath = "Assets/UniversitySimulator/Data/cards_v1_program_validation.json";
-    const string TargetScenePath = "Assets/Kings/Game.unity";
+    const string TargetScenePath = "Assets/UniversitySimulator/Scenes/Game.unity";
+    static readonly Color CardArtDisplayColor = Color.white;
 
     static readonly Dictionary<string, valueDefinitions.values> ValueMap = new Dictionary<string, valueDefinitions.values>
     {
@@ -662,6 +664,7 @@ public static class UniversityCardImportTool
                 ConfigureMainlineHook(root, eventScript, row, prefabsByEventId, report);
                 ConfigureMainlineEventCard(root, row);
                 ConfigureTrueEndingReturn(root, eventScript, row, report);
+                ConfigureCardArt(root, row, report);
 
                 EditorUtility.SetDirty(eventScript);
                 PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
@@ -672,6 +675,49 @@ public static class UniversityCardImportTool
                 PrefabUtility.UnloadPrefabContents(root);
             }
         }
+    }
+
+    static void ConfigureCardArt(GameObject root, ProgramCard row, ImportReport report)
+    {
+        string expectedArtPath = GetExpectedCardArtPath(row);
+        if (string.IsNullOrWhiteSpace(expectedArtPath))
+        {
+            return;
+        }
+
+        report.cardArtExpected++;
+        CardStyle cardStyle = root.GetComponent<CardStyle>();
+        if (cardStyle == null)
+        {
+            report.errors.Add("Generated prefab is missing CardStyle for card art binding: " + GetPrefabPath(row));
+            return;
+        }
+
+        cardStyle.usePrefabIconOverride = true;
+        Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(expectedArtPath);
+        if (cardStyle.iconImage == null)
+        {
+            report.errors.Add("Generated prefab is missing iconImage for card art binding: " + GetPrefabPath(row));
+            EditorUtility.SetDirty(cardStyle);
+            return;
+        }
+
+        cardStyle.iconImage.color = CardArtDisplayColor;
+        cardStyle.iconImage.preserveAspect = true;
+        if (sprite == null)
+        {
+            cardStyle.iconImage.sprite = null;
+            report.cardArtMissing++;
+            report.warnings.Add("Card " + row.EventId + " is missing expected card art: " + expectedArtPath);
+        }
+        else
+        {
+            cardStyle.iconImage.sprite = sprite;
+            report.cardArtBound++;
+        }
+
+        EditorUtility.SetDirty(cardStyle.iconImage);
+        EditorUtility.SetDirty(cardStyle);
     }
 
     static void ConfigureConditionExpression(GameObject root, ProgramCard row, ImportReport report)
@@ -1122,6 +1168,7 @@ public static class UniversityCardImportTool
             check.hasMainlineHook = prefab.GetComponent<UniversityMainlineCardHook>() != null;
             check.hasConditionExpression = prefab.GetComponent<UniversityConditionExpression>() != null;
             check.hasTrueEndingReturn = prefab.GetComponent<UniversityTrueEndingReturnToNewGame>() != null;
+            check.cardArtExpectedPath = GetExpectedCardArtPath(row);
 
             if (eventScript == null)
             {
@@ -1148,9 +1195,14 @@ public static class UniversityCardImportTool
             {
                 check.issues.Add("Missing CardStyle.");
             }
-            else if (cardStyle.GetStyleName() != row.StyleName)
+            else
             {
-                check.issues.Add("Style mismatch. Expected '" + row.StyleName + "', got '" + cardStyle.GetStyleName() + "'.");
+                if (cardStyle.GetStyleName() != row.StyleName)
+                {
+                    check.issues.Add("Style mismatch. Expected '" + row.StyleName + "', got '" + cardStyle.GetStyleName() + "'.");
+                }
+
+                VerifyCardArtBinding(row, cardStyle, check);
             }
 
             if (!styleList.HasStyle(row.StyleName))
@@ -1178,6 +1230,76 @@ public static class UniversityCardImportTool
         }
 
         report.generatedPrefabs = report.cards.FindAll(card => card.exists).Count;
+        VerifyExtraCardArt(table, report);
+    }
+
+    static void VerifyCardArtBinding(ProgramCard row, CardStyle cardStyle, CardCheck check)
+    {
+        if (string.IsNullOrWhiteSpace(check.cardArtExpectedPath))
+        {
+            return;
+        }
+
+        Sprite expectedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(check.cardArtExpectedPath);
+        check.cardArtLoaded = expectedSprite != null;
+        check.cardArtUsesPrefabOverride = cardStyle.usePrefabIconOverride;
+        check.cardArtIconImageFound = cardStyle.iconImage != null;
+        if (cardStyle.iconImage != null)
+        {
+            check.cardArtActualPath = cardStyle.iconImage.sprite != null ? AssetDatabase.GetAssetPath(cardStyle.iconImage.sprite) : "";
+            check.cardArtDisplayColor = "#" + ColorUtility.ToHtmlStringRGBA(cardStyle.iconImage.color);
+            check.cardArtDisplayColorUntinted = IsUntintedCardArtColor(cardStyle.iconImage.color);
+        }
+
+        if (expectedSprite == null)
+        {
+            check.cardArtIssue = "Missing expected card art.";
+            return;
+        }
+
+        check.cardArtMatches = cardStyle.usePrefabIconOverride && check.cardArtActualPath == check.cardArtExpectedPath;
+        if (!check.cardArtMatches)
+        {
+            check.cardArtIssue = "Card art sprite mismatch.";
+            check.issues.Add(check.cardArtIssue);
+        }
+
+        if (!check.cardArtDisplayColorUntinted)
+        {
+            string message = "Card art display color is not untinted white.";
+            check.cardArtIssue = string.IsNullOrEmpty(check.cardArtIssue) ? message : check.cardArtIssue + " " + message;
+            check.issues.Add(message);
+        }
+    }
+
+    static void VerifyExtraCardArt(CsvTable table, ImportReport report)
+    {
+        HashSet<string> expectedArtPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (ProgramCard row in table.rows)
+        {
+            string expectedArtPath = GetExpectedCardArtPath(row);
+            if (!string.IsNullOrWhiteSpace(expectedArtPath))
+            {
+                expectedArtPaths.Add(expectedArtPath);
+            }
+        }
+
+        if (!Directory.Exists(CardArtFolderPath))
+        {
+            return;
+        }
+
+        string[] cardArtFiles = Directory.GetFiles(CardArtFolderPath, "card-E*.png", SearchOption.TopDirectoryOnly);
+        Array.Sort(cardArtFiles, StringComparer.OrdinalIgnoreCase);
+        foreach (string rawPath in cardArtFiles)
+        {
+            string artPath = rawPath.Replace('\\', '/');
+            if (!expectedArtPaths.Contains(artPath))
+            {
+                report.cardArtExtra++;
+                report.extraCardArtPaths.Add(artPath);
+            }
+        }
     }
 
     static void CompareText(string expected, string actual, string field, CardCheck check)
@@ -1186,6 +1308,40 @@ public static class UniversityCardImportTool
         {
             check.issues.Add(field + " mismatch.");
         }
+    }
+
+    static string GetExpectedCardArtPath(ProgramCard row)
+    {
+        string explicitArtPath = row.Get("artPath").Trim().Replace('\\', '/');
+        if (!string.IsNullOrWhiteSpace(explicitArtPath))
+        {
+            return explicitArtPath;
+        }
+
+        return IsStandardCardArtEventId(row.EventId) ? CardArtFolderPath + "/card-" + row.EventId + ".png" : "";
+    }
+
+    static bool IsStandardCardArtEventId(string eventId)
+    {
+        if (string.IsNullOrWhiteSpace(eventId) || eventId.Length != 4 || eventId[0] != 'E')
+        {
+            return false;
+        }
+
+        for (int i = 1; i < eventId.Length; i++)
+        {
+            if (!char.IsDigit(eventId[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static bool IsUntintedCardArtColor(Color color)
+    {
+        return color.a > 0.99f && color.r > 0.99f && color.g > 0.99f && color.b > 0.99f;
     }
 
     static void WriteReport(ImportReport report)
@@ -1301,12 +1457,17 @@ public static class UniversityCardImportTool
         public int mainlineHooks;
         public int conditionExpressionGates;
         public int trueEndingReturnCards;
+        public int cardArtExpected;
+        public int cardArtBound;
+        public int cardArtMissing;
+        public int cardArtExtra;
         public int sceneGroups;
         public int sceneCards;
         public string trueEndingStartCard;
         public ProgramValidationReport tableValidation;
         public List<string> errors = new List<string>();
         public List<string> warnings = new List<string>();
+        public List<string> extraCardArtPaths = new List<string>();
         public List<CardCheck> cards = new List<CardCheck>();
     }
 
@@ -1350,6 +1511,15 @@ public static class UniversityCardImportTool
         public bool hasMainlineHook;
         public bool hasConditionExpression;
         public bool hasTrueEndingReturn;
+        public string cardArtExpectedPath;
+        public string cardArtActualPath;
+        public string cardArtDisplayColor;
+        public string cardArtIssue;
+        public bool cardArtLoaded;
+        public bool cardArtUsesPrefabOverride;
+        public bool cardArtIconImageFound;
+        public bool cardArtMatches;
+        public bool cardArtDisplayColorUntinted;
         public bool textMatches;
         public List<string> issues = new List<string>();
     }

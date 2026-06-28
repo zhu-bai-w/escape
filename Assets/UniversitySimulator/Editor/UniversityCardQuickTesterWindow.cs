@@ -10,7 +10,7 @@ public class UniversityCardQuickTesterWindow : EditorWindow
     static readonly string[] CardPrefabFolders =
     {
         "Assets/UniversitySimulator/Prefabs/Cards",
-        "Assets/Kings/cards"
+        "Assets/UniversitySimulator/Prefabs/CardTemplates"
     };
 
     readonly List<CardEntry> cards = new List<CardEntry>();
