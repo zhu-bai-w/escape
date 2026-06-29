@@ -304,7 +304,7 @@ public class UniversitySimulatorRegressionTests
     }
 
     [Test]
-    public void StartMenuSceneFollowUpChainReturnsToDrawableCards()
+    public void StartMenuSceneSkipsQuestCardAndReturnsToDrawableCards()
     {
         string previousScenePath = EditorSceneManager.GetActiveScene().path;
         try
@@ -314,8 +314,14 @@ public class UniversitySimulatorRegressionTests
 
             CardStack stack = Object.FindObjectOfType<CardStack>();
             valueManager.instance = Object.FindObjectOfType<valueManager>();
+            GameStateManager gameStateManager = Object.FindObjectOfType<GameStateManager>();
+            Quests quests = Object.FindObjectOfType<Quests>();
             Assert.IsNotNull(stack, "Game scene is missing CardStack.");
             Assert.IsNotNull(valueManager.instance, "Game scene is missing valueManager.");
+            Assert.IsNotNull(gameStateManager, "Game scene is missing GameStateManager.");
+            Assert.IsNotNull(quests, "Game scene is missing the retained Quests component.");
+            Assert.IsFalse(quests.featureEnabled, "Quest feature should be isolated in the current scene.");
+            AssertSceneNewGameDoesNotAutoFillQuests(gameStateManager);
 
             typeof(CardStack)
                 .GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic)
@@ -327,13 +333,7 @@ public class UniversitySimulatorRegressionTests
 
             EventScript mainMenuEvent = stack.spawnedCard.GetComponent<EventScript>();
             mainMenuEvent.onLeftSwipe();
-            Assert.IsNotNull(stack.followUpCard);
-            Assert.IsTrue(stack.followUpCard.name.StartsWith("_StartCard"));
-
-            InvokeNewCard(stack);
-            Assert.IsNotNull(stack.spawnedCard);
-            Assert.IsTrue(stack.spawnedCard.name.StartsWith("_StartCard"));
-            Assert.IsNull(stack.followUpCard);
+            Assert.IsNull(stack.followUpCard, "MainMenuCard should not queue the deferred quest/start placeholder card.");
 
             InvokeNewCard(stack);
             Assert.IsNotNull(stack.spawnedCard);
@@ -348,6 +348,16 @@ public class UniversitySimulatorRegressionTests
             {
                 EditorSceneManager.OpenScene(previousScenePath);
             }
+        }
+    }
+
+    static void AssertSceneNewGameDoesNotAutoFillQuests(GameStateManager gameStateManager)
+    {
+        Assert.IsNotNull(gameStateManager.OnNewGame);
+        int count = gameStateManager.OnNewGame.GetPersistentEventCount();
+        for (int i = 0; i < count; i++)
+        {
+            Assert.AreNotEqual("FillActiveQuests", gameStateManager.OnNewGame.GetPersistentMethodName(i));
         }
     }
 

@@ -31,6 +31,8 @@ public class Quests : TranslatableContent
     public System.Action OnQuestbookChangeAction;   //Callback possibility for other scripts to get informed if something changes.
     bool loaded = false;                            //Internally information, if loading occured.
 
+    [Tooltip("Disable this while the project-specific quest/task card flow is not implemented. The legacy quest assets stay in the project.")]
+    public bool featureEnabled = true;
     [Tooltip("Please specify the maximal number of active quests.")]
     public int maxNrOfActiveQuests = 3;
     [Tooltip("Check if number of active quests shall be autmatically refilled to maximum. The internal check occures if something changes.")]
@@ -39,12 +41,38 @@ public class Quests : TranslatableContent
     private void Awake()
     {
         instance = this;
+        if (questBook == null)
+        {
+            questBook = new C_Quests();
+        }
+        if (questBook.quests == null)
+        {
+            questBook.quests = new List<C_QuestState>();
+        }
+        if (questBook.activeQuests == null)
+        {
+            questBook.activeQuests = new List<C_QuestState>();
+        }
+
+        if (!featureEnabled)
+        {
+            catalog.Clear();
+            questBook.activeQuests.Clear();
+            loaded = true;
+            return;
+        }
+
         loadCatalog();
         load();
     }
 
     private void Start()
     {
+        if (!featureEnabled)
+        {
+            return;
+        }
+
         TranslationManager.instance.registerTranslateableContentScript(this);
         if (CardStack.instance != null)
         {
@@ -253,6 +281,11 @@ public class Quests : TranslatableContent
     /// </summary>
     public void FillActiveQuests()
     {
+        if (!featureEnabled)
+        {
+            return;
+        }
+
         while (GetNrOfActiveQuests() < maxNrOfActiveQuests)
         {
             if (SetRandomQuestActiveGetCandidateCount() <= 0)
@@ -534,7 +567,7 @@ public class Quests : TranslatableContent
 
     void TryAutomaticRefill()
     {
-        if (autoRefillActiveQuests == true)
+        if (featureEnabled == true && autoRefillActiveQuests == true)
         {
             if (GetNrOfActiveQuests() < maxNrOfActiveQuests)
             {
@@ -654,4 +687,3 @@ public class Quests : TranslatableContent
         return terms;
     }
 }
-

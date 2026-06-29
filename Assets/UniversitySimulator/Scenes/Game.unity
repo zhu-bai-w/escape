@@ -19069,8 +19069,7 @@ MonoBehaviour:
       modifiers:
         valueChanges: []
         extras: []
-        followUpCard: {fileID: 1818390954452748, guid: dcbac29ed1ccf8548bc2198cb3f1b0bc,
-          type: 3}
+        followUpCard: {fileID: 0}
         followUpDelay:
           min: 0
           max: 0
@@ -19150,8 +19149,7 @@ MonoBehaviour:
       modifiers:
         valueChanges: []
         extras: []
-        followUpCard: {fileID: 1818390954452748, guid: dcbac29ed1ccf8548bc2198cb3f1b0bc,
-          type: 3}
+        followUpCard: {fileID: 0}
         followUpDelay:
           min: 0
           max: 0
@@ -34339,6 +34337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   verboseDebug: 0
+  featureEnabled: 0
   maxNrOfActiveQuests: 0
   autoRefillActiveQuests: 0
   questFullfillmentPopup:
@@ -41209,18 +41208,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1760999220}
         m_TargetAssemblyTypeName: 
         m_MethodName: setRandomValues
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1097241871}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: FillActiveQuests
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

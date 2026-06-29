@@ -56,6 +56,12 @@ public class Quest_UIList : MonoBehaviour
         }
 
         quests = Quests.instance;
+        if (quests == null || !quests.featureEnabled)
+        {
+            enabled = false;
+            return;
+        }
+
         quests.OnQuestbookChangeAction += OnQuestboockChanged;   //Callback to get informed if something changes.
         callbackSet = true;
 
@@ -82,6 +88,11 @@ public class Quest_UIList : MonoBehaviour
     //Actualization of the questbook for the UI
     public void ActualizeUIList()
     {
+        if (quests == null || !quests.featureEnabled)
+        {
+            return;
+        }
+
         //1. clear
         foreach(GameObject go in listElements)
         {
