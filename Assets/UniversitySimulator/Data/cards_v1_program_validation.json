@@ -1,8 +1,8 @@
 {
     "success": true,
-    "generatedAt": "2026-06-26 21:23:31",
+    "generatedAt": "2026-06-29 11:44:09",
     "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
-    "rowCount": 63,
+    "rowCount": 71,
     "eventChainCount": 5,
     "eventChainCards": 17,
     "eventChainEntryCards": 5,

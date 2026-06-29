@@ -175,8 +175,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 0}
   m_Color: {r: 0.2627451, g: 0.23529413, b: 0.21176472, a: 1}
   m_RaycastTarget: 1
@@ -11882,6 +11882,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -12349,6 +12352,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -12956,7 +12962,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 42
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -19967,6 +19973,9 @@ MonoBehaviour:
     randomMin: 1
     randomMax: 100
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -20650,6 +20659,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 1
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -20907,6 +20919,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 5
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -23010,6 +23025,9 @@ MonoBehaviour:
     randomMin: 80
     randomMax: 80
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -23117,6 +23135,9 @@ MonoBehaviour:
     randomMin: 1
     randomMax: 100
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -23279,6 +23300,9 @@ MonoBehaviour:
     randomMin: 80
     randomMax: 80
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -23497,6 +23521,9 @@ MonoBehaviour:
     randomMin: 1
     randomMax: 100
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -24597,6 +24624,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -25230,6 +25260,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 5
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -25827,6 +25860,9 @@ MonoBehaviour:
     randomMin: 80
     randomMax: 80
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -31247,6 +31283,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -31862,6 +31901,9 @@ MonoBehaviour:
     randomMin: 80
     randomMax: 80
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -31969,6 +32011,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 1
   events:
     OnIncrease:
@@ -32333,6 +32378,9 @@ MonoBehaviour:
     randomMin: 1
     randomMax: 100
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -32570,6 +32618,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -39806,6 +39857,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 2
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -40614,6 +40668,7 @@ GameObject:
   - component: {fileID: 1179489445}
   - component: {fileID: 1179489447}
   - component: {fileID: 1179489448}
+  - component: {fileID: 1179489449}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -40998,6 +41053,17 @@ MonoBehaviour:
     - {fileID: 8068730067539490891, guid: f4e36ede1a611d64a8ed014eca5273b2, type: 3}
     - {fileID: 2601019138746741785, guid: 94a7f307991eedb4b8bb69409e83abf9, type: 3}
     - {fileID: 819277483401644788, guid: ba61d6b8de2b152438a0d8603a282133, type: 3}
+  - groupName: ValueEnding
+    subStackCondition: []
+    groupCards:
+    - {fileID: 8782259687516161215, guid: d6a239f0c66ce0d47a348c93bb8253a4, type: 3}
+    - {fileID: 7983867563616330945, guid: 7e84b140d5047c24e81baec5d8a788cf, type: 3}
+    - {fileID: 7808325088093487620, guid: 67981526e78f88846980ed4ccf07eef5, type: 3}
+    - {fileID: 5019540008930729435, guid: 1bd7a48e0a7d4f44889df7d410041c0c, type: 3}
+    - {fileID: 3233221730859507979, guid: d6aebc9a384805b4ca4e278e127af926, type: 3}
+    - {fileID: 3834719880321994045, guid: 02e0f1c3dbe4d20469248dba04f051aa, type: 3}
+    - {fileID: 3329780212983124385, guid: 74801429da9b73a4a854f5183a768a03, type: 3}
+    - {fileID: 8028225054446004222, guid: e6d0f8e80fbbdfc4596605bd92f51d65, type: 3}
   - groupName: TrueEnding
     subStackCondition: []
     groupCards:
@@ -41313,6 +41379,61 @@ MonoBehaviour:
   initialChance: 0.15
   chanceIncreasePerMiss: 0.15
   guaranteedAfterMisses: 6
+  debugLog: 0
+--- !u!114 &1179489449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179489435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8909ff68e6608884e9ac1c860f3f2ce0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  rules:
+  - eventId: END01
+    valueType: 5
+    triggerOnMaximum: 1
+    endingCard: {fileID: 8782259687516161215, guid: d6a239f0c66ce0d47a348c93bb8253a4,
+      type: 3}
+  - eventId: END02
+    valueType: 5
+    triggerOnMaximum: 0
+    endingCard: {fileID: 7983867563616330945, guid: 7e84b140d5047c24e81baec5d8a788cf,
+      type: 3}
+  - eventId: END03
+    valueType: 6
+    triggerOnMaximum: 1
+    endingCard: {fileID: 7808325088093487620, guid: 67981526e78f88846980ed4ccf07eef5,
+      type: 3}
+  - eventId: END04
+    valueType: 6
+    triggerOnMaximum: 0
+    endingCard: {fileID: 5019540008930729435, guid: 1bd7a48e0a7d4f44889df7d410041c0c,
+      type: 3}
+  - eventId: END05
+    valueType: 7
+    triggerOnMaximum: 1
+    endingCard: {fileID: 3233221730859507979, guid: d6aebc9a384805b4ca4e278e127af926,
+      type: 3}
+  - eventId: END06
+    valueType: 7
+    triggerOnMaximum: 0
+    endingCard: {fileID: 3834719880321994045, guid: 02e0f1c3dbe4d20469248dba04f051aa,
+      type: 3}
+  - eventId: END07
+    valueType: 8
+    triggerOnMaximum: 1
+    endingCard: {fileID: 3329780212983124385, guid: 74801429da9b73a4a854f5183a768a03,
+      type: 3}
+  - eventId: END08
+    valueType: 8
+    triggerOnMaximum: 0
+    endingCard: {fileID: 8028225054446004222, guid: e6d0f8e80fbbdfc4596605bd92f51d65,
+      type: 3}
+  triggerOnlyOncePerRun: 1
   debugLog: 0
 --- !u!1 &1181937960
 GameObject:
@@ -43887,6 +44008,9 @@ MonoBehaviour:
     randomMin: 80
     randomMax: 100
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -45616,6 +45740,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -48212,6 +48339,9 @@ MonoBehaviour:
     randomMin: 1
     randomMax: 100
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -53683,6 +53813,9 @@ MonoBehaviour:
     randomMin: 1
     randomMax: 100
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 0
   events:
     OnIncrease:
@@ -59803,6 +59936,9 @@ MonoBehaviour:
     randomMin: 0
     randomMax: 0
     roundToWholeNumbers: 1
+  lastLimitDeviation: 0
+  lastLimitWasMax: 0
+  lastLimitFrame: -1
   keepValue: 1
   events:
     OnIncrease:

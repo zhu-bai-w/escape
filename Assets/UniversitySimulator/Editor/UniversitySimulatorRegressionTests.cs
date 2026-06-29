@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class UniversitySimulatorRegressionTests
@@ -10,6 +11,7 @@ public class UniversitySimulatorRegressionTests
     const string ProgramCsvPath = "Assets/UniversitySimulator/Data/cards_v1_program.csv";
     const string CardsFolderPath = "Assets/UniversitySimulator/Art/cards";
     const string PrefabRootPath = "Assets/UniversitySimulator/Prefabs/Cards";
+    const string GameScenePath = "Assets/UniversitySimulator/Scenes/Game.unity";
 
     [SetUp]
     public void SetUp()
@@ -221,6 +223,135 @@ public class UniversitySimulatorRegressionTests
     }
 
     [Test]
+    public void ExternalFollowUpCardIsConsumedOnceBeforeReturningToDrawableCards()
+    {
+        GameObject stackObject = new GameObject("CardStack Test Host");
+        GameObject parentObject = new GameObject("Card Parent");
+        GameObject valueManagerObject = new GameObject("ValueManager Test Host");
+        GameObject standardPrefab = new GameObject("Standard Test Card");
+        GameObject followUpPrefab = new GameObject("Follow Up Test Card");
+        CardStack stack = null;
+        try
+        {
+            valueManager manager = valueManagerObject.AddComponent<valueManager>();
+            valueManager.instance = manager;
+            manager.values = new List<ValueScript>();
+
+            ConfigureStackTestCard(standardPrefab, true);
+            ConfigureStackTestCard(followUpPrefab, false);
+
+            stack = stackObject.AddComponent<CardStack>();
+            typeof(CardStack)
+                .GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(stack, null);
+
+            stack.CardParent = parentObject.transform;
+            stack.availableCards = new List<GameObject>();
+            stack.highPriorityCards = new List<GameObject>();
+            stack.followUpStack = new CardStack.C_WrapFollowUpStack();
+            stack.allCards = new[]
+            {
+                new CardStack.cardCategory
+                {
+                    groupName = "Test",
+                    subStackCondition = new EventScript.condition[0],
+                    groupCards = new[] { standardPrefab }
+                }
+            };
+            stack.cardDrawCount = new CardStack.drawCnts
+            {
+                cnt = new[] { new CardStack.cardCount { drawCnt = new int[1] } }
+            };
+            stack.cardBlockCount = new CardStack.blockCount
+            {
+                cnt = new[] { new CardStack.cardCount { drawCnt = new int[1] } }
+            };
+            stack.fallBackCard = standardPrefab;
+            stack.followUpCard = followUpPrefab;
+
+            typeof(CardStack)
+                .GetMethod("newCard", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(stack, null);
+
+            Assert.IsNotNull(stack.spawnedCard);
+            Assert.IsTrue(stack.spawnedCard.name.StartsWith(followUpPrefab.name));
+            Assert.IsNull(stack.followUpCard);
+            Assert.AreEqual(0, stack.cardDrawCount.cnt[0].drawCnt[0]);
+
+            typeof(CardStack)
+                .GetMethod("newCard", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(stack, null);
+
+            Assert.IsNotNull(stack.spawnedCard);
+            Assert.IsTrue(stack.spawnedCard.name.StartsWith(standardPrefab.name));
+            Assert.AreEqual(1, stack.cardDrawCount.cnt[0].drawCnt[0]);
+        }
+        finally
+        {
+            PlayerPrefs.DeleteKey("drawCnt");
+            PlayerPrefs.DeleteKey("blockCnt");
+            PlayerPrefs.DeleteKey("Cind");
+            if (stack != null && stack.spawnedCard != null)
+            {
+                UnityEngine.Object.DestroyImmediate(stack.spawnedCard);
+            }
+            UnityEngine.Object.DestroyImmediate(followUpPrefab);
+            UnityEngine.Object.DestroyImmediate(standardPrefab);
+            UnityEngine.Object.DestroyImmediate(valueManagerObject);
+            UnityEngine.Object.DestroyImmediate(parentObject);
+            UnityEngine.Object.DestroyImmediate(stackObject);
+        }
+    }
+
+    [Test]
+    public void StartMenuSceneFollowUpChainReturnsToDrawableCards()
+    {
+        string previousScenePath = EditorSceneManager.GetActiveScene().path;
+        try
+        {
+            ClearRuntimeCardStackPrefs();
+            EditorSceneManager.OpenScene(GameScenePath);
+
+            CardStack stack = Object.FindObjectOfType<CardStack>();
+            valueManager.instance = Object.FindObjectOfType<valueManager>();
+            Assert.IsNotNull(stack, "Game scene is missing CardStack.");
+            Assert.IsNotNull(valueManager.instance, "Game scene is missing valueManager.");
+
+            typeof(CardStack)
+                .GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(stack, null);
+            ConfigureSceneStackForEditMode(stack);
+
+            Assert.IsNotNull(stack.spawnedCard);
+            Assert.IsTrue(stack.spawnedCard.name.StartsWith("MainMenuCard"));
+
+            EventScript mainMenuEvent = stack.spawnedCard.GetComponent<EventScript>();
+            mainMenuEvent.onLeftSwipe();
+            Assert.IsNotNull(stack.followUpCard);
+            Assert.IsTrue(stack.followUpCard.name.StartsWith("_StartCard"));
+
+            InvokeNewCard(stack);
+            Assert.IsNotNull(stack.spawnedCard);
+            Assert.IsTrue(stack.spawnedCard.name.StartsWith("_StartCard"));
+            Assert.IsNull(stack.followUpCard);
+
+            InvokeNewCard(stack);
+            Assert.IsNotNull(stack.spawnedCard);
+            Assert.IsFalse(stack.spawnedCard.name.StartsWith("_StartCard"));
+            Assert.IsFalse(stack.spawnedCard.name.StartsWith("MainMenuCard"));
+            Assert.IsTrue(stack.getCardMoveEnabled());
+        }
+        finally
+        {
+            ClearRuntimeCardStackPrefs();
+            if (!string.IsNullOrEmpty(previousScenePath))
+            {
+                EditorSceneManager.OpenScene(previousScenePath);
+            }
+        }
+    }
+
+    [Test]
     public void ReturnToNewGameDoesNotIncrementGameOverCount()
     {
         GameObject managerObject = new GameObject("GameStateManager Test Host");
@@ -248,6 +379,144 @@ public class UniversitySimulatorRegressionTests
             UniversityTrueEndingProgress.ResetForDebug(UniversityTrueEndingProgress.DefaultRequiredFlags);
             UnityEngine.Object.DestroyImmediate(returnObject);
             UnityEngine.Object.DestroyImmediate(managerObject);
+        }
+    }
+
+    [Test]
+    public void ValueScriptRecordsLimitDeviationBeforeClamping()
+    {
+        GameObject valueObject = new GameObject("Value Limit Test Host");
+        try
+        {
+            ValueScript valueScript = valueObject.AddComponent<ValueScript>();
+            valueScript.valueType = valueDefinitions.values.bodyMind;
+            valueScript.limits = new ValueScript.valueLimits
+            {
+                min = 0f,
+                max = 100f,
+                randomMin = 0f,
+                randomMax = 100f,
+                roundToWholeNumbers = true
+            };
+            valueScript.events = BuildValueEvents();
+            valueScript.value = 107f;
+
+            valueScript.limitValue();
+
+            float deviation;
+            Assert.AreEqual(100f, valueScript.value);
+            Assert.IsTrue(valueScript.TryGetLastLimitDeviation(Time.frameCount, true, out deviation));
+            Assert.AreEqual(7f, deviation);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(valueObject);
+        }
+    }
+
+    [Test]
+    public void ValueEndingControllerChoosesLargestBoundaryDeviation()
+    {
+        GameObject stackObject = new GameObject("CardStack Test Host");
+        GameObject managerObject = new GameObject("GameStateManager Test Host");
+        GameObject valueManagerObject = new GameObject("ValueManager Test Host");
+        GameObject bodyMindObject = new GameObject("BodyMind Value");
+        GameObject economyObject = new GameObject("Economy Value");
+        GameObject healthHighEnding = new GameObject("US_END01");
+        GameObject economyLowEnding = new GameObject("US_END08");
+        try
+        {
+            CardStack stack = stackObject.AddComponent<CardStack>();
+            CardStack.instance = stack;
+            stack.onCardSwipe = new CardStack.mEvent();
+            stack.followUpStack = new CardStack.C_WrapFollowUpStack();
+
+            GameStateManager manager = managerObject.AddComponent<GameStateManager>();
+            GameStateManager.instance = manager;
+            manager.OnNewGame = new GameStateManager.mEvent();
+            manager.OnGameOver = new GameStateManager.mEvent();
+            manager.gamestate = GameStateManager.Gamestate.gameActive;
+
+            ValueScript bodyMind = bodyMindObject.AddComponent<ValueScript>();
+            bodyMind.valueType = valueDefinitions.values.bodyMind;
+            bodyMind.lastLimitFrame = Time.frameCount;
+            bodyMind.lastLimitWasMax = true;
+            bodyMind.lastLimitDeviation = 7f;
+
+            ValueScript economy = economyObject.AddComponent<ValueScript>();
+            economy.valueType = valueDefinitions.values.economy;
+            economy.lastLimitFrame = Time.frameCount;
+            economy.lastLimitWasMax = false;
+            economy.lastLimitDeviation = 15f;
+
+            valueManager valueManagerComponent = valueManagerObject.AddComponent<valueManager>();
+            valueManager.instance = valueManagerComponent;
+            valueManagerComponent.values = new List<ValueScript> { bodyMind, economy };
+
+            UniversityValueEndingController controller = stackObject.AddComponent<UniversityValueEndingController>();
+            controller.rules = new[]
+            {
+                new UniversityValueEndingController.ValueEndingRule
+                {
+                    eventId = "END01",
+                    valueType = valueDefinitions.values.bodyMind,
+                    triggerOnMaximum = true,
+                    endingCard = healthHighEnding
+                },
+                new UniversityValueEndingController.ValueEndingRule
+                {
+                    eventId = "END08",
+                    valueType = valueDefinitions.values.economy,
+                    triggerOnMaximum = false,
+                    endingCard = economyLowEnding
+                }
+            };
+
+            typeof(UniversityValueEndingController)
+                .GetMethod("Subscribe", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(controller, null);
+
+            stack.onCardSwipe.Invoke();
+
+            Assert.AreSame(economyLowEnding, stack.followUpCard);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(economyLowEnding);
+            UnityEngine.Object.DestroyImmediate(healthHighEnding);
+            UnityEngine.Object.DestroyImmediate(economyObject);
+            UnityEngine.Object.DestroyImmediate(bodyMindObject);
+            UnityEngine.Object.DestroyImmediate(valueManagerObject);
+            UnityEngine.Object.DestroyImmediate(managerObject);
+            UnityEngine.Object.DestroyImmediate(stackObject);
+        }
+    }
+
+    [Test]
+    public void ProgramCsvContainsConfiguredValueEndingCards()
+    {
+        string[] expectedIds = { "END01", "END02", "END03", "END04", "END05", "END06", "END07", "END08" };
+        string[] expectedExpressions =
+        {
+            "bodyMind > 100",
+            "bodyMind < 0",
+            "academics > 100",
+            "academics < 0",
+            "relationships > 100",
+            "relationships < 0",
+            "economy > 100",
+            "economy < 0"
+        };
+
+        for (int i = 0; i < expectedIds.Length; i++)
+        {
+            Dictionary<string, string> row = FindCsvRow(expectedIds[i]);
+            Assert.AreEqual("US_" + expectedIds[i], row["cardName"]);
+            Assert.AreEqual("ValueEnding", row["groupName"]);
+            Assert.AreEqual("cs_GameOver", row["styleName"]);
+            Assert.AreEqual("false", row["isDrawable"]);
+            Assert.AreEqual("false", row["isEndingChain"]);
+            Assert.AreEqual(expectedExpressions[i], row["conditionExpression"]);
         }
     }
 
@@ -322,6 +591,17 @@ public class UniversitySimulatorRegressionTests
         }
     }
 
+    static ValueScript.valueEvents BuildValueEvents()
+    {
+        return new ValueScript.valueEvents
+        {
+            OnIncrease = new ValueScript.mEvent(),
+            OnDecrease = new ValueScript.mEvent(),
+            OnMax = new ValueScript.mEvent(),
+            OnMin = new ValueScript.mEvent()
+        };
+    }
+
     static EventScript.result EmptyResult()
     {
         return new EventScript.result
@@ -333,6 +613,62 @@ public class UniversitySimulatorRegressionTests
             modifiersFalse = EmptyModifierGroup(),
             randomModifiers = new EventScript.modifierGroup[0]
         };
+    }
+
+    static void ConfigureStackTestCard(GameObject cardPrefab, bool isDrawable)
+    {
+        EventScript eventScript = cardPrefab.AddComponent<EventScript>();
+        eventScript.isDrawable = isDrawable;
+        eventScript.cardPropability = 1f;
+        eventScript.conditions = new EventScript.condition[0];
+        eventScript.changeExtrasOnCardDespawn = new EventScript.C_AdditionalModifiers[0];
+        eventScript.changeValueOnCardDespawn = new EventScript.resultModifier[0];
+        eventScript.OnCardSpawn = new EventScript.mEvent();
+        eventScript.OnCardDespawn = new EventScript.mEvent();
+    }
+
+    static void ConfigureSceneStackForEditMode(CardStack stack)
+    {
+        stack.availableCards = new List<GameObject>();
+        stack.highPriorityCards = new List<GameObject>();
+        stack.followUpStack = new CardStack.C_WrapFollowUpStack();
+        stack.cardDrawCount = new CardStack.drawCnts
+        {
+            cnt = new CardStack.cardCount[stack.allCards.Length]
+        };
+        stack.cardBlockCount = new CardStack.blockCount
+        {
+            cnt = new CardStack.cardCount[stack.allCards.Length]
+        };
+
+        for (int i = 0; i < stack.allCards.Length; i++)
+        {
+            int cardCount = stack.allCards[i].groupCards.Length;
+            stack.cardDrawCount.cnt[i] = new CardStack.cardCount
+            {
+                drawCnt = new int[cardCount]
+            };
+            stack.cardBlockCount.cnt[i] = new CardStack.cardCount
+            {
+                drawCnt = new int[cardCount]
+            };
+        }
+    }
+
+    static void InvokeNewCard(CardStack stack)
+    {
+        typeof(CardStack)
+            .GetMethod("newCard", BindingFlags.Instance | BindingFlags.NonPublic)
+            .Invoke(stack, null);
+    }
+
+    static void ClearRuntimeCardStackPrefs()
+    {
+        PlayerPrefs.DeleteKey("GameState");
+        PlayerPrefs.DeleteKey("drawCnt");
+        PlayerPrefs.DeleteKey("blockCnt");
+        PlayerPrefs.DeleteKey("Cind");
+        PlayerPrefs.DeleteKey("followUpStack");
     }
 
     static EventScript.modifierGroup EmptyModifierGroup()

@@ -20,6 +20,7 @@ public static class UniversityCardImportTool
     const string ReportPath = "Assets/UniversitySimulator/Data/cards_v1_kings_import_report.json";
     const string ValidationReportPath = "Assets/UniversitySimulator/Data/cards_v1_program_validation.json";
     const string TargetScenePath = "Assets/UniversitySimulator/Scenes/Game.unity";
+    const string ValueEndingGroupName = "ValueEnding";
     static readonly Color CardArtDisplayColor = Color.white;
 
     static readonly Dictionary<string, valueDefinitions.values> ValueMap = new Dictionary<string, valueDefinitions.values>
@@ -663,7 +664,7 @@ public static class UniversityCardImportTool
                 ApplyFollowUp(eventScript.Results.resultRight, row.Get("nextRightCardId"), prefabsByEventId, row, report);
                 ConfigureMainlineHook(root, eventScript, row, prefabsByEventId, report);
                 ConfigureMainlineEventCard(root, row);
-                ConfigureTrueEndingReturn(root, eventScript, row, report);
+                ConfigureReturnToNewGame(root, eventScript, row, report);
                 ConfigureCardArt(root, row, report);
 
                 EditorUtility.SetDirty(eventScript);
@@ -938,11 +939,13 @@ public static class UniversityCardImportTool
         report.mainlineHooks++;
     }
 
-    static void ConfigureTrueEndingReturn(GameObject root, EventScript eventScript, ProgramCard row, ImportReport report)
+    static void ConfigureReturnToNewGame(GameObject root, EventScript eventScript, ProgramCard row, ImportReport report)
     {
-        bool isEndingCard = ParseBool(row.Get("isEndingChain"), false);
+        bool isTrueEndingCard = ParseBool(row.Get("isEndingChain"), false);
+        bool isValueEndingCard = IsValueEndingRow(row);
+        bool shouldReturnToNewGame = isTrueEndingCard || isValueEndingCard;
         UniversityTrueEndingReturnToNewGame returnToNewGame = root.GetComponent<UniversityTrueEndingReturnToNewGame>();
-        if (!isEndingCard)
+        if (!shouldReturnToNewGame)
         {
             if (returnToNewGame != null)
             {
@@ -965,7 +968,14 @@ public static class UniversityCardImportTool
         UnityEventTools.AddPersistentListener(eventScript.OnSwipeLeft, returnToNewGame.ReturnToNewGame);
         UnityEventTools.AddPersistentListener(eventScript.OnSwipeRight, returnToNewGame.ReturnToNewGame);
         EditorUtility.SetDirty(returnToNewGame);
-        report.trueEndingReturnCards++;
+        if (isTrueEndingCard)
+        {
+            report.trueEndingReturnCards++;
+        }
+        else if (isValueEndingCard)
+        {
+            report.valueEndingReturnCards++;
+        }
     }
 
     static GameObject ResolveOptionalCard(string eventId, Dictionary<string, GameObject> prefabsByEventId, ProgramCard row, ImportReport report, string fieldName)
@@ -1076,9 +1086,18 @@ public static class UniversityCardImportTool
         scheduler.guaranteedAfterMisses = 6;
         scheduler.debugLog = false;
 
+        UniversityValueEndingController valueEndingController = cardStack.GetComponent<UniversityValueEndingController>();
+        if (valueEndingController == null)
+        {
+            valueEndingController = cardStack.gameObject.AddComponent<UniversityValueEndingController>();
+        }
+
+        ConfigureValueEndingController(valueEndingController, table, prefabsByEventId, report);
+
         EditorUtility.SetDirty(cardStack);
         EditorUtility.SetDirty(controller);
         EditorUtility.SetDirty(scheduler);
+        EditorUtility.SetDirty(valueEndingController);
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
 
@@ -1099,7 +1118,95 @@ public static class UniversityCardImportTool
             return 90;
         }
 
+        if (groupName == ValueEndingGroupName)
+        {
+            return 80;
+        }
+
         return 10;
+    }
+
+    static void ConfigureValueEndingController(
+        UniversityValueEndingController controller,
+        CsvTable table,
+        Dictionary<string, GameObject> prefabsByEventId,
+        ImportReport report)
+    {
+        List<UniversityValueEndingController.ValueEndingRule> rules = new List<UniversityValueEndingController.ValueEndingRule>();
+        foreach (ProgramCard row in table.rows.Where(IsValueEndingRow).OrderBy(row => row.EventId))
+        {
+            valueDefinitions.values valueType;
+            bool triggerOnMaximum;
+            if (!TryParseValueEndingRule(row, out valueType, out triggerOnMaximum))
+            {
+                report.errors.Add("Value ending card " + row.EventId + " must set conditionExpression like 'bodyMind > 100' or 'economy < 0'.");
+                continue;
+            }
+
+            GameObject endingCard;
+            if (!prefabsByEventId.TryGetValue(row.EventId, out endingCard) || endingCard == null)
+            {
+                report.errors.Add("Value ending prefab missing: " + row.EventId);
+                continue;
+            }
+
+            rules.Add(new UniversityValueEndingController.ValueEndingRule
+            {
+                eventId = row.EventId,
+                valueType = valueType,
+                triggerOnMaximum = triggerOnMaximum,
+                endingCard = endingCard
+            });
+        }
+
+        controller.rules = rules.ToArray();
+        controller.triggerOnlyOncePerRun = true;
+        controller.debugLog = false;
+        report.valueEndingRules = rules.Count;
+    }
+
+    static bool TryParseValueEndingRule(ProgramCard row, out valueDefinitions.values valueType, out bool triggerOnMaximum)
+    {
+        valueType = valueDefinitions.values.bodyMind;
+        triggerOnMaximum = false;
+        string expression = row.Get("conditionExpression").Trim();
+        if (string.IsNullOrWhiteSpace(expression))
+        {
+            return false;
+        }
+
+        foreach (KeyValuePair<string, valueDefinitions.values> pair in ValueMap)
+        {
+            if (!expression.StartsWith(pair.Key, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            valueType = pair.Value;
+            if (expression.Contains(">"))
+            {
+                triggerOnMaximum = true;
+                return true;
+            }
+
+            if (expression.Contains("<"))
+            {
+                triggerOnMaximum = false;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static bool IsValueEndingRow(ProgramCard row)
+    {
+        return string.Equals(row.GroupName, ValueEndingGroupName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    static bool ShouldReturnToNewGame(ProgramCard row)
+    {
+        return ParseBool(row.Get("isEndingChain"), false) || IsValueEndingRow(row);
     }
 
     static GameObject ResolveTrueEndingStartCard(CsvTable table, Dictionary<string, GameObject> prefabsByEventId, ImportReport report)
@@ -1215,7 +1322,7 @@ public static class UniversityCardImportTool
                 check.issues.Add("Missing UniversityConditionExpression.");
             }
 
-            if (ParseBool(row.Get("isEndingChain"), false) && !check.hasTrueEndingReturn)
+            if (ShouldReturnToNewGame(row) && !check.hasTrueEndingReturn)
             {
                 check.issues.Add("Missing UniversityTrueEndingReturnToNewGame.");
             }
@@ -1457,6 +1564,8 @@ public static class UniversityCardImportTool
         public int mainlineHooks;
         public int conditionExpressionGates;
         public int trueEndingReturnCards;
+        public int valueEndingReturnCards;
+        public int valueEndingRules;
         public int cardArtExpected;
         public int cardArtBound;
         public int cardArtMissing;

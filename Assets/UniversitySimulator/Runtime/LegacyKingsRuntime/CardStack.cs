@@ -73,6 +73,7 @@ public class CardStack :  TranslatableContent {
 
 	//move enable is used to block or enable the card movement while in menu
 	private bool cardMoveEnabled = true;
+	private bool cardTransitionInProgress;
 	//the animator for the card (left/right) movement. Each card has its own animator.
 	Animator anim;
 
@@ -244,6 +245,8 @@ public class CardStack :  TranslatableContent {
 		lastCardIndex.groupIndex = -1;
 		lastCardIndex.cardSubIndex = -1;
 		saveCardIndex ();
+		followUpCard = null;
+		cardTransitionInProgress = false;
 	}
 
 	//Add an card-gameobject to the draw count
@@ -630,6 +633,7 @@ public class CardStack :  TranslatableContent {
 
 		newCard ();
         moveBackEnabled = true;
+		cardTransitionInProgress = false;
 	}
     //start the coroutine for moving the card (and spawning a new one after computation)
     public enum E_moveOutDirection {
@@ -645,14 +649,17 @@ public class CardStack :  TranslatableContent {
     }
 
 	public void nextCard(E_moveOutDirection direction){
-		if (cardMoveEnabled == true) {
-			if (spawnedCard == null) {
-				newCard ();
-				return;
-			}
-
-			StartCoroutine (moveCardOut (direction));
+		if (cardTransitionInProgress == true) {
+			return;
 		}
+
+		if (spawnedCard == null) {
+			newCard ();
+			return;
+		}
+
+		cardTransitionInProgress = true;
+		StartCoroutine (moveCardOut (direction));
 	}
 
 	public GameObject DebugShowCard(GameObject cardPrefab)
@@ -674,6 +681,7 @@ public class CardStack :  TranslatableContent {
 		anim = null;
 		actMoveDistance = Vector2.zero;
 		moveBackEnabled = true;
+		cardTransitionInProgress = false;
 
 		return spawnCard(cardPrefab, false);
 	}
@@ -704,11 +712,12 @@ public class CardStack :  TranslatableContent {
 		//Debug.Log ("new card");
 		spawnedCard = (GameObject)Instantiate (go);
 
-		if (recordDraw == true) {
+		cardIndex spawnedCardIndex = getCardIndex (go);
+		if (recordDraw == true && spawnedCardIndex.validIndex == true) {
 			addDrawCnt (go);
 			addBlockCnt(go);
 			decrementBlockCounts();                         //Reduce counter for all cards which are blocked by a previous draw.
-			lastCardIndex = getCardIndex (go);
+			lastCardIndex = spawnedCardIndex;
 			saveCardIndex ();
 		}
 
@@ -788,7 +797,9 @@ public class CardStack :  TranslatableContent {
 
 			if (followUpCard != null) {
 				//Debug.Log ("Follow up card: " + followUpCard.name);
-				spawnCard (followUpCard);
+				GameObject nextFollowUpCard = followUpCard;
+				followUpCard = null;
+				spawnCard (nextFollowUpCard);
 
 			} else {
 				int highPrioCnt = highPriorityCards.Count;
@@ -922,6 +933,7 @@ public class CardStack :  TranslatableContent {
     public void clearFollowUpStack()
     {
         followUpStack.followUpStack = new List<C_folluwUpStackElement>();
+		followUpCard = null;
         saveFollowUpStack();
     }
 

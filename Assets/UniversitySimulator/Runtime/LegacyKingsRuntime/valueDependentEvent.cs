@@ -25,6 +25,7 @@ public class valueDependentEvent: MonoBehaviour {
     }
 
 	void Start(){
+        EnsureEvents();
 
         if (triggerType == E_EventExecutionType.automatic)
         {
@@ -43,13 +44,23 @@ public class valueDependentEvent: MonoBehaviour {
     }
 
     public void ExecuteConditionCheck() {
+        EnsureEvents();
         testAndInvoke(true);
     }
 
     bool lastResult = false;
     private void testAndInvoke(bool initialize = false)
     {
+        if (valueManager.instance == null)
+        {
+            return;
+        }
 
+        EnsureEvents();
+        if (conditionsToTest == null)
+        {
+            conditionsToTest = new EventScript.condition[0];
+        }
         bool result = valueManager.instance.AreConditinsForResultMet(conditionsToTest);
 
         if (lastResult != result || initialize == true)
@@ -67,5 +78,18 @@ public class valueDependentEvent: MonoBehaviour {
 
 
         lastResult = result;
+    }
+
+    void EnsureEvents()
+    {
+        if (OnConditionsTrue == null)
+        {
+            OnConditionsTrue = new mEvent();
+        }
+
+        if (OnConditionsFalse == null)
+        {
+            OnConditionsFalse = new mEvent();
+        }
     }
 }

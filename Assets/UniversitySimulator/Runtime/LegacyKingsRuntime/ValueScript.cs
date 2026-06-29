@@ -253,15 +253,51 @@ public class ValueScript : MonoBehaviour {
 
 	public valueLimits limits;
 
+	[ReadOnlyInspector] public float lastLimitDeviation = 0f;
+	[ReadOnlyInspector] public bool lastLimitWasMax = false;
+	[ReadOnlyInspector] public int lastLimitFrame = -1;
+
 	public void limitValue(){
 		if (value < limits.min) {
+			RecordLimitDeviation(limits.min - value, false);
 			value = limits.min;
 			events.OnMin.Invoke();
 		}
-		if (value > limits.max) {
+		else if (value > limits.max) {
+			RecordLimitDeviation(value - limits.max, true);
 			value = limits.max;
 			events.OnMax.Invoke();
 		}
+	}
+
+	public bool TryGetLastLimitDeviation(int frame, bool wasMax, out float deviation) {
+		deviation = 0f;
+		if (lastLimitFrame != frame || lastLimitWasMax != wasMax || lastLimitDeviation <= 0f) {
+			return false;
+		}
+
+		deviation = lastLimitDeviation;
+		return true;
+	}
+
+	public void ClearLastLimitDeviation() {
+		lastLimitDeviation = 0f;
+		lastLimitFrame = -1;
+	}
+
+	void RecordLimitDeviation(float deviation, bool wasMax) {
+		if (deviation <= 0f) {
+			return;
+		}
+
+		int frame = Time.frameCount;
+		if (lastLimitFrame == frame && lastLimitDeviation >= deviation) {
+			return;
+		}
+
+		lastLimitDeviation = deviation;
+		lastLimitWasMax = wasMax;
+		lastLimitFrame = frame;
 	}
 
 	/*
