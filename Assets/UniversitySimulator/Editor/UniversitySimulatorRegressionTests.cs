@@ -837,7 +837,11 @@ public class UniversitySimulatorRegressionTests
         HashSet<string> artIds = new HashSet<string>();
         foreach (string path in Directory.GetFiles(CardsFolderPath, "card-E*.png", SearchOption.TopDirectoryOnly))
         {
-            artIds.Add(Path.GetFileNameWithoutExtension(path).Substring("card-".Length));
+            string eventId = Path.GetFileNameWithoutExtension(path).Substring("card-".Length);
+            if (IsStandardCardArtEventId(eventId))
+            {
+                artIds.Add(eventId);
+            }
         }
 
         HashSet<string> missing = new HashSet<string>(expectedIds);
