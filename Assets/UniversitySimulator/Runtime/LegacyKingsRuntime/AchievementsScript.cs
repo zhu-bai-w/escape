@@ -205,6 +205,21 @@ public class AchievementsScript : TranslatableContent {
 		}
 	}
 
+	public void ShowCustomAchievement(string title, string description, Sprite sprite){
+		if (achievementAnimator != null) {
+			if (anim_descriptionText != null) {
+				anim_descriptionText.text = TextReplacement.TranslateAndReplace(description);
+			}
+			if (anim_titleText != null) {
+				anim_titleText.text = TextReplacement.TranslateAndReplace(title);
+			}
+			if (anim_achievementImage != null && sprite != null) {
+				anim_achievementImage.overrideSprite = sprite;
+			}
+			achievementAnimator.SetTrigger (triggerOnAchievement);
+		}
+	}
+
 	/*
 	 * Return all possible translatable terms
 	 */

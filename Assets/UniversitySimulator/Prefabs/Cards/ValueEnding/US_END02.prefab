@@ -20,6 +20,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 114484288795279350, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}
+      propertyPath: usePrefabIconOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114484288795279350, guid: 0f0aa08f89365394b80c6b149344b23a,
+        type: 3}
       propertyPath: cardImages.color.b
       value: 0.125
       objectReference: {fileID: 0}
@@ -162,7 +167,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 942462fce505db945bd17b2cac9b849a,
+      objectReference: {fileID: 21300000, guid: eff745b9952942b3b0f539448c7e2e5f,
         type: 3}
     - target: {fileID: 224275568673289112, guid: 0f0aa08f89365394b80c6b149344b23a,
         type: 3}

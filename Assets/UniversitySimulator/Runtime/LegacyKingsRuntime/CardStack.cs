@@ -996,6 +996,7 @@ public class CardStack :  TranslatableContent {
 			} else {
 				Debug.LogError ("Event script missing on card");
 			}
+			UniversityAchievementSystem.RecordChoice(spawnedCard, "left");
 			onCardSwipe.Invoke ();
             nextCard(E_moveOutDirection.left);
 		}
@@ -1026,6 +1027,7 @@ public class CardStack :  TranslatableContent {
 			} else {
 				Debug.LogError ("Event script missing on card");
 			}
+			UniversityAchievementSystem.RecordChoice(spawnedCard, "right");
 			onCardSwipe.Invoke ();
             nextCard(E_moveOutDirection.right);
 		}
@@ -1062,6 +1064,7 @@ public class CardStack :  TranslatableContent {
             if (es.swipeType == EventScript.E_SwipeType.FourDirection)
             {
                 es.onUpSwipe(); //call the eventscript on the card for stat-changes, linking of follow up cards, etc.
+                UniversityAchievementSystem.RecordChoice(spawnedCard, "up");
                 onCardSwipe.Invoke();
                 nextCard(E_moveOutDirection.up);
             }
@@ -1107,6 +1110,7 @@ public class CardStack :  TranslatableContent {
             if (es.swipeType == EventScript.E_SwipeType.FourDirection)
             {
                 es.onDownSwipe(); //call the eventscript on the card for stat-changes, linking of follow up cards, etc.
+                UniversityAchievementSystem.RecordChoice(spawnedCard, "down");
                 onCardSwipe.Invoke();
                 nextCard(E_moveOutDirection.down);
             }
@@ -1142,6 +1146,9 @@ public class CardStack :  TranslatableContent {
 				executed = es.ExecuteAddtionalChoices (choiceNr); //call the eventscript on the card for stat-changes, linking of follow up cards, etc.
 			} else {
 				Debug.LogError ("Event script missing on card");
+			}
+			if (executed == true) {
+				UniversityAchievementSystem.RecordChoice(spawnedCard, "choice" + choiceNr);
 			}
 			onCardSwipe.Invoke ();
 			if (executed == true) {

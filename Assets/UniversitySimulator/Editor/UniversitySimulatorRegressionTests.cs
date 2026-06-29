@@ -5,6 +5,7 @@ using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UniversitySimulatorRegressionTests
 {
@@ -20,6 +21,7 @@ public class UniversitySimulatorRegressionTests
         GameStateManager.instance = null;
         valueManager.instance = null;
         UniversityTrueEndingProgress.ResetForDebug(UniversityTrueEndingProgress.DefaultRequiredFlags);
+        UniversityAchievementSystem.ResetAllForDebug();
     }
 
     [TearDown]
@@ -29,6 +31,12 @@ public class UniversitySimulatorRegressionTests
         GameStateManager.instance = null;
         valueManager.instance = null;
         UniversityTrueEndingProgress.ResetForDebug(UniversityTrueEndingProgress.DefaultRequiredFlags);
+        UniversityAchievementSystem.ResetAllForDebug();
+
+        if (UniversityAchievementSystem.instance != null)
+        {
+            Object.DestroyImmediate(UniversityAchievementSystem.instance.gameObject);
+        }
     }
 
     [Test]
@@ -389,6 +397,144 @@ public class UniversitySimulatorRegressionTests
             UniversityTrueEndingProgress.ResetForDebug(UniversityTrueEndingProgress.DefaultRequiredFlags);
             UnityEngine.Object.DestroyImmediate(returnObject);
             UnityEngine.Object.DestroyImmediate(managerObject);
+        }
+    }
+
+    [Test]
+    public void AchievementSystemUnlocksSpecificChoiceByCardName()
+    {
+        GameObject cardObject = new GameObject("US_E001(Clone)");
+        try
+        {
+            UniversityAchievementSystem.RecordChoice(cardObject, "left");
+            Assert.IsTrue(UniversityAchievementSystem.IsUnlocked("ACH_CHOICE_E001_L"), "Left choice achievement should unlock.");
+            Assert.IsFalse(UniversityAchievementSystem.IsUnlocked("ACH_CHOICE_E001_R"), "Right choice achievement should stay locked.");
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(cardObject);
+        }
+    }
+
+    [Test]
+    public void AchievementSystemUnlocksValueEndingByEventId()
+    {
+        UniversityAchievementSystem.RecordValueEnding("END07", valueDefinitions.values.economy, true, 12f);
+
+        Assert.IsTrue(UniversityAchievementSystem.IsUnlocked("ACH_END_ECON_HIGH"));
+        Assert.IsFalse(UniversityAchievementSystem.IsUnlocked("ACH_END_ECON_LOW"));
+    }
+
+    [Test]
+    public void AchievementPanelUsesLargeReadableRows()
+    {
+        GameObject contentObject = new GameObject("Content", typeof(RectTransform));
+        try
+        {
+            RectTransform contentRect = contentObject.GetComponent<RectTransform>();
+            contentRect.sizeDelta = new Vector2(3000f, 1240f);
+
+            UniversityAchievementSystem.EnsureInstance();
+            UniversityAchievementSystem achievementSystem = UniversityAchievementSystem.instance;
+            System.Type type = typeof(UniversityAchievementSystem);
+            const BindingFlags instanceFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+
+            type.GetMethod("ConfigureContent", instanceFlags)
+                .Invoke(achievementSystem, new object[] { contentObject.transform });
+            type.GetMethod("CreateAchievementRow", instanceFlags)
+                .Invoke(achievementSystem, new object[] { contentObject.transform, UniversityAchievementSystem.AllAchievements[0], Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") });
+
+            Assert.AreEqual(1, contentObject.transform.childCount);
+
+            VerticalLayoutGroup listLayout = contentObject.GetComponent<VerticalLayoutGroup>();
+            Assert.IsNotNull(listLayout);
+            Assert.IsTrue(listLayout.childControlHeight);
+            Assert.AreEqual(24f, listLayout.spacing);
+            Assert.AreEqual(32, listLayout.padding.top);
+
+            Transform row = contentObject.transform.GetChild(0);
+            Assert.IsNull(row.GetComponent<HorizontalLayoutGroup>());
+            Assert.AreEqual(300f, row.GetComponent<LayoutElement>().preferredHeight);
+            Assert.AreEqual(300f, row.GetComponent<RectTransform>().sizeDelta.y);
+
+            RectTransform iconRect = row.Find("Icon").GetComponent<RectTransform>();
+            Assert.AreEqual(188f, iconRect.sizeDelta.x);
+            Assert.AreEqual(188f, iconRect.sizeDelta.y);
+            Assert.AreEqual(0f, iconRect.anchorMin.x);
+            Assert.AreEqual(0.5f, iconRect.anchorMin.y);
+            Assert.AreEqual(0f, iconRect.anchorMax.x);
+            Assert.AreEqual(0.5f, iconRect.anchorMax.y);
+
+            RectTransform textsRect = row.Find("Texts").GetComponent<RectTransform>();
+            Assert.AreEqual(0f, textsRect.anchorMin.x);
+            Assert.AreEqual(0f, textsRect.anchorMin.y);
+            Assert.AreEqual(1f, textsRect.anchorMax.x);
+            Assert.AreEqual(1f, textsRect.anchorMax.y);
+            Assert.AreEqual(256f, textsRect.offsetMin.x);
+            Assert.AreEqual(28f, textsRect.offsetMin.y);
+            Assert.AreEqual(-36f, textsRect.offsetMax.x);
+            Assert.AreEqual(-28f, textsRect.offsetMax.y);
+
+            Transform texts = row.Find("Texts");
+            Text title = texts.Find("Title").GetComponent<Text>();
+            Text description = texts.Find("Description").GetComponent<Text>();
+            Text status = texts.Find("Status").GetComponent<Text>();
+
+            Assert.AreEqual(52, title.fontSize);
+            Assert.AreEqual(TextAnchor.UpperLeft, title.alignment);
+            Assert.AreEqual(VerticalWrapMode.Truncate, title.verticalOverflow);
+            Assert.AreEqual(36, description.fontSize);
+            Assert.AreEqual(TextAnchor.UpperLeft, description.alignment);
+            Assert.AreEqual(VerticalWrapMode.Truncate, description.verticalOverflow);
+            Assert.AreEqual(30, status.fontSize);
+            Assert.AreEqual(TextAnchor.LowerLeft, status.alignment);
+
+            RectTransform titleRect = title.rectTransform;
+            RectTransform descriptionRect = description.rectTransform;
+            RectTransform statusRect = status.rectTransform;
+            Assert.AreEqual(72f, titleRect.sizeDelta.y);
+            Assert.AreEqual(0f, titleRect.anchoredPosition.y);
+            Assert.AreEqual(108f, descriptionRect.sizeDelta.y);
+            Assert.AreEqual(-84f, descriptionRect.anchoredPosition.y);
+            Assert.AreEqual(44f, statusRect.sizeDelta.y);
+            Assert.AreEqual(0f, statusRect.anchoredPosition.y);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(contentObject);
+        }
+
+        float visibleRows = 1240f / (300f + 24f);
+        Assert.Greater(visibleRows, 3f);
+        Assert.Less(visibleRows, 4f);
+    }
+
+    [Test]
+    public void SettingsMenuFindsInactiveAchievementsButton()
+    {
+        GameObject hostObject = new GameObject("Settings Controller Host");
+        GameObject menuPanel = new GameObject("MenuPanel");
+        GameObject buttonObject = new GameObject("AchievementsButton");
+        try
+        {
+            buttonObject.transform.SetParent(menuPanel.transform);
+            Button button = buttonObject.AddComponent<Button>();
+            menuPanel.SetActive(false);
+
+            UniversitySettingsMenuController controller = hostObject.AddComponent<UniversitySettingsMenuController>();
+            controller.menuPanel = menuPanel;
+
+            Button foundButton = (Button)typeof(UniversitySettingsMenuController)
+                .GetMethod("FindButtonInMenu", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(controller, new object[] { "AchievementsButton" });
+
+            Assert.AreSame(button, foundButton);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(buttonObject);
+            UnityEngine.Object.DestroyImmediate(menuPanel);
+            UnityEngine.Object.DestroyImmediate(hostObject);
         }
     }
 

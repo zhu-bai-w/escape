@@ -62,6 +62,7 @@ public static class UniversityTrueEndingProgress
 
         int updatedDays = CurrentRunDays + amount;
         SecurePlayerPrefs.SetInt(CurrentRunDaysKey, updatedDays);
+        UniversityAchievementSystem.RecordCurrentRunDays(updatedDays);
         OnCurrentRunDaysChanged?.Invoke(updatedDays);
     }
 
@@ -78,7 +79,9 @@ public static class UniversityTrueEndingProgress
             return;
         }
 
-        SecurePlayerPrefs.SetInt(GameOverCountKey, GameOverCount + amount);
+        int updatedGameOvers = GameOverCount + amount;
+        SecurePlayerPrefs.SetInt(GameOverCountKey, updatedGameOvers);
+        UniversityAchievementSystem.RecordGameOverCount(updatedGameOvers);
     }
 
     public static bool IsMetaUnlocked(int requiredLifetimeDays, int requiredGameOvers)
@@ -115,6 +118,10 @@ public static class UniversityTrueEndingProgress
         }
 
         SecurePlayerPrefs.SetBool(FlagPrefix + flagId, value);
+        if (value)
+        {
+            UniversityAchievementSystem.RecordMainlineFlag(flagId);
+        }
     }
 
     public static bool GetPermanentFlag(string flagId)
@@ -155,6 +162,10 @@ public static class UniversityTrueEndingProgress
     public static void SetTrueEndingTriggered(bool value)
     {
         SecurePlayerPrefs.SetBool(TriggeredKey, value);
+        if (value)
+        {
+            UniversityAchievementSystem.RecordTrueEndingQueued();
+        }
     }
 
     public static void ResetForDebug(IEnumerable<string> flagIds)

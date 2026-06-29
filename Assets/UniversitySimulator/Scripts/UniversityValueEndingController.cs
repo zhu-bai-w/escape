@@ -145,6 +145,7 @@ public class UniversityValueEndingController : MonoBehaviour
 
         cardStack.followUpCard = bestRule.endingCard;
         hasQueuedEnding = true;
+        UniversityAchievementSystem.RecordValueEnding(bestRule.eventId, bestRule.valueType, bestRule.triggerOnMaximum, bestDeviation);
 
         if (debugLog)
         {

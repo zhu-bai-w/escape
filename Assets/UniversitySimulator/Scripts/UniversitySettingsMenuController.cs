@@ -24,8 +24,16 @@ public class UniversitySettingsMenuController : MonoBehaviour
     public Text slot3ButtonText;
     public CardStack cardStack;
     public Text saveStatusText;
+    public Button achievementsButton;
 
     SlotPanelMode currentSlotPanelMode = SlotPanelMode.Save;
+
+    void Start()
+    {
+        UniversityAchievementSystem.EnsureInstance();
+        BindAchievementsButton();
+        UniversityAchievementSystem.RefreshAchievementPanel(achievementsPanel);
+    }
 
     void Update()
     {
@@ -46,6 +54,20 @@ public class UniversitySettingsMenuController : MonoBehaviour
         SetActive(settingsSelectedIcon, true);
         CloseSlotPanel();
         SetCardMoveEnabled(false);
+    }
+
+    public void OpenAchievementsPanel()
+    {
+        SetActive(menuPanel, true);
+        SetActive(settingsPanel, false);
+        SetActive(exitPanel, false);
+        SetActive(playerInfoPanel, false);
+        SetActive(achievementsPanel, true);
+        SetActive(questsPanel, false);
+        SetActive(settingsSelectedIcon, false);
+        CloseSlotPanel();
+        SetCardMoveEnabled(false);
+        UniversityAchievementSystem.RefreshAchievementPanel(achievementsPanel);
     }
 
     public void SaveCurrentProgress()
@@ -221,6 +243,47 @@ public class UniversitySettingsMenuController : MonoBehaviour
         {
             cardStack.setCardMoveEnable(enabled);
         }
+    }
+
+    void BindAchievementsButton()
+    {
+        if (achievementsButton == null)
+        {
+            achievementsButton = FindButtonInMenu("AchievementsButton");
+        }
+
+        if (achievementsButton != null)
+        {
+            achievementsButton.onClick.RemoveListener(OpenAchievementsPanel);
+            achievementsButton.onClick.AddListener(OpenAchievementsPanel);
+        }
+    }
+
+    Button FindButtonInMenu(string buttonName)
+    {
+        if (menuPanel != null)
+        {
+            Button[] menuButtons = menuPanel.GetComponentsInChildren<Button>(true);
+            for (int i = 0; i < menuButtons.Length; i++)
+            {
+                if (menuButtons[i] != null && menuButtons[i].name == buttonName)
+                {
+                    return menuButtons[i];
+                }
+            }
+        }
+
+        Button[] allButtons = Resources.FindObjectsOfTypeAll<Button>();
+        for (int i = 0; i < allButtons.Length; i++)
+        {
+            Button button = allButtons[i];
+            if (button != null && button.name == buttonName && button.gameObject.scene.IsValid())
+            {
+                return button;
+            }
+        }
+
+        return null;
     }
 
     static void SetActive(GameObject target, bool active)
