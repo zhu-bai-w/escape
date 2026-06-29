@@ -646,6 +646,11 @@ public class CardStack :  TranslatableContent {
 
 	public void nextCard(E_moveOutDirection direction){
 		if (cardMoveEnabled == true) {
+			if (spawnedCard == null) {
+				newCard ();
+				return;
+			}
+
 			StartCoroutine (moveCardOut (direction));
 		}
 	}

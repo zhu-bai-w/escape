@@ -16,6 +16,7 @@ public class UniversitySimulatorRegressionTests
     {
         CardStack.instance = null;
         GameStateManager.instance = null;
+        valueManager.instance = null;
         UniversityTrueEndingProgress.ResetForDebug(UniversityTrueEndingProgress.DefaultRequiredFlags);
     }
 
@@ -24,6 +25,7 @@ public class UniversitySimulatorRegressionTests
     {
         CardStack.instance = null;
         GameStateManager.instance = null;
+        valueManager.instance = null;
         UniversityTrueEndingProgress.ResetForDebug(UniversityTrueEndingProgress.DefaultRequiredFlags);
     }
 
@@ -143,6 +145,77 @@ public class UniversitySimulatorRegressionTests
             }
             UnityEngine.Object.DestroyImmediate(trueEndingCard);
             UnityEngine.Object.DestroyImmediate(managerObject);
+            UnityEngine.Object.DestroyImmediate(stackObject);
+        }
+    }
+
+    [Test]
+    public void NextCardSpawnsInitialCardWhenNoCardIsLoaded()
+    {
+        GameObject stackObject = new GameObject("CardStack Test Host");
+        GameObject parentObject = new GameObject("Card Parent");
+        GameObject valueManagerObject = new GameObject("ValueManager Test Host");
+        GameObject cardPrefab = new GameObject("Initial Test Card");
+        CardStack stack = null;
+        try
+        {
+            valueManager manager = valueManagerObject.AddComponent<valueManager>();
+            valueManager.instance = manager;
+            manager.values = new List<ValueScript>();
+
+            EventScript eventScript = cardPrefab.AddComponent<EventScript>();
+            eventScript.conditions = new EventScript.condition[0];
+            eventScript.changeExtrasOnCardDespawn = new EventScript.C_AdditionalModifiers[0];
+            eventScript.changeValueOnCardDespawn = new EventScript.resultModifier[0];
+            eventScript.OnCardSpawn = new EventScript.mEvent();
+            eventScript.OnCardDespawn = new EventScript.mEvent();
+
+            stack = stackObject.AddComponent<CardStack>();
+            typeof(CardStack)
+                .GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(stack, null);
+
+            stack.CardParent = parentObject.transform;
+            stack.availableCards = new List<GameObject>();
+            stack.highPriorityCards = new List<GameObject>();
+            stack.followUpStack = new CardStack.C_WrapFollowUpStack();
+            stack.allCards = new[]
+            {
+                new CardStack.cardCategory
+                {
+                    groupName = "Test",
+                    subStackCondition = new EventScript.condition[0],
+                    groupCards = new[] { cardPrefab }
+                }
+            };
+            stack.cardDrawCount = new CardStack.drawCnts
+            {
+                cnt = new[] { new CardStack.cardCount { drawCnt = new int[1] } }
+            };
+            stack.cardBlockCount = new CardStack.blockCount
+            {
+                cnt = new[] { new CardStack.cardCount { drawCnt = new int[1] } }
+            };
+            stack.fallBackCard = cardPrefab;
+
+            stack.nextCard();
+
+            Assert.IsNotNull(stack.spawnedCard);
+            Assert.AreSame(parentObject.transform, stack.spawnedCard.transform.parent);
+            Assert.AreEqual(1, stack.cardDrawCount.cnt[0].drawCnt[0]);
+        }
+        finally
+        {
+            PlayerPrefs.DeleteKey("drawCnt");
+            PlayerPrefs.DeleteKey("blockCnt");
+            PlayerPrefs.DeleteKey("Cind");
+            if (stack != null && stack.spawnedCard != null)
+            {
+                UnityEngine.Object.DestroyImmediate(stack.spawnedCard);
+            }
+            UnityEngine.Object.DestroyImmediate(cardPrefab);
+            UnityEngine.Object.DestroyImmediate(valueManagerObject);
+            UnityEngine.Object.DestroyImmediate(parentObject);
             UnityEngine.Object.DestroyImmediate(stackObject);
         }
     }
