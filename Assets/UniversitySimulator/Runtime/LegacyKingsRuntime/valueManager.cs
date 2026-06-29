@@ -13,6 +13,7 @@ public class valueManager : MonoBehaviour {
 
 	//create a static accessable instance.
 	public static valueManager instance;
+	const float UniversityCoreNewGameValue = 50f;
 	void Awake(){
 		if (instance == null) {
 			instance = this;
@@ -283,12 +284,39 @@ public class valueManager : MonoBehaviour {
 		}
 	}
 
-	//setRandomValues randomizes the values of all 'ValueScript' within the Range defined at the script.
+	//setRandomValues randomizes non-core values and resets university core values to their fixed start.
 	//This is typically called at the start of the game to enable different experiences 
 	//and to reset the values to a defined state.
 	public void setRandomValues(){
+		if (values == null) {
+			return;
+		}
+
 		foreach (ValueScript vs in values) {
-			vs.newGameStart ();
+			if (vs == null) {
+				continue;
+			}
+
+			if (IsUniversityCoreValue (vs.valueType)) {
+				ResetUniversityCoreValue (vs);
+			} else {
+				vs.newGameStart ();
+			}
+		}
+	}
+
+	static bool IsUniversityCoreValue(valueDefinitions.values type){
+		return type == valueDefinitions.values.bodyMind
+			|| type == valueDefinitions.values.academics
+			|| type == valueDefinitions.values.relationships
+			|| type == valueDefinitions.values.economy;
+	}
+
+	static void ResetUniversityCoreValue(ValueScript valueScript){
+		valueScript.setValue (UniversityCoreNewGameValue);
+		valueScript.ClearLastLimitDeviation ();
+		if (valueScript.UserInterface != null) {
+			valueScript.UserInterface.lerpedValue = valueScript.value;
 		}
 	}
 

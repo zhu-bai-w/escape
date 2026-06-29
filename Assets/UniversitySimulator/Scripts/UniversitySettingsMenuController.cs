@@ -1,9 +1,27 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UniversitySettingsMenuController : MonoBehaviour
 {
+    const string BottomNavigationBarName = "BottomNavigationBar";
+    const string SettingsNavButtonName = "SettingsNavButton";
+    const string AchievementsNavButtonName = "AchievementsNavButton";
+    const string ReturnGameNavButtonName = "ReturnGameNavButton";
+    const string ObsoleteQuestsNavButtonName = "QuestsNavButton";
+    const float NavigationBarWidth = 980f;
+    const float NavigationBarHeight = 84f;
+    const float NavigationBarBottomOffset = 24f;
+    const float NavigationButtonWidth = 280f;
+    const float NavigationButtonHeight = 58f;
+
+    static readonly Color NavigationBarColor = new Color(0.16f, 0.14f, 0.12f, 0.92f);
+    static readonly Color NavigationButtonColor = new Color(0.36f, 0.33f, 0.28f, 1f);
+    static readonly Color NavigationButtonSelectedColor = new Color(0.93f, 0.68f, 0.05f, 1f);
+    static readonly Color NavigationButtonTextColor = new Color(1f, 0.97f, 0.9f, 1f);
+    static readonly Color NavigationButtonSelectedTextColor = new Color(0.18f, 0.13f, 0.06f, 1f);
+
     enum SlotPanelMode
     {
         Save,
@@ -25,6 +43,10 @@ public class UniversitySettingsMenuController : MonoBehaviour
     public CardStack cardStack;
     public Text saveStatusText;
     public Button achievementsButton;
+    public GameObject bottomNavigationBar;
+    public Button settingsNavigationButton;
+    public Button achievementsNavigationButton;
+    public Button returnGameNavigationButton;
 
     SlotPanelMode currentSlotPanelMode = SlotPanelMode.Save;
 
@@ -32,6 +54,7 @@ public class UniversitySettingsMenuController : MonoBehaviour
     {
         UniversityAchievementSystem.EnsureInstance();
         BindAchievementsButton();
+        EnsureBottomNavigationBar();
         UniversityAchievementSystem.RefreshAchievementPanel(achievementsPanel);
     }
 
@@ -45,29 +68,27 @@ public class UniversitySettingsMenuController : MonoBehaviour
 
     public void OpenSettingsPanel()
     {
-        SetActive(menuPanel, true);
-        SetActive(settingsPanel, true);
-        SetActive(exitPanel, false);
-        SetActive(playerInfoPanel, false);
-        SetActive(achievementsPanel, false);
-        SetActive(questsPanel, false);
-        SetActive(settingsSelectedIcon, true);
-        CloseSlotPanel();
-        SetCardMoveEnabled(false);
+        OpenMenuPanel(settingsPanel);
     }
 
     public void OpenAchievementsPanel()
     {
-        SetActive(menuPanel, true);
+        OpenMenuPanel(achievementsPanel);
+        UniversityAchievementSystem.RefreshAchievementPanel(achievementsPanel);
+    }
+
+    public void ReturnToGame()
+    {
+        CloseSlotPanel();
         SetActive(settingsPanel, false);
         SetActive(exitPanel, false);
         SetActive(playerInfoPanel, false);
-        SetActive(achievementsPanel, true);
+        SetActive(achievementsPanel, false);
         SetActive(questsPanel, false);
         SetActive(settingsSelectedIcon, false);
-        CloseSlotPanel();
-        SetCardMoveEnabled(false);
-        UniversityAchievementSystem.RefreshAchievementPanel(achievementsPanel);
+        SetActive(bottomNavigationBar, false);
+        SetActive(menuPanel, false);
+        SetCardMoveEnabled(true);
     }
 
     public void SaveCurrentProgress()
@@ -257,6 +278,215 @@ public class UniversitySettingsMenuController : MonoBehaviour
             achievementsButton.onClick.RemoveListener(OpenAchievementsPanel);
             achievementsButton.onClick.AddListener(OpenAchievementsPanel);
         }
+    }
+
+    void OpenMenuPanel(GameObject activePanel)
+    {
+        SetActive(menuPanel, true);
+        SetActive(settingsPanel, activePanel == settingsPanel);
+        SetActive(exitPanel, false);
+        SetActive(playerInfoPanel, false);
+        SetActive(achievementsPanel, activePanel == achievementsPanel);
+        SetActive(questsPanel, false);
+        SetActive(settingsSelectedIcon, activePanel == settingsPanel);
+        EnsureBottomNavigationBar();
+        SetActive(bottomNavigationBar, true);
+        UpdateNavigationButtonStates(activePanel);
+        CloseSlotPanel();
+        SetCardMoveEnabled(false);
+    }
+
+    void EnsureBottomNavigationBar()
+    {
+        if (menuPanel == null)
+        {
+            return;
+        }
+
+        if (bottomNavigationBar == null)
+        {
+            Transform existingBar = menuPanel.transform.Find(BottomNavigationBarName);
+            bottomNavigationBar = existingBar != null ? existingBar.gameObject : CreateBottomNavigationBar();
+        }
+
+        if (bottomNavigationBar == null)
+        {
+            return;
+        }
+
+        settingsNavigationButton = ResolveNavigationButton(SettingsNavButtonName, "\u8bbe\u7f6e", OpenSettingsPanel);
+        achievementsNavigationButton = ResolveNavigationButton(AchievementsNavButtonName, "\u6210\u5c31", OpenAchievementsPanel);
+        RemoveObsoleteNavigationButton(ObsoleteQuestsNavButtonName);
+        returnGameNavigationButton = ResolveNavigationButton(ReturnGameNavButtonName, "\u8fd4\u56de\u6e38\u620f", ReturnToGame);
+        bottomNavigationBar.transform.SetAsLastSibling();
+    }
+
+    GameObject CreateBottomNavigationBar()
+    {
+        GameObject bar = new GameObject(BottomNavigationBarName, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(HorizontalLayoutGroup));
+        bar.transform.SetParent(menuPanel.transform, false);
+
+        RectTransform rect = bar.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0f);
+        rect.anchorMax = new Vector2(0.5f, 0f);
+        rect.pivot = new Vector2(0.5f, 0f);
+        rect.anchoredPosition = new Vector2(0f, NavigationBarBottomOffset);
+        rect.sizeDelta = new Vector2(NavigationBarWidth, NavigationBarHeight);
+
+        Image image = bar.GetComponent<Image>();
+        image.color = NavigationBarColor;
+
+        HorizontalLayoutGroup layout = bar.GetComponent<HorizontalLayoutGroup>();
+        layout.padding = new RectOffset(18, 18, 12, 12);
+        layout.spacing = 18f;
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.childControlWidth = false;
+        layout.childControlHeight = false;
+        layout.childForceExpandWidth = false;
+        layout.childForceExpandHeight = false;
+
+        return bar;
+    }
+
+    Button ResolveNavigationButton(string buttonName, string label, UnityAction action)
+    {
+        Button button = null;
+        Transform existingButton = bottomNavigationBar.transform.Find(buttonName);
+        if (existingButton != null)
+        {
+            button = existingButton.GetComponent<Button>();
+        }
+
+        if (button == null)
+        {
+            button = CreateNavigationButton(buttonName, label);
+        }
+
+        button.onClick.RemoveListener(action);
+        button.onClick.AddListener(action);
+        SetNavigationButtonLabel(button, label, false);
+        return button;
+    }
+
+    Button CreateNavigationButton(string buttonName, string label)
+    {
+        GameObject buttonObject = new GameObject(buttonName, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button), typeof(LayoutElement));
+        buttonObject.transform.SetParent(bottomNavigationBar.transform, false);
+
+        RectTransform rect = buttonObject.GetComponent<RectTransform>();
+        rect.sizeDelta = new Vector2(NavigationButtonWidth, NavigationButtonHeight);
+
+        LayoutElement layout = buttonObject.GetComponent<LayoutElement>();
+        layout.minWidth = NavigationButtonWidth;
+        layout.preferredWidth = NavigationButtonWidth;
+        layout.minHeight = NavigationButtonHeight;
+        layout.preferredHeight = NavigationButtonHeight;
+
+        Image image = buttonObject.GetComponent<Image>();
+        image.color = NavigationButtonColor;
+
+        Button button = buttonObject.GetComponent<Button>();
+        button.targetGraphic = image;
+        button.transition = Selectable.Transition.ColorTint;
+
+        GameObject textObject = new GameObject("Text", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+        textObject.transform.SetParent(buttonObject.transform, false);
+        RectTransform textRect = textObject.GetComponent<RectTransform>();
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.offsetMin = Vector2.zero;
+        textRect.offsetMax = Vector2.zero;
+
+        Text text = textObject.GetComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize = 30;
+        text.fontStyle = FontStyle.Bold;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+        text.verticalOverflow = VerticalWrapMode.Truncate;
+        text.color = NavigationButtonTextColor;
+        text.text = label;
+
+        return button;
+    }
+
+    void UpdateNavigationButtonStates(GameObject activePanel)
+    {
+        SetNavigationButtonState(settingsNavigationButton, activePanel == settingsPanel, settingsPanel != null);
+        SetNavigationButtonState(achievementsNavigationButton, activePanel == achievementsPanel, achievementsPanel != null);
+        SetNavigationButtonState(returnGameNavigationButton, false, true);
+    }
+
+    void RemoveObsoleteNavigationButton(string buttonName)
+    {
+        if (bottomNavigationBar == null)
+        {
+            return;
+        }
+
+        Transform obsoleteButton = bottomNavigationBar.transform.Find(buttonName);
+        if (obsoleteButton == null)
+        {
+            return;
+        }
+
+        if (Application.isPlaying)
+        {
+            Destroy(obsoleteButton.gameObject);
+        }
+        else
+        {
+            DestroyImmediate(obsoleteButton.gameObject);
+        }
+    }
+
+    void SetNavigationButtonState(Button button, bool selected, bool visible)
+    {
+        if (button == null)
+        {
+            return;
+        }
+
+        button.gameObject.SetActive(visible);
+        button.interactable = visible && !selected;
+
+        Color targetColor = selected ? NavigationButtonSelectedColor : NavigationButtonColor;
+        Image image = button.GetComponent<Image>();
+        if (image != null)
+        {
+            image.color = targetColor;
+        }
+
+        ColorBlock colors = button.colors;
+        colors.normalColor = targetColor;
+        colors.highlightedColor = selected ? targetColor : Color.Lerp(targetColor, Color.white, 0.16f);
+        colors.pressedColor = Color.Lerp(targetColor, Color.black, 0.16f);
+        colors.selectedColor = targetColor;
+        colors.disabledColor = targetColor;
+        button.colors = colors;
+
+        SetNavigationButtonLabel(button, null, selected);
+    }
+
+    void SetNavigationButtonLabel(Button button, string label, bool selected)
+    {
+        if (button == null)
+        {
+            return;
+        }
+
+        Text text = button.GetComponentInChildren<Text>(true);
+        if (text == null)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(label))
+        {
+            text.text = label;
+        }
+
+        text.color = selected ? NavigationButtonSelectedTextColor : NavigationButtonTextColor;
     }
 
     Button FindButtonInMenu(string buttonName)

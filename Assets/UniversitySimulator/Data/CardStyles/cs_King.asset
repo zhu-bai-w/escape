@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: cs_King
   m_EditorClassIdentifier: 
   prefab: {fileID: 1818390954452748, guid: 0f0aa08f89365394b80c6b149344b23a, type: 2}
-  cardColor: {r: 0.9333334, g: 0.6784314, b: 0.054901965, a: 1}
+  cardColor: {r: 0.050980393, g: 0.13333334, b: 0.23921569, a: 1}
   cardFront: {fileID: 21300000, guid: 29e4fbffb4ff5d34a9b06b805d5ee3eb, type: 3}
   cardBack: {fileID: 0}
   icon: {fileID: 21300000, guid: 942462fce505db945bd17b2cac9b849a, type: 3}

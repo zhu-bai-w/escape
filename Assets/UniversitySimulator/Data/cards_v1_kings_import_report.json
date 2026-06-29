@@ -1580,7 +1580,7 @@
             "eventId": "TE001",
             "cardName": "US_TE001",
             "groupName": "TrueEnding",
-            "styleName": "cs_None",
+            "styleName": "cs_default",
             "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/TrueEnding/US_TE001.prefab",
             "exists": true,
             "hasEventScript": true,

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: cs_GameOver
   m_EditorClassIdentifier: 
   prefab: {fileID: 1818390954452748, guid: 0f0aa08f89365394b80c6b149344b23a, type: 2}
-  cardColor: {r: 1, g: 0.125, b: 0.125, a: 1}
+  cardColor: {r: 0.39215687, g: 0.14117648, b: 0.12941177, a: 1}
   cardFront: {fileID: 0}
   cardBack: {fileID: 0}
   icon: {fileID: 21300000, guid: 942462fce505db945bd17b2cac9b849a, type: 3}

@@ -67,6 +67,7 @@ public class GameStateManager : MonoBehaviour {
 		
 	public void executeGameover(){
 		gamestate = Gamestate.gameOver;
+        UniversityTrueEndingProgress.ResetCurrentRunDays();
 
         //Debug.LogWarning("executeGameover");
 
@@ -90,6 +91,7 @@ public class GameStateManager : MonoBehaviour {
     public void RestartAsNewGame(bool reloadScene)
     {
         gamestate = Gamestate.idle;
+        UniversityTrueEndingProgress.ResetCurrentRunDays();
 
         if (CardStack.instance != null)
         {
@@ -122,6 +124,7 @@ public class GameStateManager : MonoBehaviour {
 	void StartGame(){
 		swipeCounter = 0;
 		if (gamestate == Gamestate.idle) {
+            UniversityTrueEndingProgress.ResetCurrentRunDays();
 
 			//do game start preparations
 			OnNewGame.Invoke();

@@ -13,6 +13,7 @@ public class UniversitySimulatorRegressionTests
     const string CardsFolderPath = "Assets/UniversitySimulator/Art/cards";
     const string PrefabRootPath = "Assets/UniversitySimulator/Prefabs/Cards";
     const string GameScenePath = "Assets/UniversitySimulator/Scenes/Game.unity";
+    const string ValueResetTestKeyPrefix = "US.Tests.NewGameValue.";
 
     [SetUp]
     public void SetUp()
@@ -370,7 +371,7 @@ public class UniversitySimulatorRegressionTests
     }
 
     [Test]
-    public void ReturnToNewGameDoesNotIncrementGameOverCount()
+    public void ReturnToNewGameClearsCurrentRunDaysWithoutIncrementingGameOverCount()
     {
         GameObject managerObject = new GameObject("GameStateManager Test Host");
         GameObject returnObject = new GameObject("True Ending Return Test Host");
@@ -378,6 +379,7 @@ public class UniversitySimulatorRegressionTests
         {
             UniversityTrueEndingProgress.ResetForDebug(UniversityTrueEndingProgress.DefaultRequiredFlags);
             UniversityTrueEndingProgress.AddGameOver(1);
+            UniversityTrueEndingProgress.AddCurrentRunDays(7);
             int before = UniversityTrueEndingProgress.GameOverCount;
 
             GameStateManager manager = managerObject.AddComponent<GameStateManager>();
@@ -390,6 +392,7 @@ public class UniversitySimulatorRegressionTests
             returnToNewGame.ReturnToNewGame();
 
             Assert.AreEqual(before, UniversityTrueEndingProgress.GameOverCount);
+            Assert.AreEqual(0, UniversityTrueEndingProgress.CurrentRunDays);
             Assert.AreEqual(GameStateManager.Gamestate.idle, manager.gamestate);
         }
         finally
@@ -539,6 +542,72 @@ public class UniversitySimulatorRegressionTests
     }
 
     [Test]
+    public void SettingsMenuCreatesReturnNavigationOnAchievementsPanel()
+    {
+        GameObject hostObject = new GameObject("Settings Controller Host");
+        GameObject menuPanel = new GameObject("MenuPanel", typeof(RectTransform));
+        GameObject settingsPanel = new GameObject("SettingsPanel", typeof(RectTransform));
+        GameObject achievementsPanel = new GameObject("AchievementsPanel", typeof(RectTransform));
+        GameObject questsPanel = new GameObject("QuestsPanel", typeof(RectTransform));
+        try
+        {
+            settingsPanel.transform.SetParent(menuPanel.transform, false);
+            achievementsPanel.transform.SetParent(menuPanel.transform, false);
+            questsPanel.transform.SetParent(menuPanel.transform, false);
+            menuPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+            achievementsPanel.SetActive(false);
+            questsPanel.SetActive(false);
+
+            UniversitySettingsMenuController controller = hostObject.AddComponent<UniversitySettingsMenuController>();
+            controller.menuPanel = menuPanel;
+            controller.settingsPanel = settingsPanel;
+            controller.achievementsPanel = achievementsPanel;
+            controller.questsPanel = questsPanel;
+
+            controller.OpenAchievementsPanel();
+
+            Transform navigation = menuPanel.transform.Find("BottomNavigationBar");
+            Assert.IsNotNull(navigation, "The achievements panel should include the menu navigation bar.");
+            Assert.AreEqual(menuPanel.transform.childCount - 1, navigation.GetSiblingIndex(), "Navigation should render above the active panel.");
+            Assert.IsTrue(menuPanel.activeSelf);
+            Assert.IsFalse(settingsPanel.activeSelf);
+            Assert.IsTrue(achievementsPanel.activeSelf);
+            Assert.IsFalse(questsPanel.activeSelf);
+
+            Button settingsButton = navigation.Find("SettingsNavButton").GetComponent<Button>();
+            Button achievementsButton = navigation.Find("AchievementsNavButton").GetComponent<Button>();
+            Button returnGameButton = navigation.Find("ReturnGameNavButton").GetComponent<Button>();
+            Assert.IsTrue(settingsButton.gameObject.activeSelf);
+            Assert.IsFalse(achievementsButton.interactable);
+            Assert.IsTrue(returnGameButton.gameObject.activeSelf);
+            Assert.IsNull(navigation.Find("QuestsNavButton"));
+
+            settingsButton.onClick.Invoke();
+
+            Assert.IsTrue(settingsPanel.activeSelf);
+            Assert.IsFalse(achievementsPanel.activeSelf);
+            Assert.IsFalse(settingsButton.interactable);
+            Assert.IsTrue(achievementsButton.interactable);
+
+            returnGameButton.onClick.Invoke();
+
+            Assert.IsFalse(menuPanel.activeSelf);
+            Assert.IsFalse(settingsPanel.activeSelf);
+            Assert.IsFalse(achievementsPanel.activeSelf);
+            Assert.IsFalse(questsPanel.activeSelf);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(questsPanel);
+            UnityEngine.Object.DestroyImmediate(achievementsPanel);
+            UnityEngine.Object.DestroyImmediate(settingsPanel);
+            UnityEngine.Object.DestroyImmediate(menuPanel);
+            UnityEngine.Object.DestroyImmediate(hostObject);
+        }
+    }
+
+    [Test]
     public void ValueScriptRecordsLimitDeviationBeforeClamping()
     {
         GameObject valueObject = new GameObject("Value Limit Test Host");
@@ -567,6 +636,49 @@ public class UniversitySimulatorRegressionTests
         finally
         {
             UnityEngine.Object.DestroyImmediate(valueObject);
+        }
+    }
+
+    [Test]
+    public void NewGameStartForcesUniversityCoreValuesToFifty()
+    {
+        GameObject valueManagerObject = new GameObject("ValueManager Reset Test Host");
+        List<GameObject> valueObjects = new List<GameObject>();
+        try
+        {
+            valueManager manager = valueManagerObject.AddComponent<valueManager>();
+            valueManager.instance = manager;
+            manager.values = new List<ValueScript>
+            {
+                CreateNewGameResetValue(valueObjects, valueDefinitions.values.bodyMind, 12f, 80f, 80f),
+                CreateNewGameResetValue(valueObjects, valueDefinitions.values.academics, 25f, 80f, 80f),
+                CreateNewGameResetValue(valueObjects, valueDefinitions.values.relationships, 70f, 80f, 80f),
+                CreateNewGameResetValue(valueObjects, valueDefinitions.values.economy, 99f, 80f, 80f),
+                CreateNewGameResetValue(valueObjects, valueDefinitions.values.health, 99f, 12f, 12f)
+            };
+
+            manager.setRandomValues();
+
+            Assert.AreEqual(50f, manager.getFirstFittingValue(valueDefinitions.values.bodyMind).value);
+            Assert.AreEqual(50f, manager.getFirstFittingValue(valueDefinitions.values.academics).value);
+            Assert.AreEqual(50f, manager.getFirstFittingValue(valueDefinitions.values.relationships).value);
+            Assert.AreEqual(50f, manager.getFirstFittingValue(valueDefinitions.values.economy).value);
+            Assert.AreEqual(12f, manager.getFirstFittingValue(valueDefinitions.values.health).value);
+        }
+        finally
+        {
+            DeleteSecurePrefsKey(ValueResetTestKeyPrefix + valueDefinitions.values.bodyMind);
+            DeleteSecurePrefsKey(ValueResetTestKeyPrefix + valueDefinitions.values.academics);
+            DeleteSecurePrefsKey(ValueResetTestKeyPrefix + valueDefinitions.values.relationships);
+            DeleteSecurePrefsKey(ValueResetTestKeyPrefix + valueDefinitions.values.economy);
+            DeleteSecurePrefsKey(ValueResetTestKeyPrefix + valueDefinitions.values.health);
+
+            for (int i = 0; i < valueObjects.Count; i++)
+            {
+                UnityEngine.Object.DestroyImmediate(valueObjects[i]);
+            }
+
+            UnityEngine.Object.DestroyImmediate(valueManagerObject);
         }
     }
 
@@ -756,6 +868,43 @@ public class UniversitySimulatorRegressionTests
             OnMax = new ValueScript.mEvent(),
             OnMin = new ValueScript.mEvent()
         };
+    }
+
+    static ValueScript CreateNewGameResetValue(List<GameObject> valueObjects, valueDefinitions.values valueType, float currentValue, float randomMin, float randomMax)
+    {
+        GameObject valueObject = new GameObject(valueType + " Reset Test Host");
+        valueObjects.Add(valueObject);
+
+        ValueScript valueScript = valueObject.AddComponent<ValueScript>();
+        valueScript.valueType = valueType;
+        valueScript.value = currentValue;
+        valueScript.limits = new ValueScript.valueLimits
+        {
+            min = 0f,
+            max = 100f,
+            randomMin = randomMin,
+            randomMax = randomMax,
+            roundToWholeNumbers = true
+        };
+        valueScript.events = BuildValueEvents();
+        typeof(ValueScript)
+            .GetField("identifier", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(valueScript, ValueResetTestKeyPrefix + valueType);
+
+        return valueScript;
+    }
+
+    static void DeleteSecurePrefsKey(string key)
+    {
+        MethodInfo generateMd5 = typeof(SecurePlayerPrefs).GetMethod("GenerateMD5", BindingFlags.Static | BindingFlags.NonPublic);
+        if (generateMd5 == null)
+        {
+            PlayerPrefs.DeleteKey(key);
+            return;
+        }
+
+        PlayerPrefs.DeleteKey((string)generateMd5.Invoke(null, new object[] { key }));
+        PlayerPrefs.DeleteKey((string)generateMd5.Invoke(null, new object[] { key + "asdf" }));
     }
 
     static EventScript.result EmptyResult()

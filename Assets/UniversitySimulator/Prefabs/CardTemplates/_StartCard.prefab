@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9333334, g: 0.6784314, b: 0.054901965, a: 1}
+  m_Color: {r: 0.050980393, g: 0.13333334, b: 0.23921569, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -669,7 +669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 2ce901ddd5004ec438a01a1f003a768c, type: 2}
   cardImages:
-    color: {r: 0.9333334, g: 0.6784314, b: 0.054901965, a: 1}
+    color: {r: 0.050980393, g: 0.13333334, b: 0.23921569, a: 1}
     front: {fileID: 0}
     back: {fileID: 0}
   iconImage: {fileID: 114853187802903376}
