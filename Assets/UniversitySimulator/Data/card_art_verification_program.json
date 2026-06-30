@@ -1,17 +1,17 @@
 {
     "success": false,
-    "generatedAt": "2026-06-28 22:58:54",
+    "generatedAt": "2026-06-30 12:10:11",
     "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
     "cardsFolder": "Assets/UniversitySimulator/Art/cards",
     "prefabRoot": "Assets/UniversitySimulator/Prefabs/Cards",
     "reportPath": "Assets/UniversitySimulator/Data/card_art_verification_program.json",
     "expectedCount": 46,
-    "boundCount": 44,
-    "missingExpectedArtCount": 2,
+    "boundCount": 46,
+    "missingExpectedArtCount": 0,
     "missingPrefabCount": 0,
     "mismatchCount": 0,
-    "lowVisibilitySourceCount": 43,
-    "extraArtCount": 2,
+    "lowVisibilitySourceCount": 45,
+    "extraArtCount": 10,
     "errors": [],
     "cards": [
         {
@@ -80,19 +80,19 @@
             "groupName": "Main",
             "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E008.prefab",
             "expectedSpritePath": "Assets/UniversitySimulator/Art/cards/card-E008.png",
-            "expectedSpriteLoaded": false,
+            "expectedSpriteLoaded": true,
             "prefabLoaded": true,
-            "cardStyleFound": false,
-            "usePrefabIconOverride": false,
-            "iconImageFound": false,
-            "actualSpriteName": "",
-            "actualSpritePath": "",
-            "actualDisplayColor": "",
-            "displayColorUntinted": false,
-            "lowVisibilitySource": false,
-            "matchesExpectedSprite": false,
-            "status": "missing",
-            "error": "Missing expected sprite."
+            "cardStyleFound": true,
+            "usePrefabIconOverride": true,
+            "iconImageFound": true,
+            "actualSpriteName": "card-E008",
+            "actualSpritePath": "Assets/UniversitySimulator/Art/cards/card-E008.png",
+            "actualDisplayColor": "#FFFFFFFF",
+            "displayColorUntinted": true,
+            "lowVisibilitySource": true,
+            "matchesExpectedSprite": true,
+            "status": "bound",
+            "error": ""
         },
         {
             "eventId": "E010",
@@ -140,19 +140,19 @@
             "groupName": "Main",
             "prefabPath": "Assets/UniversitySimulator/Prefabs/Cards/Main/US_E012.prefab",
             "expectedSpritePath": "Assets/UniversitySimulator/Art/cards/card-E012.png",
-            "expectedSpriteLoaded": false,
+            "expectedSpriteLoaded": true,
             "prefabLoaded": true,
-            "cardStyleFound": false,
-            "usePrefabIconOverride": false,
-            "iconImageFound": false,
-            "actualSpriteName": "",
-            "actualSpritePath": "",
-            "actualDisplayColor": "",
-            "displayColorUntinted": false,
-            "lowVisibilitySource": false,
-            "matchesExpectedSprite": false,
-            "status": "missing",
-            "error": "Missing expected sprite."
+            "cardStyleFound": true,
+            "usePrefabIconOverride": true,
+            "iconImageFound": true,
+            "actualSpriteName": "card-E012",
+            "actualSpritePath": "Assets/UniversitySimulator/Art/cards/card-E012.png",
+            "actualDisplayColor": "#FFFFFFFF",
+            "displayColorUntinted": true,
+            "lowVisibilitySource": true,
+            "matchesExpectedSprite": true,
+            "status": "bound",
+            "error": ""
         },
         {
             "eventId": "E013",
@@ -944,6 +944,46 @@
         {
             "eventId": "E053",
             "spritePath": "Assets/UniversitySimulator/Art/cards/card-E053.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END01",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END01.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END02",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END02.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END03",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END03.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END04",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END04.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END05",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END05.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END06",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END06.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END07",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END07.png",
+            "lowVisibilitySource": true
+        },
+        {
+            "eventId": "END08",
+            "spritePath": "Assets/UniversitySimulator/Art/cards/card-END08.png",
             "lowVisibilitySource": true
         }
     ]

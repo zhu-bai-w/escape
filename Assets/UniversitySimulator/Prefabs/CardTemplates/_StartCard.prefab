@@ -363,14 +363,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textFields:
     titleText:
-      textContent: 鏂扮殑涓€澶?      textField: {fileID: 114090687538468844}
+      textContent: 新的一天
+      textField: {fileID: 114090687538468844}
     questionText:
-      textContent: 浣犵珯鍦ㄦ牎鍥棬鍙ｏ紝鎵嬫満閲岃繕鏈夋病鍥炵殑娑堟伅锛屼粖澶╃殑閫夋嫨浠庤繖閲屽紑濮嬨€?      textField: {fileID: 114309495523116190}
+      textContent: 你站在校园门口，手机里还有没回的消息，今天的选择从这里开始。
+      textField: {fileID: 114309495523116190}
     answerLeft:
-      textContent: 鍏堟繁鍛煎惛
+      textContent: 先深呼吸
       textField: {fileID: 114616901005016922}
     answerRight:
-      textContent: 璧拌繘鍘?      textField: {fileID: 114947929046483754}
+      textContent: 走进去
+      textField: {fileID: 114947929046483754}
     answerUp:
       textContent: 
       textField: {fileID: 0}

@@ -12,6 +12,9 @@
 /[Uu]ser[Ss]ettings/
 *.log
 /outputs/
+/tmp/
+/*.zip
+/什么？我被困在大学了+年级待填+组长姓名待填/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

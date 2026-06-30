@@ -64,6 +64,7 @@ public class UniversityAchievementSystem : MonoBehaviour
     const string UnlockTimeKeyPrefix = "US.Achievement.UnlockedAt.";
 
     static readonly string DefaultIconPath = "Assets/UniversitySimulator/Art/AchievementIcons/";
+    const string DefaultIconResourcePath = "UniversityAchievementIcons/";
     const int AchievementTitleFontSize = 52;
     const int AchievementDescriptionFontSize = 36;
     const int AchievementStatusFontSize = 30;
@@ -220,6 +221,7 @@ public class UniversityAchievementSystem : MonoBehaviour
     };
 
     readonly Queue<UniversityAchievementDefinition> pendingPopups = new Queue<UniversityAchievementDefinition>();
+    static readonly Dictionary<string, Sprite> IconCache = new Dictionary<string, Sprite>();
     bool popupRoutineRunning;
 
     public static UniversityAchievementSystem instance { get; private set; }
@@ -707,8 +709,19 @@ public class UniversityAchievementSystem : MonoBehaviour
 
     Sprite ResolveIcon(UniversityAchievementDefinition definition)
     {
+        if (definition == null || string.IsNullOrEmpty(definition.id))
+        {
+            return null;
+        }
+
+        Sprite resourceIcon = ResolveResourceIcon(definition);
+        if (resourceIcon != null)
+        {
+            return resourceIcon;
+        }
+
 #if UNITY_EDITOR
-        if (definition != null && !string.IsNullOrEmpty(definition.iconAssetPath))
+        if (!string.IsNullOrEmpty(definition.iconAssetPath))
         {
             string iconAssetPath = definition.iconAssetPath;
             if (!iconAssetPath.EndsWith(".png"))
@@ -725,6 +738,32 @@ public class UniversityAchievementSystem : MonoBehaviour
 #endif
 
         return null;
+    }
+
+    Sprite ResolveResourceIcon(UniversityAchievementDefinition definition)
+    {
+        string resourcePath = DefaultIconResourcePath + definition.id;
+        if (IconCache.TryGetValue(resourcePath, out Sprite cachedIcon))
+        {
+            return cachedIcon;
+        }
+
+        Sprite icon = Resources.Load<Sprite>(resourcePath);
+        if (icon == null)
+        {
+            Texture2D texture = Resources.Load<Texture2D>(resourcePath);
+            if (texture != null)
+            {
+                icon = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100f);
+            }
+        }
+
+        if (icon != null)
+        {
+            IconCache[resourcePath] = icon;
+        }
+
+        return icon;
     }
 
     string ResolveEventId(GameObject card)

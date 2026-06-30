@@ -1,6 +1,6 @@
 {
     "success": true,
-    "generatedAt": "2026-06-29 11:44:21",
+    "generatedAt": "2026-06-30 12:10:01",
     "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
     "textCsv": "Assets/UniversitySimulator/Data/cards_v1_kings_text_import.csv",
     "styleList": "Assets/UniversitySimulator/Data/CardStyles/CardStyle_List.asset",
@@ -18,15 +18,15 @@
     "valueEndingReturnCards": 8,
     "valueEndingRules": 8,
     "cardArtExpected": 46,
-    "cardArtBound": 44,
-    "cardArtMissing": 2,
-    "cardArtExtra": 2,
+    "cardArtBound": 46,
+    "cardArtMissing": 0,
+    "cardArtExtra": 10,
     "sceneGroups": 4,
     "sceneCards": 71,
     "trueEndingStartCard": "US_TE001",
     "tableValidation": {
         "success": true,
-        "generatedAt": "2026-06-29 11:44:21",
+        "generatedAt": "2026-06-30 12:10:01",
         "sourceCsv": "Assets/UniversitySimulator/Data/cards_v1_program.csv",
         "rowCount": 71,
         "eventChainCount": 5,
@@ -78,14 +78,18 @@
         ]
     },
     "errors": [],
-    "warnings": [
-        "Applied CardStyle references after KingsImEx import: 8 prefab(s).",
-        "Card E008 is missing expected card art: Assets/UniversitySimulator/Art/cards/card-E008.png",
-        "Card E012 is missing expected card art: Assets/UniversitySimulator/Art/cards/card-E012.png"
-    ],
+    "warnings": [],
     "extraCardArtPaths": [
         "Assets/UniversitySimulator/Art/cards/card-E036.png",
-        "Assets/UniversitySimulator/Art/cards/card-E053.png"
+        "Assets/UniversitySimulator/Art/cards/card-E053.png",
+        "Assets/UniversitySimulator/Art/cards/card-END01.png",
+        "Assets/UniversitySimulator/Art/cards/card-END02.png",
+        "Assets/UniversitySimulator/Art/cards/card-END03.png",
+        "Assets/UniversitySimulator/Art/cards/card-END04.png",
+        "Assets/UniversitySimulator/Art/cards/card-END05.png",
+        "Assets/UniversitySimulator/Art/cards/card-END06.png",
+        "Assets/UniversitySimulator/Art/cards/card-END07.png",
+        "Assets/UniversitySimulator/Art/cards/card-END08.png"
     ],
     "cards": [
         {
@@ -173,13 +177,13 @@
             "hasConditionExpression": false,
             "hasTrueEndingReturn": false,
             "cardArtExpectedPath": "Assets/UniversitySimulator/Art/cards/card-E008.png",
-            "cardArtActualPath": "",
+            "cardArtActualPath": "Assets/UniversitySimulator/Art/cards/card-E008.png",
             "cardArtDisplayColor": "#FFFFFFFF",
-            "cardArtIssue": "Missing expected card art.",
-            "cardArtLoaded": false,
+            "cardArtIssue": "",
+            "cardArtLoaded": true,
             "cardArtUsesPrefabOverride": true,
             "cardArtIconImageFound": true,
-            "cardArtMatches": false,
+            "cardArtMatches": true,
             "cardArtDisplayColorUntinted": true,
             "textMatches": true,
             "issues": []
@@ -245,13 +249,13 @@
             "hasConditionExpression": false,
             "hasTrueEndingReturn": false,
             "cardArtExpectedPath": "Assets/UniversitySimulator/Art/cards/card-E012.png",
-            "cardArtActualPath": "",
+            "cardArtActualPath": "Assets/UniversitySimulator/Art/cards/card-E012.png",
             "cardArtDisplayColor": "#FFFFFFFF",
-            "cardArtIssue": "Missing expected card art.",
-            "cardArtLoaded": false,
+            "cardArtIssue": "",
+            "cardArtLoaded": true,
             "cardArtUsesPrefabOverride": true,
             "cardArtIconImageFound": true,
-            "cardArtMatches": false,
+            "cardArtMatches": true,
             "cardArtDisplayColorUntinted": true,
             "textMatches": true,
             "issues": []

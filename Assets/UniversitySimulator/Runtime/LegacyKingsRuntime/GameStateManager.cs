@@ -146,3 +146,30 @@ public class GameStateManager : MonoBehaviour {
 	}
 
 }
+
+public static class UniversityReleaseSaveReset
+{
+    const string CleanStartKey = "US.ReleaseCleanStart.20260630.DataClearV1";
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void EnsureCleanReleaseStartBeforeSceneLoad()
+    {
+        EnsureCleanReleaseStart();
+    }
+
+    public static void EnsureCleanReleaseStart()
+    {
+#if UNITY_EDITOR
+        return;
+#else
+        if (PlayerPrefs.HasKey(CleanStartKey))
+        {
+            return;
+        }
+
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt(CleanStartKey, 1);
+        PlayerPrefs.Save();
+#endif
+    }
+}
